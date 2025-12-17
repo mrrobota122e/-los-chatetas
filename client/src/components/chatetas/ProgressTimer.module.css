@@ -1,0 +1,67 @@
+.container {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.phaseLabel {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.timerDisplay {
+    margin-bottom: 0.75rem;
+}
+
+.timeText {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #00d9ff;
+    font-variant-numeric: tabular-nums;
+}
+
+.timeText.critical {
+    color: #ff3d71;
+    animation: pulse 0.5s ease-in-out infinite;
+}
+
+.progressBarContainer {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progressBar {
+    height: 100%;
+    background: linear-gradient(90deg, #00e676 0%, #00d9ff 50%, #7b2ff7 100%);
+    border-radius: 10px;
+    transition: width 1s linear;
+    box-shadow: 0 0 15px currentColor;
+}
+
+.progressBar.critical {
+    background: linear-gradient(90deg, #ff3d71 0%, #ff6b9d 100%);
+    animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(0.98);
+    }
+}

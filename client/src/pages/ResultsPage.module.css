@@ -1,0 +1,249 @@
+.container {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.innocentsWin {
+    background: radial-gradient(circle at center, #004d40 0%, #000000 100%);
+}
+
+.impostorWin {
+    background: radial-gradient(circle at center, #4a0000 0%, #000000 100%);
+}
+
+.content {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    z-index: 1;
+    animation: fadeIn 1s ease-out;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.winIcon {
+    color: #00ff88;
+    filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.5));
+    animation: bounce 2s infinite;
+}
+
+.lossIcon {
+    color: #ff3d71;
+    filter: drop-shadow(0 0 20px rgba(255, 61, 113, 0.5));
+    animation: pulse 2s infinite;
+}
+
+.title {
+    font-size: 5rem;
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #fff, #888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.mainInfo {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.infoCard {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 250px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.infoCard:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.wordValue {
+    color: #ff3d71;
+    text-shadow: 0 0 15px rgba(255, 61, 113, 0.5);
+}
+
+.statsContainer {
+    display: flex;
+    gap: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem 2rem;
+    border-radius: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.mvp {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+.actions {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.playAgainBtn,
+.menuBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+}
+
+.playAgainBtn {
+    background: linear-gradient(135deg, #ff3d71 0%, #0066ff 100%);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(255, 61, 113, 0.3);
+}
+
+.playAgainBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(255, 61, 113, 0.5);
+}
+
+.menuBtn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menuBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 3rem;
+    }
+
+    .mainInfo {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .infoCard {
+        width: 100%;
+    }
+
+    .actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .playAgainBtn,
+    .menuBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .statsContainer {
+        flex-direction: column;
+        border-radius: 1rem;
+        width: 100%;
+    }
+}

@@ -1,0 +1,35 @@
+.tooltip {
+    background: linear-gradient(135deg, #1a2332 0%, #2a3342 100%) !important;
+    border: 1px solid rgba(0, 217, 255, 0.3) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    max-width: 250px !important;
+    z-index: 10000 !important;
+}
+
+.tooltipContent {
+    color: #fff;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+.tooltipContent strong {
+    display: block;
+    color: #00d9ff;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0, 217, 255, 0.2);
+    padding-bottom: 0.25rem;
+}
+
+.tooltipContent p {
+    margin: 0.25rem 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tooltipContent em {
+    color: #ffa726;
+    font-style: italic;
+    font-size: 0.7rem;
+}

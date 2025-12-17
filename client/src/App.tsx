@@ -1,0 +1,40 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import IntroPage from './pages/IntroPage';
+import MenuPage from './pages/MenuPage';
+import LobbyPage from './pages/LobbyPage';
+import GamePage from './pages/GamePage';
+import ResultsPage from './pages/ResultsPage';
+import GuessWhoMenuPage from './pages/guessWho/GuessWhoMenuPage';
+import GuessWhoGamePage from './pages/guessWho/GuessWhoGamePage';
+import GuessWhoLobbyPage from './pages/guessWho/GuessWhoLobbyPage';
+import ImpostorMenuPage from './pages/ImpostorMenuPage';
+
+function App() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                {/* Intro page */}
+                <Route path="/" element={<IntroPage />} />
+
+                {/* Los Chatetas routes */}
+                <Route path="/menu" element={<MenuPage />} />
+                <Route path="/lobby/:roomCode" element={<LobbyPage />} />
+                <Route path="/game/:roomCode" element={<GamePage />} />
+                <Route path="/results/:roomCode" element={<ResultsPage />} />
+
+                {/* Guess Who routes */}
+                <Route path="/guess-who/menu" element={<GuessWhoMenuPage />} />
+                <Route path="/guess-who/lobby/:roomCode" element={<GuessWhoLobbyPage />} />
+                <Route path="/guess-who/game" element={<GuessWhoGamePage />} />
+
+                {/* Impostor Menu */}
+                <Route path="/impostor/menu" element={<ImpostorMenuPage />} />
+
+                {/* Redirect unknown routes to intro */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+        </BrowserRouter>
+    );
+}
+
+export default App;

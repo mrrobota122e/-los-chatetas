@@ -1,0 +1,444 @@
+/* EPIC Intro - Blue/Purple Theme */
+.introContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, #0a0e1a 0%, #1a1f2e 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* Cinematic letterboxing */
+.letterbox {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 10%;
+    background: #000;
+    z-index: 100;
+    top: 0;
+}
+
+.letterbox.bottom {
+    top: auto;
+    bottom: 0;
+}
+
+/* Flash effect */
+.flash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #ff3d71 0%, #7b2ff7 100%);
+    opacity: 0;
+    z-index: 50;
+    pointer-events: none;
+}
+
+.flash.active {
+    animation: flashBang 0.4s ease-out;
+}
+
+@keyframes flashBang {
+    0% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Dust/particles background */
+.dustParticles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.dust {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 61, 113, 0.6);
+    border-radius: 50%;
+    animation: floatDust 5s ease-in-out infinite;
+    box-shadow: 0 0 6px rgba(255, 61, 113, 0.8);
+}
+
+@keyframes floatDust {
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: translateY(0) translateX(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(-30px) translateX(15px);
+    }
+}
+
+/* Animated light rays */
+.lightRays {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.ray {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 61, 113, 0.08), rgba(123, 47, 247, 0.08), transparent);
+    transform-origin: center;
+    animation: rayRotate 25s linear infinite;
+}
+
+.ray:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.ray:nth-child(2) {
+    animation-delay: 8s;
+}
+
+.ray:nth-child(3) {
+    animation-delay: 16s;
+}
+
+@keyframes rayRotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Logo container */
+.logoContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logoContainer.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.logoContainer.fadeOut {
+    opacity: 0;
+    transform: scale(1.15);
+    transition: all 1s ease;
+}
+
+/* Glow backdrop */
+.glowBackdrop {
+    position: absolute;
+    width: 150%;
+    height: 400%;
+    background: radial-gradient(ellipse at center,
+            rgba(255, 61, 113, 0.15) 0%,
+            rgba(123, 47, 247, 0.1) 30%,
+            transparent 60%);
+    animation: glowPulse 4s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* The main logo */
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    z-index: 10;
+}
+
+.logoLetter {
+    display: inline-block;
+    font-family: 'Montserrat', 'Arial Black', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow:
+        0 0 20px rgba(255, 61, 113, 0.5),
+        0 0 40px rgba(123, 47, 247, 0.4),
+        0 0 80px rgba(255, 61, 113, 0.2);
+    animation: letterReveal 0.8s ease-out backwards;
+    letter-spacing: 0.03em;
+}
+
+/* Stagger animation for each letter */
+.logoLetter:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.logoLetter:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.logoLetter:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.logoLetter:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.logoLetter:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.logoLetter:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+.logoLetter:nth-child(7) {
+    animation-delay: 0.35s;
+}
+
+.logoLetter:nth-child(8) {
+    animation-delay: 0.4s;
+}
+
+.logoLetter:nth-child(9) {
+    animation-delay: 0.45s;
+}
+
+.logoLetter:nth-child(10) {
+    animation-delay: 0.5s;
+}
+
+.logoLetter:nth-child(11) {
+    animation-delay: 0.55s;
+}
+
+.logoLetter:nth-child(12) {
+    animation-delay: 0.6s;
+}
+
+.logoLetter:nth-child(13) {
+    animation-delay: 0.65s;
+}
+
+@keyframes letterReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(60px) scale(0.5);
+        filter: blur(15px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+.logoSpace {
+    width: 0.4em;
+}
+
+/* Special styling for "10" */
+.logoLetter.number {
+    background: linear-gradient(180deg, #ff3d71 0%, #7b2ff7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 25px rgba(255, 61, 113, 0.8));
+    animation: letterReveal 0.8s ease-out backwards, numberGlow 2s ease-in-out infinite 1s;
+}
+
+@keyframes numberGlow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 25px rgba(255, 61, 113, 0.8));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 50px rgba(123, 47, 247, 1));
+    }
+}
+
+/* Underline effect */
+.underline {
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ff3d71, #7b2ff7, transparent);
+    animation: underlineExpand 1.2s ease-out 0.8s forwards;
+}
+
+@keyframes underlineExpand {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 70%;
+    }
+}
+
+/* Presents text */
+.presents {
+    display: flex;
+    gap: 0.25em;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.8s ease;
+}
+
+.presents.showPresents {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.presents span {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.4em;
+    color: rgba(255, 255, 255, 0.5);
+    animation: presentsFade 0.5s ease-out backwards;
+}
+
+.presents span:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.presents span:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.presents span:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.presents span:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.presents span:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.presents span:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+.presents span:nth-child(7) {
+    animation-delay: 0.35s;
+}
+
+.presents span:nth-child(8) {
+    animation-delay: 0.4s;
+}
+
+@keyframes presentsFade {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Skip button */
+.skipBtn {
+    position: absolute;
+    bottom: 12%;
+    right: 2rem;
+    padding: 0.5rem 1.25rem;
+    background: transparent;
+    border: 1px solid rgba(255, 61, 113, 0.2);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 200;
+}
+
+.skipBtn:hover {
+    border-color: rgba(255, 61, 113, 0.5);
+    color: #ff3d71;
+    background: rgba(255, 61, 113, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .logoLetter {
+        font-size: 3.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .logoLetter {
+        font-size: 2.2rem;
+    }
+
+    .presents span {
+        font-size: 0.7rem;
+        letter-spacing: 0.25em;
+    }
+
+    .skipBtn {
+        bottom: 12%;
+        right: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logoLetter {
+        font-size: 1.5rem;
+        letter-spacing: 0.02em;
+    }
+
+    .logoSpace {
+        width: 0.25em;
+    }
+}

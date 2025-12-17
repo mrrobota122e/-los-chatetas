@@ -1,0 +1,622 @@
+/* =============================================
+   MAIN MENU - Epic Premium Design
+   ============================================= */
+
+.container {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+/* === BACKGROUND LAYERS === */
+.bgBase {
+    position: absolute;
+    inset: 0;
+    background: #0a0a12;
+}
+
+.bgGradient {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(255, 61, 113, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255, 68, 68, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 30% at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.bgGrid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+}
+
+.bgOrbs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.orb1,
+.orb2,
+.orb3 {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: orbFloat 20s ease-in-out infinite;
+}
+
+.orb1 {
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 61, 113, 0.15);
+    top: -100px;
+    left: -100px;
+}
+
+.orb2 {
+    width: 350px;
+    height: 350px;
+    background: rgba(255, 68, 68, 0.12);
+    bottom: -80px;
+    right: -80px;
+    animation-delay: -7s;
+}
+
+.orb3 {
+    width: 300px;
+    height: 300px;
+    background: rgba(139, 92, 246, 0.1);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -14s;
+}
+
+@keyframes orbFloat {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -30px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.95);
+    }
+}
+
+/* === PARTICLES === */
+.particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    bottom: -20px;
+    animation: particleRise 10s ease-in-out infinite;
+}
+
+@keyframes particleRise {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 0.8;
+    }
+
+    95% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(-100vh) scale(0.3);
+        opacity: 0;
+    }
+}
+
+/* === FLOATING ICONS === */
+.floatingIcons {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.floatIcon {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.15;
+    animation: floatBounce 6s ease-in-out infinite;
+}
+
+@keyframes floatBounce {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(10deg);
+    }
+}
+
+/* === MAIN CONTENT === */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 2rem;
+    z-index: 10;
+}
+
+/* === HERO / LOGO === */
+.hero {
+    text-align: center;
+}
+
+.logoContainer {
+    position: relative;
+}
+
+.logoGlow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 61, 113, 0.3) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: logoGlowPulse 3s ease-in-out infinite;
+}
+
+@keyframes logoGlowPulse {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+}
+
+.logoTop {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+}
+
+.logoMain {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 0.05em;
+    text-shadow:
+        0 0 20px rgba(255, 61, 113, 0.5),
+        0 0 40px rgba(255, 61, 113, 0.3);
+}
+
+.logoHighlight {
+    color: #ff3d71;
+    text-shadow:
+        0 0 20px rgba(255, 61, 113, 0.8),
+        0 0 40px rgba(255, 61, 113, 0.5);
+}
+
+.logoSubtitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.3em;
+}
+
+.logoSubtitle svg {
+    color: #fbbf24;
+}
+
+/* === PLAYER SECTION === */
+.playerSection {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.playerCard {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+}
+
+.playerIcon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, rgba(255, 61, 113, 0.2), rgba(139, 92, 246, 0.2));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff3d71;
+}
+
+.playerInput {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.playerInput label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.1em;
+}
+
+.playerInput input {
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    outline: none;
+}
+
+.playerInput input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.connectionBadge {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(255, 68, 68, 0.15);
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #ff6b6b;
+    letter-spacing: 0.05em;
+}
+
+.connectionBadge.online {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+.connDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: connPulse 2s ease-in-out infinite;
+}
+
+@keyframes connPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+.errorMsg {
+    padding: 0.75rem 1rem;
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.2);
+    border-radius: 12px;
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+/* === GAMES SECTION === */
+.gamesSection {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.selectTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.2em;
+    margin: 0;
+}
+
+.selectTitle svg {
+    color: #fbbf24;
+}
+
+.gameCards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+/* === GAME CARD === */
+.gameCard {
+    position: relative;
+    padding: 1.75rem;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+    overflow: hidden;
+    text-align: left;
+}
+
+.cardGlow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.gameCard:hover .cardGlow {
+    opacity: 1;
+}
+
+.guessCard {
+    background: linear-gradient(135deg, rgba(255, 61, 113, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border-color: rgba(255, 61, 113, 0.2);
+}
+
+.guessCard .cardGlow {
+    background: radial-gradient(circle at center, rgba(255, 61, 113, 0.2) 0%, transparent 70%);
+}
+
+.guessCard:hover {
+    border-color: rgba(255, 61, 113, 0.5);
+    box-shadow:
+        0 20px 60px rgba(255, 61, 113, 0.2),
+        0 0 0 1px rgba(255, 61, 113, 0.3) inset;
+}
+
+.impostorCard {
+    background: linear-gradient(135deg, rgba(255, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+    border-color: rgba(255, 68, 68, 0.2);
+}
+
+.impostorCard .cardGlow {
+    background: radial-gradient(circle at center, rgba(255, 68, 68, 0.2) 0%, transparent 70%);
+}
+
+.impostorCard:hover {
+    border-color: rgba(255, 68, 68, 0.5);
+    box-shadow:
+        0 20px 60px rgba(255, 68, 68, 0.2),
+        0 0 0 1px rgba(255, 68, 68, 0.3) inset;
+}
+
+.cardContent {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cardIcon {
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.guessCard .cardIcon {
+    background: linear-gradient(135deg, #ff3d71 0%, #7b2ff7 100%);
+    box-shadow: 0 10px 30px rgba(255, 61, 113, 0.4);
+}
+
+.impostorCard .cardIcon {
+    background: linear-gradient(135deg, #ff4444 0%, #dc2626 100%);
+    box-shadow: 0 10px 30px rgba(255, 68, 68, 0.4);
+}
+
+.cardInfo h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.02em;
+}
+
+.cardInfo p {
+    margin: 0.25rem 0 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.cardFeatures {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.cardFeatures span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.cardBadge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+}
+
+.guessCard .cardBadge {
+    background: linear-gradient(135deg, #ff3d71, #7b2ff7);
+    color: #fff;
+}
+
+.impostorCard .cardBadge {
+    background: linear-gradient(135deg, #ff4444, #dc2626);
+    color: #fff;
+}
+
+.cardArrow {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s;
+}
+
+.gameCard:hover .cardArrow {
+    color: rgba(255, 255, 255, 0.8);
+    transform: translateX(5px);
+}
+
+.cardShine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: cardShine 0.6s ease-out forwards;
+}
+
+@keyframes cardShine {
+    to {
+        left: 100%;
+    }
+}
+
+/* === INFO SECTION === */
+.infoSection {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+}
+
+.infoItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.infoIcon {
+    font-size: 1rem;
+}
+
+.infoDivider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* === FOOTER === */
+.footer {
+    padding: 1.5rem;
+    text-align: center;
+    z-index: 10;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.footer span {
+    color: #ff3d71;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 700px) {
+    .gameCards {
+        grid-template-columns: 1fr;
+    }
+
+    .logoMain {
+        font-size: 2.5rem;
+    }
+
+    .infoSection {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

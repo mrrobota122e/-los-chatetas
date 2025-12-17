@@ -1,0 +1,47 @@
+.typingIndicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.5rem;
+    background: rgba(0, 217, 255, 0.05);
+    border-left: 2px solid #00d9ff;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.playerName {
+    color: #00d9ff;
+    font-weight: 600;
+}
+
+.typingText {
+    font-style: italic;
+}
+
+.dots {
+    display: flex;
+    gap: 2px;
+}
+
+.dot {
+    color: #00d9ff;
+    font-size: 1rem;
+    animation: typingDot 1s ease-in-out infinite;
+}
+
+@keyframes typingDot {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+
+    30% {
+        transform: translateY(-4px);
+        opacity: 1;
+    }
+}

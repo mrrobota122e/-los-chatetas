@@ -1,0 +1,523 @@
+/* Premium Lobby Styles */
+.container {
+    min-height: 100vh;
+    background: #0a0a12;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.bgPattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 30% 20%, rgba(255, 61, 113, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(123, 47, 247, 0.08) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: relative;
+    z-index: 10;
+}
+
+.backBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+    background: rgba(255, 61, 113, 0.1);
+    border-color: rgba(255, 61, 113, 0.3);
+    color: #ff3d71;
+}
+
+.backBtn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.backBtn span {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.logoText {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.1em;
+}
+
+.logoNum {
+    background: linear-gradient(135deg, #ff3d71 0%, #7b2ff7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 1rem 2rem 2rem;
+    position: relative;
+    z-index: 10;
+}
+
+.content {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Code Section */
+.codeSection {
+    text-align: center;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
+
+.headerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.settingsBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.settingsBtn:hover,
+.settingsBtn.active {
+    background: rgba(255, 61, 113, 0.1);
+    border-color: rgba(255, 61, 113, 0.3);
+    color: #ff3d71;
+}
+
+.settingsPanel {
+    background: rgba(15, 20, 25, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.settingsGroup h3 {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.settingRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.settingRow label {
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.settingRow select {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    outline: none;
+}
+
+.settingRow input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: #ff3d71;
+    cursor: pointer;
+}
+
+.codeCard {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.25rem 3rem;
+    background: rgba(26, 33, 48, 0.8);
+    border: 2px solid rgba(255, 61, 113, 0.3);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.codeCard:hover {
+    border-color: rgba(255, 61, 113, 0.6);
+    box-shadow: 0 0 30px rgba(255, 61, 113, 0.2);
+}
+
+.codeLabel {
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 0.25rem;
+}
+
+.codeValue {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    background: linear-gradient(135deg, #ff3d71 0%, #7b2ff7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.copyHint {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Players Section */
+.playersSection {
+    background: rgba(26, 33, 48, 0.5);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1.25rem;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+}
+
+.sectionHeader h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.counter {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ff3d71;
+}
+
+.playersGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.playerCard {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.playerCard.ready {
+    border-color: rgba(0, 230, 118, 0.3);
+    background: rgba(0, 230, 118, 0.05);
+}
+
+.playerAvatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.playerInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.playerName {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.hostBadge {
+    padding: 0.125rem 0.5rem;
+    background: linear-gradient(135deg, #ffa726 0%, #ff7043 100%);
+    border-radius: 20px;
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.playerStatus {
+    display: block;
+    margin-top: 0.125rem;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.checkIcon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 230, 118, 0.2);
+    border-radius: 50%;
+    color: #00e676;
+}
+
+.checkIcon svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Empty slots */
+.emptySlot {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+.emptyAvatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.emptyAvatar svg {
+    width: 24px;
+    height: 24px;
+}
+
+.emptyText {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.2);
+}
+
+/* Actions Section */
+.actionsSection {
+    text-align: center;
+}
+
+.hint {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1rem;
+}
+
+.startBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+}
+
+.startBtn.active {
+    background: linear-gradient(135deg, #ff3d71 0%, #7b2ff7 100%);
+    border-color: transparent;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(255, 61, 113, 0.3);
+}
+
+.startBtn.active:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 61, 113, 0.4);
+}
+
+.startBtn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.readyBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: rgba(255, 61, 113, 0.1);
+    border: 2px solid rgba(255, 61, 113, 0.3);
+    border-radius: 14px;
+    color: #ff3d71;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.readyBtn:hover {
+    background: rgba(255, 61, 113, 0.2);
+    border-color: rgba(255, 61, 113, 0.5);
+}
+
+.readyBtn.isReady {
+    background: linear-gradient(135deg, #00e676 0%, #00c853 100%);
+    border-color: transparent;
+    color: #fff;
+}
+
+.readyBtn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Info Section */
+.infoSection {
+    background: rgba(26, 33, 48, 0.3);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+}
+
+.infoSection h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.infoLabel {
+    font-size: 0.625rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.infoValue {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header {
+        padding: 1rem;
+    }
+
+    .main {
+        padding: 1rem;
+    }
+
+    .playersGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .infoGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .codeValue {
+        font-size: 1.75rem;
+    }
+}

@@ -1,0 +1,746 @@
+{
+    "players": [
+        {
+            "id": "messi-001",
+            "name": "Lionel Messi",
+            "team": "Inter Miami",
+            "nationality": "Argentina",
+            "position": "Delantero",
+            "league": "MLS",
+            "age": 36,
+            "foot": "Izquierda",
+            "hasBeard": true,
+            "hairColor": "Castaño",
+            "height": "Bajo",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "8 Balones de Oro",
+                "Copa del Mundo 2022"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/e0i2051750317027.png"
+        },
+        {
+            "id": "ronaldo-002",
+            "name": "Cristiano Ronaldo",
+            "team": "Al-Nassr",
+            "nationality": "Portugal",
+            "position": "Delantero",
+            "league": "Saudi Pro League",
+            "age": 38,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Alto",
+            "skinTone": "Moreno",
+            "era": "actual",
+            "achievements": [
+                "5 Balones de Oro",
+                "5 Champions League"
+            ],
+            "imageUrl": "https://www.thesportsdb.com/images/media/player/cutout/a19jje1761592498.png"
+        },
+        {
+            "id": "neymar-003",
+            "name": "Neymar Jr",
+            "team": "Santos",
+            "nationality": "Brasil",
+            "position": "Delantero",
+            "league": "Brasileirão",
+            "age": 31,
+            "foot": "Ambas",
+            "hasBeard": true,
+            "hairColor": "Rubio",
+            "height": "Medio",
+            "skinTone": "Moreno",
+            "era": "actual",
+            "achievements": [
+                "Champions League 2015"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/fe708x1678357303.png"
+        },
+        {
+            "id": "mbappe-004",
+            "name": "Kylian Mbappé",
+            "team": "Real Madrid",
+            "nationality": "Francia",
+            "position": "Delantero",
+            "league": "La Liga",
+            "age": 25,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Medio",
+            "skinTone": "Negro",
+            "era": "actual",
+            "achievements": [
+                "Copa del Mundo 2018"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/h9u9vz1733653583.png"
+        },
+        {
+            "id": "haaland-005",
+            "name": "Erling Haaland",
+            "team": "Manchester City",
+            "nationality": "Noruega",
+            "position": "Delantero",
+            "league": "Premier League",
+            "age": 23,
+            "foot": "Ambas",
+            "hasBeard": false,
+            "hairColor": "Rubio",
+            "height": "Alto",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Champions League 2023",
+                "Triplete 2023"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/u9s2be1757098327.png"
+        },
+        {
+            "id": "debruyne-006",
+            "name": "Kevin De Bruyne",
+            "team": "Napoli",
+            "nationality": "Bélgica",
+            "position": "Mediocampista",
+            "league": "Serie A",
+            "age": 32,
+            "foot": "Ambas",
+            "hasBeard": true,
+            "hairColor": "Pelirrojo",
+            "height": "Medio",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Champions League 2023"
+            ],
+            "imageUrl": "https://www.thesportsdb.com/images/media/player/cutout/o4flia1764089447.png"
+        },
+        {
+            "id": "vinicius-007",
+            "name": "Vinicius Jr",
+            "team": "Real Madrid",
+            "nationality": "Brasil",
+            "position": "Delantero",
+            "league": "La Liga",
+            "age": 23,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Medio",
+            "skinTone": "Negro",
+            "era": "actual",
+            "achievements": [
+                "Champions League 2022"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/ejuxsh1750271859.png"
+        },
+        {
+            "id": "modric-008",
+            "name": "Luka Modrić",
+            "team": "AC Milan",
+            "nationality": "Croacia",
+            "position": "Mediocampista",
+            "league": "Serie A",
+            "age": 38,
+            "foot": "Ambas",
+            "hasBeard": false,
+            "hairColor": "Castaño",
+            "height": "Bajo",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Balón de Oro 2018",
+                "5 Champions League"
+            ],
+            "imageUrl": "https://www.thesportsdb.com/images/media/player/cutout/msewdx1758892756.png"
+        },
+        {
+            "id": "lewandowski-009",
+            "name": "Robert Lewandowski",
+            "team": "Barcelona",
+            "nationality": "Polonia",
+            "position": "Delantero",
+            "league": "La Liga",
+            "age": 35,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Castaño",
+            "height": "Alto",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Champions League 2020"
+            ],
+            "imageUrl": "https://www.thesportsdb.com/images/media/player/cutout/xg2rl51762289740.png"
+        },
+        {
+            "id": "salah-010",
+            "name": "Mohamed Salah",
+            "team": "Liverpool",
+            "nationality": "Egipto",
+            "position": "Delantero",
+            "league": "Premier League",
+            "age": 31,
+            "foot": "Izquierda",
+            "hasBeard": true,
+            "hairColor": "Negro",
+            "height": "Medio",
+            "skinTone": "Moreno",
+            "era": "actual",
+            "achievements": [
+                "Champions League 2019"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/3blc581757088735.png"
+        },
+        {
+            "id": "benzema-011",
+            "name": "Karim Benzema",
+            "team": "Al-Ittihad",
+            "nationality": "Francia",
+            "position": "Delantero",
+            "league": "Saudi Pro League",
+            "age": 36,
+            "foot": "Derecha",
+            "hasBeard": true,
+            "hairColor": "Negro",
+            "height": "Alto",
+            "skinTone": "Moreno",
+            "era": "actual",
+            "achievements": [
+                "Balón de Oro 2022",
+                "5 Champions League"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/4wxjq11632218864.png"
+        },
+        {
+            "id": "kane-012",
+            "name": "Harry Kane",
+            "team": "Bayern Munich",
+            "nationality": "Inglaterra",
+            "position": "Delantero",
+            "league": "Bundesliga",
+            "age": 30,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Rubio",
+            "height": "Alto",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Bota de Oro"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/j4ouvd1756408895.png"
+        },
+        {
+            "id": "bellingham-013",
+            "name": "Jude Bellingham",
+            "team": "Real Madrid",
+            "nationality": "Inglaterra",
+            "position": "Mediocampista",
+            "league": "La Liga",
+            "age": 20,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Alto",
+            "skinTone": "Moreno",
+            "era": "actual",
+            "achievements": [
+                "Golden Boy 2023"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/trk5271750271712.png"
+        },
+        {
+            "id": "griezmann-014",
+            "name": "Antoine Griezmann",
+            "team": "Atlético Madrid",
+            "nationality": "Francia",
+            "position": "Delantero",
+            "league": "La Liga",
+            "age": 32,
+            "foot": "Izquierda",
+            "hasBeard": true,
+            "hairColor": "Rubio",
+            "height": "Medio",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Copa del Mundo 2018"
+            ],
+            "imageUrl": "https://www.thesportsdb.com/images/media/player/cutout/tiqhh41762288400.png"
+        },
+        {
+            "id": "son-015",
+            "name": "Heung-min Son",
+            "team": "Los Angeles FC",
+            "nationality": "Corea del Sur",
+            "position": "Delantero",
+            "league": "MLS",
+            "age": 31,
+            "foot": "Ambas",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Medio",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Bota de Oro Premier"
+            ],
+            "imageUrl": "https://www.thesportsdb.com/images/media/player/cutout/kzmq7s1759500823.png"
+        },
+        {
+            "id": "vandijk-016",
+            "name": "Virgil van Dijk",
+            "team": "Liverpool",
+            "nationality": "Países Bajos",
+            "position": "Defensa",
+            "league": "Premier League",
+            "age": 32,
+            "foot": "Derecha",
+            "hasBeard": true,
+            "hairColor": "Negro",
+            "height": "Alto",
+            "skinTone": "Moreno",
+            "era": "actual",
+            "achievements": [
+                "Champions League 2019"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/9cxf2q1757087742.png"
+        },
+        {
+            "id": "bruno-017",
+            "name": "Bruno Fernandes",
+            "team": "Manchester United",
+            "nationality": "Portugal",
+            "position": "Mediocampista",
+            "league": "Premier League",
+            "age": 29,
+            "foot": "Derecha",
+            "hasBeard": true,
+            "hairColor": "Castaño",
+            "height": "Medio",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/4oxunj1738527607.png"
+        },
+        {
+            "id": "pedri-018",
+            "name": "Pedri",
+            "team": "Barcelona",
+            "nationality": "España",
+            "position": "Mediocampista",
+            "league": "La Liga",
+            "age": 21,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Bajo",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Golden Boy 2021"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/82xtuu1726509836.png"
+        },
+        {
+            "id": "saka-019",
+            "name": "Bukayo Saka",
+            "team": "Arsenal",
+            "nationality": "Inglaterra",
+            "position": "Delantero",
+            "league": "Premier League",
+            "age": 22,
+            "foot": "Izquierda",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Medio",
+            "skinTone": "Negro",
+            "era": "actual",
+            "achievements": [],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/0q2oif1694203861.png"
+        },
+        {
+            "id": "musiala-020",
+            "name": "Jamal Musiala",
+            "team": "Bayern Munich",
+            "nationality": "Alemania",
+            "position": "Mediocampista",
+            "league": "Bundesliga",
+            "age": 20,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Castaño",
+            "height": "Medio",
+            "skinTone": "Moreno",
+            "era": "actual",
+            "achievements": [],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/vbkv611756416067.png"
+        },
+        {
+            "id": "lautaro-021",
+            "name": "Lautaro Martínez",
+            "team": "Inter Milan",
+            "nationality": "Argentina",
+            "position": "Delantero",
+            "league": "Serie A",
+            "age": 26,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Medio",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Copa del Mundo 2022"
+            ],
+            "imageUrl": "https://www.thesportsdb.com/images/media/player/cutout/vwxq811759408924.png"
+        },
+        {
+            "id": "foden-022",
+            "name": "Phil Foden",
+            "team": "Manchester City",
+            "nationality": "Inglaterra",
+            "position": "Mediocampista",
+            "league": "Premier League",
+            "age": 23,
+            "foot": "Izquierda",
+            "hasBeard": false,
+            "hairColor": "Rubio",
+            "height": "Bajo",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Champions League 2023"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/rfor6l1757098123.png"
+        },
+        {
+            "id": "rodri-023",
+            "name": "Rodri",
+            "team": "Manchester City",
+            "nationality": "España",
+            "position": "Mediocampista",
+            "league": "Premier League",
+            "age": 27,
+            "foot": "Derecha",
+            "hasBeard": true,
+            "hairColor": "Castaño",
+            "height": "Alto",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Champions League 2023"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/s2kndy1757097683.png"
+        },
+        {
+            "id": "courtois-024",
+            "name": "Thibaut Courtois",
+            "team": "Real Madrid",
+            "nationality": "Bélgica",
+            "position": "Portero",
+            "league": "La Liga",
+            "age": 31,
+            "foot": "Izquierda",
+            "hasBeard": true,
+            "hairColor": "Castaño",
+            "height": "Alto",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "Champions League 2022"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/592mar1733653475.png"
+        },
+        {
+            "id": "pele-101",
+            "name": "Pelé",
+            "team": "Santos (Retirado)",
+            "nationality": "Brasil",
+            "position": "Delantero",
+            "league": "Leyenda",
+            "age": 82,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Medio",
+            "skinTone": "Negro",
+            "era": "leyenda",
+            "achievements": [
+                "3 Copas del Mundo",
+                "1000+ Goles"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/s4apzi1615723073.png"
+        },
+        {
+            "id": "maradona-102",
+            "name": "Diego Maradona",
+            "team": "Napoli (Retirado)",
+            "nationality": "Argentina",
+            "position": "Mediocampista",
+            "league": "Leyenda",
+            "age": 60,
+            "foot": "Izquierda",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Bajo",
+            "skinTone": "Moreno",
+            "era": "leyenda",
+            "achievements": [
+                "Copa del Mundo 1986",
+                "La Mano de Dios"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/v298851606327825.png"
+        },
+        {
+            "id": "zidane-103",
+            "name": "Zinedine Zidane",
+            "team": "Real Madrid (Retirado)",
+            "nationality": "Francia",
+            "position": "Mediocampista",
+            "league": "Leyenda",
+            "age": 51,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Calvo",
+            "height": "Alto",
+            "skinTone": "Moreno",
+            "era": "leyenda",
+            "achievements": [
+                "Copa del Mundo 1998",
+                "Balón de Oro 1998"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/ae7bng1586814446.png"
+        },
+        {
+            "id": "ronaldinho-104",
+            "name": "Ronaldinho",
+            "team": "Barcelona (Retirado)",
+            "nationality": "Brasil",
+            "position": "Mediocampista",
+            "league": "Leyenda",
+            "age": 43,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Medio",
+            "skinTone": "Moreno",
+            "era": "leyenda",
+            "achievements": [
+                "2 Balones de Oro",
+                "Copa del Mundo 2002"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/u91au61586868506.png"
+        },
+        {
+            "id": "henry-105",
+            "name": "Thierry Henry",
+            "team": "Arsenal (Retirado)",
+            "nationality": "Francia",
+            "position": "Delantero",
+            "league": "Leyenda",
+            "age": 46,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Alto",
+            "skinTone": "Negro",
+            "era": "leyenda",
+            "achievements": [
+                "Copa del Mundo 1998",
+                "Invincible 2004"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/omd0kz1698248921.png"
+        },
+        {
+            "id": "ronaldo-brazil-106",
+            "name": "Ronaldo Nazário",
+            "team": "Real Madrid (Retirado)",
+            "nationality": "Brasil",
+            "position": "Delantero",
+            "league": "Leyenda",
+            "age": 47,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Alto",
+            "skinTone": "Moreno",
+            "era": "leyenda",
+            "achievements": [
+                "2 Copas del Mundo",
+                "2 Balones de Oro"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/djc6qs1615728737.png"
+        },
+        {
+            "id": "beckham-107",
+            "name": "David Beckham",
+            "team": "Manchester United (Retirado)",
+            "nationality": "Inglaterra",
+            "position": "Mediocampista",
+            "league": "Leyenda",
+            "age": 48,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Rubio",
+            "height": "Alto",
+            "skinTone": "Claro",
+            "era": "leyenda",
+            "achievements": [
+                "Champions League 1999",
+                "6 Ligas"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/jy70751586640389.png"
+        },
+        {
+            "id": "maldini-108",
+            "name": "Paolo Maldini",
+            "team": "AC Milan (Retirado)",
+            "nationality": "Italia",
+            "position": "Defensa",
+            "league": "Leyenda",
+            "age": 55,
+            "foot": "Izquierda",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Alto",
+            "skinTone": "Claro",
+            "era": "leyenda",
+            "achievements": [
+                "5 Champions League",
+                "7 Serie A"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/9ccmbp1665653152.png"
+        },
+        {
+            "id": "iniesta-109",
+            "name": "Andrés Iniesta",
+            "team": "Barcelona (Retirado)",
+            "nationality": "España",
+            "position": "Mediocampista",
+            "league": "Leyenda",
+            "age": 39,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Bajo",
+            "skinTone": "Claro",
+            "era": "leyenda",
+            "achievements": [
+                "Copa del Mundo 2010",
+                "4 Champions League"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/nx7oze1611167333.png"
+        },
+        {
+            "id": "xavi-110",
+            "name": "Xavi Hernández",
+            "team": "Barcelona (Retirado)",
+            "nationality": "España",
+            "position": "Mediocampista",
+            "league": "Leyenda",
+            "age": 43,
+            "foot": "Derecha",
+            "hasBeard": false,
+            "hairColor": "Negro",
+            "height": "Bajo",
+            "skinTone": "Claro",
+            "era": "leyenda",
+            "achievements": [
+                "Copa del Mundo 2010",
+                "4 Champions League"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/18olk11612092725.png"
+        },
+        {
+            "id": "ramos-111",
+            "name": "Sergio Ramos",
+            "team": "Monterrey",
+            "nationality": "España",
+            "position": "Defensa",
+            "league": "Liga MX",
+            "age": 37,
+            "foot": "Derecha",
+            "hasBeard": true,
+            "hairColor": "Castaño",
+            "height": "Alto",
+            "skinTone": "Claro",
+            "era": "actual",
+            "achievements": [
+                "4 Champions League",
+                "Copa del Mundo 2010"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/ztj6241701091276.png"
+        },
+        {
+            "id": "casillas-112",
+            "name": "Iker Casillas",
+            "team": "Real Madrid (Retirado)",
+            "nationality": "España",
+            "position": "Portero",
+            "league": "Leyenda",
+            "age": 42,
+            "foot": "Derecha",
+            "hasBeard": true,
+            "hairColor": "Negro",
+            "height": "Alto",
+            "skinTone": "Claro",
+            "era": "leyenda",
+            "achievements": [
+                "Copa del Mundo 2010",
+                "3 Champions League"
+            ],
+            "imageUrl": "https://r2.thesportsdb.com/images/media/player/cutout/zh95mc1541336479.png"
+        }
+    ],
+    "metadata": {
+        "version": "6.0",
+        "totalPlayers": 36,
+        "lastUpdated": "2025-12-16",
+        "imageSource": "TheSportsDB CDN (verified)",
+        "categories": {
+            "positions": [
+                "Portero",
+                "Defensa",
+                "Mediocampista",
+                "Delantero"
+            ],
+            "leagues": [
+                "Premier League",
+                "La Liga",
+                "Serie A",
+                "Bundesliga",
+                "Ligue 1",
+                "MLS",
+                "Saudi Pro League",
+                "Brasileirão",
+                "Liga MX",
+                "Leyenda"
+            ],
+            "eras": [
+                "actual",
+                "leyenda"
+            ],
+            "heights": [
+                "Bajo",
+                "Medio",
+                "Alto"
+            ],
+            "hairColors": [
+                "Negro",
+                "Castaño",
+                "Rubio",
+                "Pelirrojo",
+                "Calvo"
+            ],
+            "skinTones": [
+                "Claro",
+                "Moreno",
+                "Negro"
+            ]
+        }
+    }
+}

@@ -1,0 +1,118 @@
+.container {
+    background: rgba(26, 33, 48, 0.7);
+    border: 1px solid rgba(255, 167, 38, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.header h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #ffa726;
+    margin: 0;
+}
+
+.pointsBadge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 167, 38, 0.2);
+    border: 1px solid rgba(255, 167, 38, 0.4);
+    border-radius: 20px;
+    color: #ffa726;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.powerUpCard {
+    position: relative;
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 167, 38, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.powerUpCard:hover:not(.disabled) {
+    background: rgba(255, 167, 38, 0.1);
+    border-color: #ffa726;
+}
+
+.powerUpCard.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.powerUpCard.active {
+    border-color: #00e676;
+    box-shadow: 0 0 20px rgba(0, 230, 118, 0.3);
+}
+
+.icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.info {
+    flex: 1;
+}
+
+.info h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 0.25rem 0;
+}
+
+.description {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
+}
+
+.meta {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+}
+
+.cost {
+    color: #ffa726;
+    font-weight: 700;
+}
+
+.cooldown {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.activeBadge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    background: #00e676;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #000;
+}

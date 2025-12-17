@@ -1,0 +1,245 @@
+/* Music Player */
+.musicButton {
+    position: fixed;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #7b2ff7 0%, #00d9ff 100%);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    cursor: grab;
+    box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 100;
+    user-select: none;
+}
+
+.musicButton:hover {
+    transform: scale(1.1);
+}
+
+.musicButton.dragging {
+    cursor: grabbing;
+    transform: scale(1.15);
+    box-shadow: 0 8px 25px rgba(123, 47, 247, 0.6);
+}
+
+/* Hidden player - keeps music playing when panel closed */
+.hiddenPlayer {
+    position: fixed;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.musicPanel {
+    position: fixed;
+    width: 320px;
+    max-height: 80vh;
+    background: rgba(26, 33, 48, 0.98);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    animation: slideUp 0.2s ease;
+    overflow: hidden;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.625rem 0.875rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header h3 {
+    font-size: 0.85rem;
+    color: #fff;
+}
+
+.header button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.content {
+    padding: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.label {
+    display: block;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+/* Preset stations */
+.presetGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+.presetBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.presetBtn:hover {
+    background: rgba(123, 47, 247, 0.2);
+    border-color: rgba(123, 47, 247, 0.4);
+}
+
+.presetBtn.active {
+    background: linear-gradient(135deg, rgba(123, 47, 247, 0.3) 0%, rgba(0, 217, 255, 0.3) 100%);
+    border-color: #00d9ff;
+}
+
+.presetIcon {
+    font-size: 1.25rem;
+}
+
+.presetName {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Custom URL */
+.urlRow {
+    display: flex;
+    gap: 0.375rem;
+}
+
+.urlRow input {
+    flex: 1;
+    padding: 0.5rem 0.625rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.75rem;
+    outline: none;
+}
+
+.urlRow input:focus {
+    border-color: rgba(123, 47, 247, 0.5);
+}
+
+.urlRow input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.urlRow button {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #7b2ff7 0%, #00d9ff 100%);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+/* Player */
+.player {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.video {
+    width: 100%;
+    height: 160px;
+    border: none;
+    border-radius: 8px;
+}
+
+.controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.controlBtn {
+    flex: 1;
+    padding: 0.5rem;
+    background: rgba(0, 230, 118, 0.1);
+    border: 1px solid rgba(0, 230, 118, 0.3);
+    border-radius: 6px;
+    color: #00e676;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.controlBtn.muted {
+    background: rgba(255, 61, 113, 0.1);
+    border-color: rgba(255, 61, 113, 0.3);
+    color: #ff3d71;
+}
+
+.stopBtn {
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 61, 113, 0.1);
+    border: 1px solid rgba(255, 61, 113, 0.3);
+    border-radius: 6px;
+    color: #ff3d71;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.noMusic {
+    padding: 1.5rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.75rem;
+}
+
+.note {
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+}

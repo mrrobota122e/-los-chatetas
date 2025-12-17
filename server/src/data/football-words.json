@@ -1,0 +1,132 @@
+{
+    "players": [
+        "Lionel Messi",
+        "Cristiano Ronaldo",
+        "Neymar Jr",
+        "Kylian Mbappé",
+        "Erling Haaland",
+        "Mohamed Salah",
+        "Kevin De Bruyne",
+        "Luka Modrić",
+        "Robert Lewandowski",
+        "Karim Benzema",
+        "Pelé",
+        "Diego Maradona",
+        "Zinedine Zidane",
+        "Ronaldinho",
+        "Andrés Iniesta",
+        "Xavi Hernández",
+        "Sergio Ramos",
+        "Virgil van Dijk",
+        "Manuel Neuer",
+        "Gianluigi Buffon"
+    ],
+    "teams": [
+        "Real Madrid",
+        "FC Barcelona",
+        "Manchester United",
+        "Liverpool FC",
+        "Bayern Munich",
+        "Juventus",
+        "Paris Saint-Germain",
+        "Manchester City",
+        "Chelsea FC",
+        "Inter Milan",
+        "AC Milan",
+        "Arsenal FC",
+        "Atlético Madrid",
+        "Borussia Dortmund",
+        "Boca Juniors",
+        "River Plate"
+    ],
+    "competitions": [
+        "Copa Mundial FIFA",
+        "UEFA Champions League",
+        "Copa América",
+        "Eurocopa",
+        "Copa Libertadores",
+        "Premier League",
+        "La Liga",
+        "Serie A",
+        "Bundesliga",
+        "Ligue 1",
+        "Balón de Oro",
+        "Mundial de Clubes",
+        "Europa League",
+        "Copa del Rey",
+        "FA Cup"
+    ],
+    "concepts": [
+        "Fuera de juego",
+        "Hat-trick",
+        "Penalti",
+        "Tiro de esquina",
+        "Tarjeta roja",
+        "Tarjeta amarilla",
+        "VAR",
+        "Portería",
+        "Gol olímpico",
+        "Chilena",
+        "Tiki-taka",
+        "Contraataque",
+        "Regate",
+        "Volea",
+        "Cabezazo",
+        "Tiro libre",
+        "Saque de banda",
+        "Offside",
+        "Goleador",
+        "Asistencia"
+    ],
+    "stadiums": [
+        "Camp Nou",
+        "Santiago Bernabéu",
+        "Old Trafford",
+        "Maracaná",
+        "Wembley",
+        "San Siro",
+        "Allianz Arena",
+        "La Bombonera",
+        "Anfield",
+        "Signal Iduna Park",
+        "Estadio Azteca",
+        "Parc des Princes",
+        "Metropolitano",
+        "Stamford Bridge",
+        "Monumental"
+    ],
+    "pairs": [
+        {
+            "correct": "Lionel Messi",
+            "impostor": "Luis Suárez"
+        },
+        {
+            "correct": "UEFA Champions League",
+            "impostor": "UEFA Europa League"
+        },
+        {
+            "correct": "FC Barcelona",
+            "impostor": "Espanyol"
+        },
+        {
+            "correct": "Real Madrid",
+            "impostor": "Atlético Madrid"
+        },
+        {
+            "correct": "Fuera de juego",
+            "impostor": "Falta"
+        },
+        {
+            "correct": "Tarjeta roja",
+            "impostor": "Tarjeta amarilla"
+        },
+        {
+            "correct": "Premier League",
+            "impostor": "Championship"
+        },
+        {
+            "correct": "Copa Mundial",
+            "impostor": "Mundial de Clubes"
+        }
+    ]
+}
