@@ -1,0 +1,70 @@
+// This is your Prisma schema file
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Room {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  hostId      String
+  maxPlayers  Int      @default(10)
+  minPlayers  Int      @default(6)
+  mode        String   @default("NORMAL") // NORMAL | ADVANCED
+  status      String   @default("WAITING") // WAITING | IN_GAME | FINISHED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  settings    String   @default("{}") // JSON string for settings
+  
+  players     Player[]
+  games       Game[]
+}
+
+model Player {
+  id          String   @id @default(cuid())
+  socketId    String   @unique
+  name        String
+  roomId      String?
+  isReady     Boolean  @default(false)
+  isHost      Boolean  @default(false)
+  avatarColor String   @default("#00d9ff")
+  createdAt   DateTime @default(now())
+  
+  room        Room?    @relation(fields: [roomId], references: [id])
+  gameActions GameAction[]
+}
+
+model Game {
+  id          String   @id @default(cuid())
+  roomId      String
+  word        String
+  impostorId  String
+  currentRound Int     @default(1)
+  maxRounds   Int     @default(5)
+  phase       String  @default("CLUES") // CLUES | DISCUSSION | VOTING | ELIMINATION
+  status      String  @default("IN_PROGRESS") // IN_PROGRESS | INNOCENTS_WIN | IMPOSTOR_WIN
+  startedAt   DateTime @default(now())
+  endedAt     DateTime?
+  
+  room        Room     @relation(fields: [roomId], references: [id])
+  actions     GameAction[]
+}
+
+model GameAction {
+  id          String   @id @default(cuid())
+  gameId      String
+  playerId    String
+  actionType  String   // CLUE | VOTE | CHAT
+  content     String?
+  round       Int
+  createdAt   DateTime @default(now())
+  
+  game        Game     @relation(fields: [gameId], references: [id])
+  player      Player   @relation(fields: [playerId], references: [id])
+}
