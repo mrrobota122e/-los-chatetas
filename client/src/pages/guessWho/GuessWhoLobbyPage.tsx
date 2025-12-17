@@ -38,19 +38,19 @@ export default function GuessWhoLobbyPage() {
             }
         }
 
-        socket.on('room:state', (data) => {
+        socket.on('room:state', (data: { roomId: string; players: Player[]; hostId: string }) => {
             setRoomId(data.roomId);
             setPlayers(data.players);
             setIsHost(data.hostId === socket.id);
         });
 
-        socket.on('room:joined', (data) => {
+        socket.on('room:joined', (data: { roomId: string; players: Player[]; hostId: string }) => {
             setRoomId(data.roomId);
             setPlayers(data.players);
             setIsHost(data.hostId === socket.id);
         });
 
-        socket.on('room:updated', (data) => {
+        socket.on('room:updated', (data: { players: Player[] }) => {
             setPlayers(data.players);
         });
 
@@ -58,7 +58,7 @@ export default function GuessWhoLobbyPage() {
             navigate(`/guess-who/game`, { state: { roomId, mode: 'vsPlayer' } });
         });
 
-        socket.on('room:error', (error) => {
+        socket.on('room:error', (error: { code: string; message: string }) => {
             console.error('Room error:', error);
             if (error.code === 'ROOM_CLOSED' || error.code === 'ROOM_NOT_FOUND') {
                 alert(error.message);
