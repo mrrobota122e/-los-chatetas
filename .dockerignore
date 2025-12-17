@@ -1,6 +1,0 @@
-# Ignore for docker
-node_modules
-.git
-*.log
-.env
-.env.local
