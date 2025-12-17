@@ -67,8 +67,8 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
     res.status(500).json({ error: 'Internal server error' });
 });
 
-// Start server - hardcode port 3001
-const PORT = 3001;
+// Start server - use Railway's PORT env variable
+const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {
     logger.info(`🚀 Server running on port ${PORT}`);
     logger.info(`📝 Environment: ${config.nodeEnv}`);
