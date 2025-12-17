@@ -1,26 +1,38 @@
 FROM node:20-alpine
 
+# Set working directory
 WORKDIR /app
 
-# Copy everything
-COPY . .
+# Copy package files first
+COPY package*.json ./
+COPY server/package*.json ./server/
+COPY client/package*.json ./client/
 
-# Install all dependencies including dev deps
+# Copy shared folder
+COPY shared ./shared
+
+# Install server dependencies
 WORKDIR /app/server
-RUN npm install
+RUN npm install --force
 
-WORKDIR /app/client  
-RUN npm install
+# Install client dependencies and build
+WORKDIR /app/client
+RUN npm install --force
+COPY client ./
 RUN npm run build
 
-# Back to server
+# Copy server source
 WORKDIR /app/server
+COPY server ./
+
+# Generate Prisma client
 RUN npx prisma generate
 
-# Set environment
+# Environment
 ENV NODE_ENV=production
+ENV PORT=3001
 
 EXPOSE 3001
 
-# Use tsx to run TypeScript directly (no compile step)
+# Run with tsx
 CMD ["npx", "tsx", "src/index.ts"]
