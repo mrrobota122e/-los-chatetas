@@ -1,44 +1,39 @@
-# Simple build
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Install dependencies for all workspaces
-COPY package*.json ./
-COPY client/package*.json ./client/
-COPY server/package*.json ./server/
+# Copy shared types first
 COPY shared/ ./shared/
 
-# Install root dependencies
-RUN npm install --legacy-peer-deps || true
-
-# Install client dependencies
-WORKDIR /app/client
-RUN npm install --legacy-peer-deps || true
-
-# Install server dependencies  
+# Copy and install server
+COPY server/package*.json ./server/
 WORKDIR /app/server
-RUN npm install --legacy-peer-deps || true
+RUN npm install
 
-# Copy all source code
+# Copy and install client
 WORKDIR /app
-COPY client/ ./client/
-COPY server/ ./server/
-
-# Build client
+COPY client/package*.json ./client/
 WORKDIR /app/client
-RUN npm run build 2>/dev/null || true
+RUN npm install
 
-# Build server
+# Copy source files
+WORKDIR /app
+COPY server/ ./server/
+COPY client/ ./client/
+
+# Build client first
+WORKDIR /app/client
+RUN npm run build
+
+# Setup Prisma and build server
 WORKDIR /app/server
-RUN npx prisma generate || true
-RUN npm run build || true
+RUN npx prisma generate
+RUN npx tsc
 
-# Set production mode
+# Set environment
 ENV NODE_ENV=production
-ENV PORT=3001
 
 EXPOSE 3001
 
-# Start
-CMD ["node", "dist/index.js"]
+# Start with the port from environment
+CMD ["sh", "-c", "node dist/index.js"]
