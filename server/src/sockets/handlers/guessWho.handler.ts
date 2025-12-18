@@ -122,6 +122,23 @@ export function handleGuessWhoEvents(socket: TypedSocket, io: TypedServer) {
         logger.debug(`Question in room ${roomId}: ${question}`);
     });
 
+    // Simple chat message (for simplified game)
+    socket.on('guesswho:send-message', ({ roomId, text }) => {
+        const game = games.get(roomId);
+        if (!game || game.status !== 'PLAYING') return;
+
+        // Get player name
+        const playerName = game.players[socket.id]?.name || 'Jugador';
+
+        // Broadcast to opponent
+        socket.to(roomId).emit('guesswho:message-received', {
+            sender: playerName,
+            text
+        });
+
+        logger.debug(`Chat message in room ${roomId}: ${text}`);
+    });
+
     // Opponent answers
     socket.on('guesswho:answer', ({ roomId, answer }) => {
         const game = games.get(roomId);

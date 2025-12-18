@@ -10,7 +10,7 @@ import GuessWhoLobbyPage from './pages/guessWho/GuessWhoLobbyPage';
 import ImpostorMenuPage from './pages/ImpostorMenuPage';
 import MusicRadio from './components/MusicRadio';
 
-const APP_VERSION = '1.6.0';
+const APP_VERSION = '1.7.0';
 
 function App() {
     return (

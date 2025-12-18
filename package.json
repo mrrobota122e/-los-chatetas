@@ -1,6 +1,6 @@
 {
   "name": "los-chatetas",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Juego web multijugador de deducción social en tiempo real con temática de fútbol",
   "private": true,
   "workspaces": [
