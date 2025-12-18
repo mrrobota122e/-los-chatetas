@@ -15,8 +15,7 @@
     "build": "npm run build:client && npm run build:server",
     "build:client": "npm run build --workspace=client",
     "build:server": "npm run build --workspace=server",
-    "start": "npm run start --workspace=server",
-    "postinstall": "npx prisma generate --schema=./server/prisma/schema.prisma"
+    "start": "npm run start --workspace=server"
   },
   "keywords": [
     "game",
