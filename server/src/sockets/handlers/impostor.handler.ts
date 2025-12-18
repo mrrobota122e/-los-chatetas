@@ -407,7 +407,7 @@ export function handleImpostorEvents(socket: TypedSocket, io: TypedServer) {
         }
 
         if (tie || maxVotes === 0 || !eliminated) {
-            io.to(roomId).emit('impostor:no-elimination', { reason: tie ? 'TIE' : 'NO_VOTES' });
+            io.to(roomId).emit('impostor:no-elimination', { wasTie: tie || false });
 
             // Check if impostor wins by rounds
             if (game.round >= 5) {
