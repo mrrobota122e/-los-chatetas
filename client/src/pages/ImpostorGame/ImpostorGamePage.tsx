@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSocket } from '../../hooks/useSocket';
-import styles from './ImpostorGamePage.v2.module.css';
+import styles from './ImpostorGamePage.v3.module.css';
 
 // Types
 interface Player {
@@ -66,7 +66,6 @@ export default function ImpostorGamePage() {
         if (savedGame) {
             try {
                 const data = JSON.parse(savedGame);
-                console.log('📂 Loaded from localStorage:', data);
                 setGameState(prev => ({
                     ...prev,
                     gameId: data.gameId || '',
@@ -93,11 +92,11 @@ export default function ImpostorGamePage() {
     useEffect(() => {
         if (!socket) return;
 
-        console.log('🔌 Socket ready:', socket.id);
+        // Sync state on join (for late joiners)
+        socket.emit('impostor:sync', { roomCode });
 
         // --- OLD GAME EVENTS (FALLBACK) ---
         socket.on('game:your-role' as any, (data: any) => {
-            console.log('🎭 game:your-role:', data);
             setGameState(prev => ({
                 ...prev,
                 isImpostor: data.isImpostor || data.role === 'IMPOSTOR',
@@ -120,9 +119,7 @@ export default function ImpostorGamePage() {
             setGameState(prev => ({ ...prev, phase: data.phase, timeRemaining: data.duration || 30 }));
         });
 
-        // CRITICAL FIX: Turn change listener
         socket.on('game:turn-changed' as any, (data: any) => {
-            console.log('🔄 Turn changed:', data);
             setGameState(prev => ({
                 ...prev,
                 currentTurnId: data.currentPlayerId,
@@ -131,12 +128,10 @@ export default function ImpostorGamePage() {
 
         // --- NEW IMPOSTOR EVENTS ---
         socket.on('impostor:state' as any, (state: Partial<GameState>) => {
-            console.log('📥 impostor:state:', state);
             setGameState(prev => ({ ...prev, ...state }));
         });
 
         socket.on('impostor:role' as any, (data: { isImpostor: boolean; word: string | null; gameId: string }) => {
-            console.log('🎭 impostor:role:', data);
             setGameState(prev => ({
                 ...prev,
                 isImpostor: data.isImpostor,
@@ -267,7 +262,6 @@ export default function ImpostorGamePage() {
     // Actions
     const handleSendClue = () => {
         if (!clueInput.trim() || !isMyTurn || !socket) return;
-        // Emit BOTH for compatibility
         socket.emit('impostor:send-clue', { roomCode, clue: clueInput });
         socket.emit('game:send-clue', { clue: clueInput });
         setClueInput('');
@@ -294,7 +288,7 @@ export default function ImpostorGamePage() {
         const radius = 220;
         return {
             left: `calc(50% + ${Math.cos(angle) * radius}px - 50px)`,
-            top: `calc(50% + ${Math.sin(angle) * radius}px - 60px)`,
+            top: `calc(50% + ${Math.sin(angle) * radius}px - 50px)`,
         };
     };
 
@@ -320,6 +314,8 @@ export default function ImpostorGamePage() {
     // Main Game UI
     return (
         <div className={styles.container}>
+            <div className={styles.bgOverlay} />
+
             {/* Header */}
             <header className={styles.header}>
                 <div className={styles.phases}>
@@ -374,7 +370,7 @@ export default function ImpostorGamePage() {
                             className={`${styles.playerSlot} ${player.socketId === gameState.currentTurnId ? styles.speaking : ''} ${!player.isAlive ? styles.dead : ''}`}
                             style={getPlayerPosition(i, gameState.players.length)}
                         >
-                            <div className={styles.playerAvatar} style={{ backgroundColor: player.avatarColor }}>
+                            <div className={styles.avatar3D} style={{ backgroundColor: player.avatarColor }}>
                                 {player.name.charAt(0).toUpperCase()}
                                 {!player.isAlive && <span className={styles.deadIcon}>💀</span>}
                             </div>
@@ -399,15 +395,33 @@ export default function ImpostorGamePage() {
                                         className={`${styles.voteBtn} ${myVote === player.id ? styles.selected : ''}`}
                                         onClick={() => handleVote(player.id)}
                                         disabled={!!myVote}
+                                        style={{
+                                            padding: '1rem',
+                                            background: 'rgba(255,255,255,0.1)',
+                                            border: myVote === player.id ? '2px solid #00d9ff' : '1px solid rgba(255,255,255,0.2)',
+                                            borderRadius: '8px',
+                                            color: '#fff',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.5rem'
+                                        }}
                                     >
                                         <div style={{ width: 20, height: 20, borderRadius: '50%', background: player.avatarColor }}></div>
                                         {player.name}
                                     </button>
                                 ))}
                                 <button
-                                    className={`${styles.voteBtn} ${styles.skipBtn} ${myVote === 'skip' ? styles.selected : ''}`}
                                     onClick={() => handleVote('skip')}
                                     disabled={!!myVote}
+                                    style={{
+                                        padding: '1rem',
+                                        background: 'rgba(255,255,255,0.1)',
+                                        border: myVote === 'skip' ? '2px solid #888' : '1px solid rgba(255,255,255,0.2)',
+                                        borderRadius: '8px',
+                                        color: '#aaa',
+                                        cursor: 'pointer'
+                                    }}
                                 >
                                     ⏭️ Saltar Voto
                                 </button>

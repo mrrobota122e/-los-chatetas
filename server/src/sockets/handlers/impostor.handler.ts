@@ -141,6 +141,35 @@ export function handleImpostorEvents(socket: TypedSocket, io: TypedServer) {
         }
     });
 
+    // Sync state for late joiners
+    socket.on('impostor:sync' as any, async ({ roomCode }) => {
+        try {
+            const room = await prisma.room.findFirst({ where: { roomCode } });
+            if (!room) return;
+
+            const game = games.get(room.id);
+            if (!game) return;
+
+            // Send current state to the requesting socket
+            socket.emit('impostor:state', {
+                gameId: game.gameId,
+                phase: game.phase,
+                round: game.round,
+                players: game.players,
+                currentTurnId: game.players.find(p => p.isAlive && game.players.indexOf(p) === game.currentTurnIndex)?.socketId,
+                timeRemaining: 30, // Approximate or track real time
+                clues: game.clues,
+                votes: game.votes,
+                word: game.impostorId === socket.id ? null : game.word, // Only show word if crew
+                isImpostor: game.impostorId === socket.id
+            });
+
+            logger.info(`Synced state for ${socket.id} in room ${roomCode}`);
+        } catch (error) {
+            logger.error('Error syncing state:', error);
+        }
+    });
+
     // Send clue
     socket.on('impostor:send-clue', async ({ roomCode, clue }) => {
         try {

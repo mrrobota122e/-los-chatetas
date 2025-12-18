@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, HelpCircle, Target, Trophy, Clock, Users, MessageSquare, Send, Zap, AlertTriangle, Volume2, VolumeX } from 'lucide-react';
 import PlayerCard from '../../components/guessWho/PlayerCard';
-import { Player, ALL_PLAYERS, suggestNextQuestion, evaluateQuestion } from '../../game-data/players/playerUtils';
+import { Player, ALL_PLAYERS, SMART_QUESTIONS, suggestNextQuestion, evaluateQuestion } from '../../game-data/players/playerUtils';
 import ConfettiCelebration from '../../components/ConfettiCelebration';
 import { useSocket } from '../../hooks/useSocket';
 import styles from './GuessWhoGamePage.module.css';
@@ -133,7 +133,9 @@ export default function GuessWhoGamePage() {
                 setOpponentName('Oponente');
                 // Socket listeners for multiplayer
                 if (socket) {
-                    socket.on('guesswho:opponent-selected', () => {
+                    socket.on('guesswho:game-started', (data: { opponentName: string, firstTurn: string }) => {
+                        setOpponentName(data.opponentName);
+                        setIsMyTurn(data.firstTurn === socket.id);
                         setGamePhase('playing');
                     });
 
@@ -191,6 +193,32 @@ export default function GuessWhoGamePage() {
             // Notify server
             socket?.emit('guesswho:select-player', { roomId, playerId: player.id });
             setGamePhase('waiting');
+        }
+    };
+
+    const handleAskQuestion = (questionText: string) => {
+        if (!isMyTurn) return;
+
+        // Add to chat
+        setChatHistory(prev => [...prev, { sender: 'Tú', text: questionText }]);
+
+        if (gameMode === 'vsAI') {
+            // AI Logic for Quick Questions
+            let answer = false;
+            if (opponentSecretPlayer) {
+                answer = evaluateQuestion({ text: questionText, id: 'custom', category: 'general' }, opponentSecretPlayer);
+            }
+
+            setTimeout(() => {
+                setChatHistory(prev => [...prev, { sender: 'IA', text: answer ? 'SÍ' : 'NO' }]);
+                setIsMyTurn(false);
+                setTimeout(() => {
+                    // AI Turn
+                    const randomQ = SMART_QUESTIONS[Math.floor(Math.random() * SMART_QUESTIONS.length)];
+                    setChatHistory(prev => [...prev, { sender: 'IA', text: randomQ.text }]);
+                    setIsMyTurn(true);
+                }, 2000);
+            }, 1000);
         }
     };
 
@@ -465,6 +493,29 @@ export default function GuessWhoGamePage() {
                         <button className={styles.actionBtn} onClick={() => setIsGuessing(true)}>
                             <Target size={18} /> ADIVINAR PERSONAJE
                         </button>
+
+                        {/* Quick Questions ONLY for AI */}
+                        {gameMode === 'vsAI' && isMyTurn && (
+                            <div className={styles.quickQuestions}>
+                                <p style={{ fontSize: '0.8rem', color: '#aaa', marginBottom: '0.5rem', marginTop: '1rem' }}>Preguntas Rápidas:</p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    {SMART_QUESTIONS.slice(0, 4).map(q => (
+                                        <button
+                                            key={q.id}
+                                            className={styles.questionBtn}
+                                            onClick={() => handleAskQuestion(q.text)}
+                                            style={{
+                                                padding: '0.5rem', background: 'rgba(255,255,255,0.1)',
+                                                border: '1px solid rgba(255,255,255,0.2)', borderRadius: '6px',
+                                                color: '#fff', fontSize: '0.8rem', cursor: 'pointer'
+                                            }}
+                                        >
+                                            {q.text}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Chat Section */}
