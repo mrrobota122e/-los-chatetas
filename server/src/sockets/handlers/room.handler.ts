@@ -161,6 +161,37 @@ export function handleRoomEvents(socket: TypedSocket, io: TypedServer) {
         }
     });
 
+    // Fill room with bots
+    socket.on('room:fill-bots', async ({ roomId }) => {
+        try {
+            const room = await roomService.getRoomById(roomId);
+            if (!room || room.hostId !== socket.id) {
+                return;
+            }
+
+            const slotsToFill = room.maxPlayers - room.players.length;
+            if (slotsToFill <= 0) return;
+
+            // Create bots
+            await botService.createBotsForRoom(roomId, slotsToFill);
+            logger.info(`Created ${slotsToFill} bots for room ${room.code}`);
+
+            // Get updated room
+            const updatedRoom = await roomService.getRoomById(roomId);
+            if (updatedRoom) {
+                io.to(roomId).emit('room:updated', {
+                    players: updatedRoom.players,
+                });
+            }
+        } catch (error: any) {
+            logger.error('Error filling room with bots:', error);
+            socket.emit('room:error', {
+                code: 'BOT_FILL_FAILED',
+                message: 'Error al llenar con bots',
+            });
+        }
+    });
+
     // Leave room
     socket.on('room:leave', async ({ roomId }) => {
         try {

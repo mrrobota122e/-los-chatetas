@@ -367,6 +367,34 @@ export default function LobbyPage() {
                                             ? `${readyCount}/${players.length} jugadores listos`
                                             : '¡Todos listos para jugar!'}
                                 </p>
+
+                                {/* Fill with Bots Button */}
+                                {players.length < maxPlayers && (
+                                    <button
+                                        style={{
+                                            marginBottom: '10px',
+                                            padding: '12px 24px',
+                                            background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+                                            border: 'none',
+                                            borderRadius: '12px',
+                                            color: '#fff',
+                                            fontSize: '1rem',
+                                            fontWeight: 600,
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '8px',
+                                        }}
+                                        onClick={() => {
+                                            if (socket && roomId) {
+                                                socket.emit('room:fill-bots', { roomId });
+                                            }
+                                        }}
+                                    >
+                                        🤖 Llenar con Bots ({maxPlayers - players.length} slots)
+                                    </button>
+                                )}
+
                                 <button
                                     className={`${styles.startBtn} ${canStart ? styles.active : ''}`}
                                     onClick={handleStartGame}

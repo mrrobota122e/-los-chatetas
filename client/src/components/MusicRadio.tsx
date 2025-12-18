@@ -1,42 +1,39 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
+// Using direct YouTube audio or reliable streaming
 const RADIO_STATIONS = [
-    { name: '🎵 Lo-Fi Beats', url: 'https://streams.ilovemusic.de/iloveradio17.mp3' },
-    { name: '🎸 Rock Classics', url: 'https://streams.ilovemusic.de/iloveradio16.mp3' },
-    { name: '🎤 Pop Hits', url: 'https://streams.ilovemusic.de/iloveradio1.mp3' },
-    { name: '🎹 Chill Out', url: 'https://streams.ilovemusic.de/iloveradio14.mp3' },
+    { name: '🎵 Lo-Fi Beats', url: 'https://usa9.fastcast4u.com/proxy/jamz?mp=/1' },
+    { name: '🎸 Rock', url: 'https://usa9.fastcast4u.com/proxy/classicrock?mp=/1' },
+    { name: '🎤 Pop Hits', url: 'https://streams.radiobob.de/bob-national/mp3-192/mediaplayer' },
+    { name: '🎹 Chill', url: 'https://streams.radiobob.de/bob-shlf/mp3-192/mediaplayer' },
 ];
 
 export default function MusicRadio() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentStation, setCurrentStation] = useState(0);
-    const [volume, setVolume] = useState(0.3);
     const [isExpanded, setIsExpanded] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
-
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.volume = volume;
-        }
-    }, [volume]);
 
     const togglePlay = () => {
         if (!audioRef.current) return;
         if (isPlaying) {
             audioRef.current.pause();
+            setIsPlaying(false);
         } else {
+            audioRef.current.volume = 0.3;
             audioRef.current.play().catch(() => {
-                // Autoplay blocked, user interaction needed
+                alert('Click de nuevo para reproducir música');
             });
+            setIsPlaying(true);
         }
-        setIsPlaying(!isPlaying);
     };
 
     const changeStation = (index: number) => {
         setCurrentStation(index);
-        if (audioRef.current && isPlaying) {
+        setIsPlaying(false);
+        if (audioRef.current) {
+            audioRef.current.pause();
             audioRef.current.load();
-            audioRef.current.play().catch(() => { });
         }
     };
 
@@ -54,7 +51,7 @@ export default function MusicRadio() {
         borderRadius: '50%',
         background: isPlaying
             ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
-            : 'linear-gradient(135deg, #f87171 0%, #ef4444 100%)',
+            : 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
         border: 'none',
         cursor: 'pointer',
         fontSize: '24px',
@@ -62,7 +59,7 @@ export default function MusicRadio() {
         alignItems: 'center',
         justifyContent: 'center',
         boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-        transition: 'transform 0.2s, box-shadow 0.2s',
+        transition: 'transform 0.2s',
     };
 
     const panelStyle: React.CSSProperties = {
@@ -73,7 +70,7 @@ export default function MusicRadio() {
         border: '1px solid rgba(255,255,255,0.1)',
         borderRadius: '12px',
         padding: '15px',
-        width: '220px',
+        width: '200px',
         display: isExpanded ? 'block' : 'none',
         backdropFilter: 'blur(10px)',
     };
@@ -90,19 +87,13 @@ export default function MusicRadio() {
         transition: 'all 0.2s',
     });
 
-    const volumeStyle: React.CSSProperties = {
-        width: '100%',
-        marginTop: '10px',
-        accentColor: '#22c55e',
-    };
-
     return (
         <div style={containerStyle}>
             <audio ref={audioRef} src={RADIO_STATIONS[currentStation].url} />
 
             <div style={panelStyle}>
                 <div style={{ color: '#888', fontSize: '12px', marginBottom: '10px' }}>
-                    📻 Radio Stations
+                    📻 Radio - Selecciona y dale Play
                 </div>
                 {RADIO_STATIONS.map((station, idx) => (
                     <div
@@ -113,25 +104,28 @@ export default function MusicRadio() {
                         {station.name}
                     </div>
                 ))}
-                <div style={{ marginTop: '10px', color: '#888', fontSize: '12px' }}>
-                    🔊 Volumen
-                </div>
-                <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value={volume}
-                    onChange={(e) => setVolume(parseFloat(e.target.value))}
-                    style={volumeStyle}
-                />
+                <button
+                    onClick={togglePlay}
+                    style={{
+                        width: '100%',
+                        marginTop: '10px',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        border: 'none',
+                        background: isPlaying ? '#ef4444' : '#22c55e',
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                    }}
+                >
+                    {isPlaying ? '⏹ Parar' : '▶ Reproducir'}
+                </button>
             </div>
 
             <button
                 style={buttonStyle}
                 onClick={() => setIsExpanded(!isExpanded)}
-                onDoubleClick={togglePlay}
-                title="Click para expandir, doble-click para play/pause"
+                title="Click para abrir radio"
             >
                 {isPlaying ? '🎵' : '📻'}
             </button>
