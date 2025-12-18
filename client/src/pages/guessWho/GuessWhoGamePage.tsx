@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, HelpCircle, Target, Trophy, Clock, Users, MessageSquare, Send, Zap, AlertTriangle, Volume2, VolumeX } from 'lucide-react';
 import PlayerCard from '../../components/guessWho/PlayerCard';
-import { Player, ALL_PLAYERS, SMART_QUESTIONS, suggestNextQuestion, evaluateQuestion } from '../../game-data/players/playerUtils';
+import { Player, ALL_PLAYERS, suggestNextQuestion, evaluateQuestion } from '../../game-data/players/playerUtils';
 import ConfettiCelebration from '../../components/ConfettiCelebration';
 import { useSocket } from '../../hooks/useSocket';
 import styles from './GuessWhoGamePage.module.css';
@@ -33,7 +33,7 @@ export default function GuessWhoGamePage() {
     const [revealOpponent, setRevealOpponent] = useState<Player | null>(null);
 
     // UI state
-    const [chatHistory, setChatHistory] = useState<{ sender: string, text: string, answer?: 'yes' | 'no' }[]>([]);
+    const [chatHistory, setChatHistory] = useState<{ sender: string, text: string }[]>([]);
     const [showConfetti, setShowConfetti] = useState(false);
     const [notification, setNotification] = useState<string | null>(null);
     const [isGuessing, setIsGuessing] = useState(false);
@@ -98,253 +98,120 @@ export default function GuessWhoGamePage() {
                 osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.15);
                 gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.15);
                 gain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + i * 0.15 + 0.05);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.15 + 0.4);
+                gain.gain.linearRampToValueAtTime(0, ctx.currentTime + i * 0.15 + 0.4);
                 osc.start(ctx.currentTime + i * 0.15);
                 osc.stop(ctx.currentTime + i * 0.15 + 0.4);
             });
-        } catch (e) { /* Audio not supported */ }
+        } catch (e) { }
     };
 
     const playDefeatSound = () => {
         try {
             const ctx = getAudioContext();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sawtooth';
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.frequency.setValueAtTime(200, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.5);
-            gain.gain.setValueAtTime(0.15, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + 0.5);
-        } catch (e) { /* Audio not supported */ }
+            [392, 370, 349, 330].forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'triangle';
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.3);
+                gain.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.3);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.3 + 0.25);
+                osc.start(ctx.currentTime + i * 0.3);
+                osc.stop(ctx.currentTime + i * 0.3 + 0.3);
+            });
+        } catch (e) { }
     };
 
-    const playClickSound = () => {
-        try {
-            const ctx = getAudioContext();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.frequency.setValueAtTime(600, ctx.currentTime);
-            osc.frequency.setValueAtTime(800, ctx.currentTime + 0.05);
-            gain.gain.setValueAtTime(0.15, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + 0.08);
-        } catch (e) { /* Audio not supported */ }
-    };
-
-    // Scroll to bottom of chat
+    // Init Game
     useEffect(() => {
-        if (chatEndRef.current) {
-            chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        const state = location.state as any;
+        if (state?.mode) {
+            setGameMode(state.mode);
+            setRoomId(state.roomId);
+            if (state.mode === 'vsPlayer') {
+                setOpponentName('Oponente');
+                // Socket listeners for multiplayer
+                if (socket) {
+                    socket.on('guesswho:opponent-selected', () => {
+                        setGamePhase('playing');
+                    });
+
+                    socket.on('guesswho:chat-message', (data: { sender: string, text: string }) => {
+                        setChatHistory(prev => [...prev, data]);
+                    });
+
+                    socket.on('guesswho:turn-change', (data: { currentTurn: string }) => {
+                        setIsMyTurn(data.currentTurn === socket.id);
+                    });
+
+                    socket.on('guesswho:game-over', (data: { winnerId: string, opponentSecret: Player }) => {
+                        setRevealOpponent(data.opponentSecret);
+                        endGame(data.winnerId === socket.id ? 'me' : 'opponent');
+                    });
+                }
+            }
         }
+    }, [location, socket]);
+
+    // Scroll chat
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [chatHistory]);
 
-    // Initialize game
+    // Selection Timer
     useEffect(() => {
-        if (location.state) {
-            if (location.state.mode) setGameMode(location.state.mode);
-            if (location.state.roomId) setRoomId(location.state.roomId);
-        }
-    }, [location]);
-
-    // Initialize AI Game
-    useEffect(() => {
-        if (gameMode === 'vsAI') {
-            const aiPlayer = ALL_PLAYERS[Math.floor(Math.random() * ALL_PLAYERS.length)];
-            setOpponentSecretPlayer(aiPlayer);
-            setOpponentName('IA');
-        }
-    }, [gameMode]);
-
-    // Selection Timer Countdown
-    useEffect(() => {
-        if (gamePhase !== 'selection') return;
-        if (selectionTimer <= 0) {
-            // Auto-select random player when timer runs out
-            const randomPlayer = filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
-            if (randomPlayer && !mySecretPlayer) {
-                handleSelectMyPlayer(randomPlayer);
-            }
-            return;
-        }
-        const interval = setInterval(() => {
-            setSelectionTimer(prev => prev - 1);
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [gamePhase, selectionTimer, filteredPlayers, mySecretPlayer]);
-
-    // Socket Events
-    useEffect(() => {
-        if (gameMode !== 'vsPlayer' || !socket) return;
-
-        socket.on('guesswho:game-started', (data: { roomId: string, opponentName: string, firstTurn: string }) => {
-            setOpponentName(data.opponentName);
-            setIsMyTurn(data.firstTurn === socket.id);
-            setGamePhase('playing');
-            setNotification(`¡Juego iniciado contra ${data.opponentName}!`);
-            setTimeout(() => setNotification(null), 3000);
-        });
-
-        socket.on('guesswho:turn-change', (data: { currentTurn: string }) => {
-            setIsMyTurn(data.currentTurn === socket.id);
-        });
-
-        socket.on('guesswho:question-received', (data: { question: string }) => {
-            setChatHistory(prev => [...prev, { sender: opponentName, text: data.question }]);
-
-            // Auto-answer logic
-            if (mySecretPlayer) {
-                const qObj = SMART_QUESTIONS.find(q => q.text === data.question);
-                let answer: boolean = false;
-                if (qObj) answer = evaluateQuestion(qObj, mySecretPlayer);
-
-                socket.emit('guesswho:answer', { roomId, answer: answer ? 'yes' : 'no' });
-
-                setChatHistory(prev => {
-                    const last = prev[prev.length - 1];
-                    if (last.text === data.question) {
-                        return [...prev.slice(0, -1), { ...last, answer: answer ? 'yes' : 'no' }];
-                    }
-                    return prev;
-                });
-            }
-        });
-
-        socket.on('guesswho:answer-received', (data: { answer: 'yes' | 'no' }) => {
-            setChatHistory(prev => {
-                const last = [...prev].reverse().find(m => m.sender === 'Tú' && !m.answer);
-                if (last) {
-                    return prev.map(m => m === last ? { ...m, answer: data.answer } : m);
-                }
-                return prev;
-            });
-        });
-
-        socket.on('guesswho:game-ended', (data: { winner: string, opponentSecretPlayer?: string }) => {
-            if (data.opponentSecretPlayer) {
-                const p = ALL_PLAYERS.find(pl => pl.id === data.opponentSecretPlayer);
-                setRevealOpponent(p || null);
-            }
-            if (data.winner === socket.id) endGame('me');
-            else endGame('opponent');
-        });
-
-        socket.on('guesswho:opponent-guessed', (data: { correct: boolean, targetPlayerId: string }) => {
-            const target = ALL_PLAYERS.find(p => p.id === data.targetPlayerId);
-            setNotification(`${opponentName} adivinó: ${target?.name} - ${data.correct ? '¡Correcto!' : 'Incorrecto'}`);
-            setTimeout(() => setNotification(null), 3000);
-        });
-
-        return () => {
-            socket.off('guesswho:game-started');
-            socket.off('guesswho:turn-change');
-            socket.off('guesswho:question-received');
-            socket.off('guesswho:answer-received');
-            socket.off('guesswho:game-ended');
-            socket.off('guesswho:opponent-guessed');
-        };
-    }, [gameMode, socket, roomId, opponentName, mySecretPlayer]);
-
-    // Game Logic Functions
-    const handleSelectMyPlayer = (player: Player) => {
         if (gamePhase === 'selection') {
-            setMySecretPlayer(player);
-            if (gameMode === 'vsAI') setGamePhase('playing');
-            else {
-                setGamePhase('waiting');
-                socket?.emit('guesswho:select-player', { roomId, playerId: player.id });
-            }
+            const timer = setInterval(() => {
+                setSelectionTimer(prev => {
+                    if (prev <= 1) {
+                        clearInterval(timer);
+                        // Auto-select random if time runs out
+                        if (!mySecretPlayer) {
+                            const random = filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
+                            handleSelectMyPlayer(random);
+                        }
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            return () => clearInterval(timer);
         }
-    };
+    }, [gamePhase, mySecretPlayer]);
 
-    const handleAskQuestion = (questionText: string) => {
-        if (!isMyTurn || !questionText.trim()) return;
-
-        playClickSound();
-        setChatHistory(prev => [...prev, { sender: 'Tú', text: questionText }]);
-
+    const handleSelectMyPlayer = (player: Player) => {
+        setMySecretPlayer(player);
         if (gameMode === 'vsAI') {
-            if (!opponentSecretPlayer) return;
-
-            // Check if it's a predefined smart question
-            const smartQ = SMART_QUESTIONS.find(q => q.text === questionText);
-            let answer: boolean;
-
-            if (smartQ) {
-                answer = evaluateQuestion(smartQ, opponentSecretPlayer);
-            } else {
-                // AI tries to answer custom questions based on keywords
-                const q = questionText.toLowerCase();
-                const player = opponentSecretPlayer;
-
-                if (q.includes('delantero') || q.includes('forward')) answer = player.position === 'Delantero';
-                else if (q.includes('portero') || q.includes('goalkeeper')) answer = player.position === 'Portero';
-                else if (q.includes('defensa') || q.includes('defender')) answer = player.position === 'Defensa';
-                else if (q.includes('mediocampista') || q.includes('midfielder')) answer = player.position === 'Mediocampista';
-                else if (q.includes('españa') || q.includes('spain') || q.includes('laliga')) answer = player.league === 'La Liga';
-                else if (q.includes('premier') || q.includes('england') || q.includes('inglaterra')) answer = player.league === 'Premier League';
-                else if (q.includes('europa') || q.includes('europe')) answer = ['La Liga', 'Premier League', 'Serie A', 'Bundesliga', 'Ligue 1'].includes(player.league);
-                else if (q.includes('rubio') || q.includes('blond')) answer = Math.random() > 0.5; // Can't determine hair color
-                else if (q.includes('alto') || q.includes('tall')) answer = Math.random() > 0.5;
-                else if (q.includes('argentina')) answer = player.nationality === 'Argentina';
-                else if (q.includes('portugal')) answer = player.nationality === 'Portugal';
-                else if (q.includes('brasil') || q.includes('brazil')) answer = player.nationality === 'Brazil';
-                else if (q.includes('francia') || q.includes('france')) answer = player.nationality === 'France';
-                else if (q.includes('leyenda') || q.includes('legend') || q.includes('retir')) answer = (player as any).era === 'leyenda';
-                else answer = Math.random() > 0.5; // Random answer for unknown questions
-            }
-
-            setChatHistory(prev => {
-                const newHist = [...prev];
-                newHist[newHist.length - 1].answer = answer ? 'yes' : 'no';
-                return newHist;
-            });
-
-            setIsMyTurn(false);
-            setTimeout(() => aiTurn(), 2000);
+            // AI selects random player
+            const randomOpponent = ALL_PLAYERS[Math.floor(Math.random() * ALL_PLAYERS.length)];
+            setOpponentSecretPlayer(randomOpponent);
+            setGamePhase('playing');
         } else {
-            socket?.emit('guesswho:ask-question', { roomId, question: questionText });
-            setIsMyTurn(false);
+            // Notify server
+            socket?.emit('guesswho:select-player', { roomId, playerId: player.id });
+            setGamePhase('waiting');
         }
     };
 
     const handleSendCustomQuestion = () => {
-        if (customQuestion.trim() && isMyTurn) {
-            handleAskQuestion(customQuestion);
+        if (customQuestion.trim()) {
+            const text = customQuestion;
             setCustomQuestion('');
-        }
-    };
 
-    const aiTurn = () => {
-        if (!mySecretPlayer) return;
-        const remainingPlayers = ALL_PLAYERS.filter(p => !opponentEliminated.includes(p.id));
-        const suggestedQ = suggestNextQuestion(remainingPlayers);
+            // Add to local chat immediately
+            setChatHistory(prev => [...prev, { sender: 'Tú', text }]);
 
-        if (suggestedQ) {
-            const answer = evaluateQuestion(suggestedQ, mySecretPlayer);
-            setChatHistory(prev => [...prev, { sender: 'IA', text: suggestedQ.text, answer: answer ? 'yes' : 'no' }]);
-
-            setTimeout(() => {
-                const toEliminate = ALL_PLAYERS
-                    .filter(p => !opponentEliminated.includes(p.id))
-                    .filter(p => evaluateQuestion(suggestedQ, p) !== answer)
-                    .map(p => p.id);
-                setOpponentEliminated(prev => [...prev, ...toEliminate]);
-
-                const aiRemaining = ALL_PLAYERS.filter(p => !opponentEliminated.includes(p.id) && !toEliminate.includes(p.id));
-                if (aiRemaining.length === 1 && aiRemaining[0].id === mySecretPlayer.id) endGame('opponent');
-                else setIsMyTurn(true);
-            }, 1500);
-        } else {
-            const aiGuess = remainingPlayers[0];
-            if (aiGuess?.id === mySecretPlayer.id) endGame('opponent');
-            else setIsMyTurn(true);
+            if (gameMode === 'vsAI') {
+                // AI Logic (Simplified for free chat)
+                setTimeout(() => {
+                    // AI just acknowledges for now since it's free chat
+                    // In a real AI implementation, it would try to answer
+                    // But user requested "Free Chat" style
+                }, 1000);
+            } else {
+                socket?.emit('guesswho:send-chat', { roomId, text });
+            }
         }
     };
 
@@ -355,10 +222,8 @@ export default function GuessWhoGamePage() {
         if (gameMode === 'vsAI') {
             if (selectedGuess.id === opponentSecretPlayer?.id) endGame('me');
             else {
-                setNotification('¡Incorrecto! Pierdes un turno.');
+                setNotification('¡Incorrecto! Sigue intentando.');
                 setTimeout(() => setNotification(null), 2000);
-                setIsMyTurn(false);
-                setTimeout(() => aiTurn(), 1500);
             }
         } else {
             socket?.emit('guesswho:guess', { roomId, targetPlayerId: selectedGuess.id });
@@ -373,7 +238,6 @@ export default function GuessWhoGamePage() {
             setTimeout(() => setNotification(null), 2000);
             return;
         }
-        // Only add to eliminated - no toggle back
         if (myEliminated.includes(playerId)) return;
 
         playFlipSound();
@@ -538,9 +402,6 @@ export default function GuessWhoGamePage() {
                     </button>
 
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                        <div className={styles.turnBadge} data-active={isMyTurn}>
-                            {isMyTurn ? 'TU TURNO' : `TURNO DE ${opponentName.toUpperCase()}`}
-                        </div>
                         {mySecretPlayer && (
                             <div className={styles.secretPlayerBadge}>
                                 <span>Tú eres:</span>
@@ -595,36 +456,15 @@ export default function GuessWhoGamePage() {
             {/* RIGHT: SIDEBAR UI */}
             <div className={styles.sidebar}>
                 <div className={styles.sidebarHeader}>
-                    <h3><Zap size={18} /> Panel de Control</h3>
+                    <h3><Zap size={18} /> Chat Libre</h3>
                 </div>
 
                 <div className={styles.sidebarContent}>
                     {/* Actions Section */}
                     <div className={styles.actionsSection}>
-                        {isMyTurn ? (
-                            <>
-                                <button className={styles.actionBtn} onClick={() => setIsGuessing(true)}>
-                                    <Target size={18} /> ADIVINAR PERSONAJE
-                                </button>
-                                <p style={{ fontSize: '0.8rem', color: '#aaa', marginBottom: '0.5rem' }}>Preguntas Rápidas:</p>
-                                <div className={styles.quickQuestions}>
-                                    {SMART_QUESTIONS.slice(0, 4).map(q => (
-                                        <button
-                                            key={q.id}
-                                            className={styles.questionBtn}
-                                            onClick={() => handleAskQuestion(q.text)}
-                                        >
-                                            {q.text}
-                                        </button>
-                                    ))}
-                                </div>
-                            </>
-                        ) : (
-                            <div style={{ textAlign: 'center', padding: '1rem', color: '#aaa' }}>
-                                <Clock size={32} className={styles.spinIcon} style={{ marginBottom: '0.5rem' }} />
-                                <p>Esperando a {opponentName}...</p>
-                            </div>
-                        )}
+                        <button className={styles.actionBtn} onClick={() => setIsGuessing(true)}>
+                            <Target size={18} /> ADIVINAR PERSONAJE
+                        </button>
                     </div>
 
                     {/* Chat Section */}
@@ -633,42 +473,35 @@ export default function GuessWhoGamePage() {
                             {chatHistory.length === 0 && (
                                 <div style={{ textAlign: 'center', padding: '2rem', opacity: 0.3 }}>
                                     <MessageSquare size={32} style={{ marginBottom: '0.5rem' }} />
-                                    <p>Historial del juego</p>
+                                    <p>Habla con tu oponente...</p>
                                 </div>
                             )}
                             {chatHistory.map((msg, i) => (
                                 <div key={i} className={`${styles.chatMsg} ${msg.sender === 'Tú' ? styles.me : ''}`}>
                                     <div style={{ fontSize: '0.7rem', opacity: 0.7, marginBottom: '2px' }}>{msg.sender}</div>
                                     {msg.text}
-                                    {msg.answer && (
-                                        <div style={{ marginTop: '0.2rem', fontWeight: 'bold', color: msg.answer === 'yes' ? '#00e676' : '#ff3d71', textTransform: 'uppercase', fontSize: '0.8rem' }}>
-                                            {msg.answer === 'yes' ? 'SÍ' : 'NO'}
-                                        </div>
-                                    )}
                                 </div>
                             ))}
                             <div ref={chatEndRef} />
                         </div>
                         {/* Custom Question Input */}
-                        {isMyTurn && (
-                            <div className={styles.chatInputContainer}>
-                                <input
-                                    type="text"
-                                    className={styles.chatInput}
-                                    placeholder="Escribe tu pregunta..."
-                                    value={customQuestion}
-                                    onChange={(e) => setCustomQuestion(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleSendCustomQuestion()}
-                                />
-                                <button
-                                    className={styles.sendBtn}
-                                    onClick={handleSendCustomQuestion}
-                                    disabled={!customQuestion.trim()}
-                                >
-                                    <Send size={18} />
-                                </button>
-                            </div>
-                        )}
+                        <div className={styles.chatInputContainer}>
+                            <input
+                                type="text"
+                                className={styles.chatInput}
+                                placeholder="Escribe aquí..."
+                                value={customQuestion}
+                                onChange={(e) => setCustomQuestion(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && handleSendCustomQuestion()}
+                            />
+                            <button
+                                className={styles.sendBtn}
+                                onClick={handleSendCustomQuestion}
+                                disabled={!customQuestion.trim()}
+                            >
+                                <Send size={18} />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
