@@ -77,23 +77,36 @@ export default function LobbyPage() {
             setSettings(newSettings);
         });
 
+        // OLD game events (for backwards compatibility)
         socket.on('game:started', (data: any) => {
-            // Broadcast only - wait for game:your-role
+            // Broadcast only - wait for role
         });
 
         socket.on('game:your-role' as any, (data: any) => {
             localStorage.setItem('currentGame', JSON.stringify({
                 gameId: data.gameId,
                 roomId: data.roomId,
-                roomCode: roomCode, // Save roomCode for "Play Again"
+                roomCode: roomCode,
                 totalRounds: data.totalRounds,
                 players: data.players,
                 word: data.word,
                 isImpostor: data.isImpostor,
                 role: data.role,
-                settings: settings // Save settings for GamePage
+                settings: settings
             }));
-            navigate(`/game/${data.gameId}`);
+            // Navigate to NEW game page!
+            navigate(`/impostor/game/${roomCode}`);
+        });
+
+        // NEW impostor game events
+        socket.on('impostor:role' as any, (data: any) => {
+            localStorage.setItem('currentGame', JSON.stringify({
+                gameId: data.gameId,
+                roomCode: roomCode,
+                isImpostor: data.isImpostor,
+                word: data.word,
+            }));
+            navigate(`/impostor/game/${roomCode}`);
         });
 
         socket.on('guesswho:start-selection', () => {
@@ -114,6 +127,7 @@ export default function LobbyPage() {
             socket.off('room:updated');
             socket.off('game:started');
             socket.off('game:your-role');
+            socket.off('impostor:role');
             socket.off('guesswho:start-selection');
             socket.off('room:error');
         };
@@ -132,7 +146,8 @@ export default function LobbyPage() {
         if (mode === 'GUESS_WHO') {
             socket.emit('guesswho:init', { roomId });
         } else {
-            socket.emit('game:start', { roomId });
+            // Use NEW impostor:start event with roomCode
+            socket.emit('impostor:start' as any, { roomCode });
         }
     };
 
