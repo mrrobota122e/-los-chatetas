@@ -274,6 +274,30 @@ export default function LobbyPage() {
                                 {copied ? 'Copiado' : 'Click para copiar'}
                             </span>
                         </div>
+
+                        {/* Share Link Button */}
+                        <button
+                            style={{
+                                marginTop: '1rem',
+                                padding: '0.75rem 1.5rem',
+                                background: 'linear-gradient(135deg, #f87171 0%, #ef4444 100%)',
+                                border: 'none',
+                                borderRadius: '12px',
+                                color: '#fff',
+                                fontSize: '0.9rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                width: '100%'
+                            }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                const shareUrl = `${window.location.origin}/join/${roomCode}`;
+                                navigator.clipboard.writeText(shareUrl);
+                                alert('¡Link copiado! Compártelo con tus amigos');
+                            }}
+                        >
+                            🔗 Compartir Link de Invitación
+                        </button>
                     </section>
 
                     {/* Players Grid */}

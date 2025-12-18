@@ -166,6 +166,32 @@ export default function GuessWhoLobbyPage() {
                     </div>
                 </motion.div>
 
+                {/* Share Link */}
+                <motion.button
+                    style={{
+                        padding: '0.75rem 1.5rem',
+                        background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+                        border: 'none',
+                        borderRadius: '12px',
+                        color: '#fff',
+                        fontSize: '0.9rem',
+                        fontWeight: 600,
+                        cursor: 'pointer'
+                    }}
+                    onClick={() => {
+                        const shareUrl = `${window.location.origin}/guess-who/join/${roomCode}`;
+                        navigator.clipboard.writeText(shareUrl);
+                        alert('¡Link copiado! Compártelo con tu amigo');
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.25 }}
+                >
+                    🔗 Compartir Link de Invitación
+                </motion.button>
+
                 {/* Players */}
                 <motion.div
                     className={styles.playersSection}
