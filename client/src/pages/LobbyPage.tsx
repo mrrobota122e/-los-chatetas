@@ -372,26 +372,37 @@ export default function LobbyPage() {
                                 {players.length < maxPlayers && (
                                     <button
                                         style={{
-                                            marginBottom: '10px',
-                                            padding: '12px 24px',
-                                            background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
-                                            border: 'none',
-                                            borderRadius: '12px',
-                                            color: '#fff',
-                                            fontSize: '1rem',
-                                            fontWeight: 600,
+                                            marginBottom: '15px',
+                                            padding: '14px 28px',
+                                            background: 'rgba(248, 113, 113, 0.15)',
+                                            border: '2px solid rgba(248, 113, 113, 0.4)',
+                                            borderRadius: '14px',
+                                            color: '#f87171',
+                                            fontSize: '0.95rem',
+                                            fontWeight: 700,
                                             cursor: 'pointer',
                                             display: 'flex',
                                             alignItems: 'center',
-                                            gap: '8px',
+                                            justifyContent: 'center',
+                                            gap: '10px',
+                                            width: '100%',
+                                            transition: 'all 0.3s',
                                         }}
                                         onClick={() => {
                                             if (socket && roomId) {
                                                 socket.emit('room:fill-bots', { roomId });
                                             }
                                         }}
+                                        onMouseOver={(e) => {
+                                            e.currentTarget.style.background = 'rgba(248, 113, 113, 0.25)';
+                                            e.currentTarget.style.borderColor = 'rgba(248, 113, 113, 0.6)';
+                                        }}
+                                        onMouseOut={(e) => {
+                                            e.currentTarget.style.background = 'rgba(248, 113, 113, 0.15)';
+                                            e.currentTarget.style.borderColor = 'rgba(248, 113, 113, 0.4)';
+                                        }}
                                     >
-                                        🤖 Llenar con Bots ({maxPlayers - players.length} slots)
+                                        🤖 Completar con Bots ({maxPlayers - players.length})
                                     </button>
                                 )}
 
