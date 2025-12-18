@@ -143,11 +143,18 @@ export default function LobbyPage() {
     const handleStartGame = () => {
         if (!socket || !roomId) return;
 
+        console.log('🚀 Starting game...', { mode, roomCode, roomId });
+
         if (mode === 'GUESS_WHO') {
             socket.emit('guesswho:init', { roomId });
         } else {
-            // Use NEW impostor:start event with roomCode
+            // Emit BOTH old and new events for compatibility
+            console.log('📡 Emitting impostor:start with roomCode:', roomCode);
             socket.emit('impostor:start' as any, { roomCode });
+
+            // Also emit old event as fallback
+            console.log('📡 Emitting game:start with roomId:', roomId);
+            socket.emit('game:start', { roomId });
         }
     };
 
