@@ -33,11 +33,7 @@ export default function ImpostorMenuPage() {
 
     const handleCreateRoom = async () => {
         if (!playerName.trim()) {
-            setError('¡Vuelve al menú y escribe tu nombre!');
-            return;
-        }
-        if (playerName.toUpperCase() !== ADMIN_NAME) {
-            setError('⚠️ Solo habilitado para AARONLAMARAVILLA');
+            setError('¡Escribe tu nombre primero!');
             return;
         }
 

@@ -30,6 +30,14 @@ export function handleGameEvents(socket: TypedSocket, io: TypedServer) {
                     reason: 'NO_VOTES',
                     message: 'Nadie fue eliminado - no hubo votos',
                 });
+                // Continue to next round anyway
+                setTimeout(() => {
+                    io.to(roomId).emit('game:next-round', {
+                        round: round + 1,
+                        eliminatedPlayerId: null,
+                        eliminatedPlayerName: null,
+                    });
+                }, 3000);
                 return;
             }
 
@@ -89,6 +97,16 @@ export function handleGameEvents(socket: TypedSocket, io: TypedServer) {
                             },
                         });
                     }, 3000);
+                } else {
+                    // El impostor sigue vivo - continuar con siguiente ronda
+                    logger.info(`🔄 Player eliminated was innocent, starting next round...`);
+                    setTimeout(() => {
+                        io.to(roomId).emit('game:next-round', {
+                            round: round + 1,
+                            eliminatedPlayerId: eliminatedPlayer.id,
+                            eliminatedPlayerName: eliminatedPlayer.name,
+                        });
+                    }, 4000);
                 }
             } else {
                 logger.warn(`⚠️ Could not find player ${mostVoted} in room players`);
