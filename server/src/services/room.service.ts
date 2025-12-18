@@ -27,6 +27,15 @@ export class RoomService {
     async createRoom(socketId: string, hostName: string, maxPlayers: number, mode: 'NORMAL' | 'ADVANCED' | 'GUESS_WHO', settings?: any) {
         const code = this.generateRoomCode();
 
+        // Clean up any existing player with this socketId (from previous sessions)
+        try {
+            await prisma.player.deleteMany({
+                where: { socketId }
+            });
+        } catch (e) {
+            // Ignore if no player exists
+        }
+
         const room = await prisma.room.create({
             data: {
                 code,
@@ -74,6 +83,15 @@ export class RoomService {
         const existingPlayer = room.players.find(p => p.socketId === socketId);
         if (existingPlayer) {
             return this.formatRoom(room);
+        }
+
+        // Clean up any existing player with this socketId from other rooms
+        try {
+            await prisma.player.deleteMany({
+                where: { socketId }
+            });
+        } catch (e) {
+            // Ignore
         }
 
         // Add player
