@@ -1,11 +1,8 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { io, Socket } from 'socket.io-client';
-import type { ClientToServerEvents, ServerToClientEvents } from '@shared/types/events';
-
-type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
 interface SocketContextType {
-    socket: TypedSocket | null;
+    socket: Socket | null;
     isConnected: boolean;
 }
 
@@ -14,18 +11,25 @@ const SocketContext = createContext<SocketContextType>({
     isConnected: false,
 });
 
+// Get socket URL based on environment
+function getSocketUrl(): string {
+    // Use environment variable if set (for production)
+    if (import.meta.env.VITE_SERVER_URL) {
+        return import.meta.env.VITE_SERVER_URL;
+    }
+    // Development: use same hostname with port 3001
+    return `http://${window.location.hostname}:3001`;
+}
+
 export function SocketProvider({ children }: { children: ReactNode }) {
-    const [socket, setSocket] = useState<TypedSocket | null>(null);
+    const [socket, setSocket] = useState<Socket | null>(null);
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
-        // Connect to backend on port 3001, using same hostname as the page
-        // Works for localhost AND network IP (192.168.x.x)
-        const socketUrl = `http://${window.location.hostname}:3001`;
-
+        const socketUrl = getSocketUrl();
         console.log('🔌 Connecting to socket:', socketUrl);
 
-        const newSocket: TypedSocket = io(socketUrl, {
+        const newSocket = io(socketUrl, {
             transports: ['websocket', 'polling'],
             withCredentials: false,
             reconnection: true,
@@ -45,7 +49,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 
         setSocket(newSocket);
 
-        // Solo limpiar cuando el componente raíz se desmonte (nunca durante navegación)
         return () => {
             console.log('🔌 Closing socket connection');
             newSocket.close();
