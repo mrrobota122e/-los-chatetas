@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import LoadingScreen from './components/LoadingScreen';
 import IntroPage from './pages/IntroPage';
 import MenuPage from './pages/MenuPage';
 import LobbyPage from './pages/LobbyPage';
@@ -11,10 +13,15 @@ import ImpostorMenuPage from './pages/ImpostorMenuPage';
 import ImpostorGamePage from './pages/ImpostorGame/ImpostorGamePage';
 import AdminPage from './pages/AdminPage';
 import MusicRadio from './components/MusicRadio';
-
-const APP_VERSION = '2.0.0';
+import { APP_VERSION } from './config';
 
 function App() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    if (isLoading) {
+        return <LoadingScreen onComplete={() => setIsLoading(false)} />;
+    }
+
     return (
         <BrowserRouter>
             <Routes>
@@ -34,7 +41,7 @@ function App() {
                 <Route path="/guess-who/join/:roomCode" element={<GuessWhoLobbyPage />} />
                 <Route path="/guess-who/game" element={<GuessWhoGamePage />} />
 
-                {/* Impostor Menu */}
+                {/* Impostor Routes */}
                 <Route path="/impostor/menu" element={<ImpostorMenuPage />} />
                 <Route path="/impostor/game/:roomCode" element={<ImpostorGamePage />} />
 
