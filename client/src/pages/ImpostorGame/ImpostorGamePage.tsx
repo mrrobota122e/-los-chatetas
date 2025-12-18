@@ -62,13 +62,69 @@ export default function ImpostorGamePage() {
     const isMyTurn = gameState.currentTurnId === socket?.id;
     const amAlive = myPlayer?.isAlive !== false;
 
+    // Load initial state from localStorage
+    useEffect(() => {
+        const savedGame = localStorage.getItem('currentGame');
+        if (savedGame) {
+            try {
+                const data = JSON.parse(savedGame);
+                console.log('📂 Loaded from localStorage:', data);
+                setGameState(prev => ({
+                    ...prev,
+                    gameId: data.gameId || '',
+                    word: data.word || null,
+                    isImpostor: data.isImpostor || data.role === 'IMPOSTOR',
+                    players: (data.players || []).map((p: any) => ({
+                        id: p.id,
+                        socketId: p.socketId,
+                        name: p.name,
+                        avatarColor: p.avatarColor || '#c51111',
+                        isAlive: true,
+                    })),
+                    phase: 'CLUES',
+                }));
+                setShowRoleReveal(true);
+                setTimeout(() => setShowRoleReveal(false), 5000);
+            } catch (e) {
+                console.error('Parse error:', e);
+            }
+        }
+    }, []);
+
     // Socket listeners
     useEffect(() => {
         if (!socket) return;
 
-        // Game state sync from server
-        socket.on('impostor:state', (state: Partial<GameState>) => {
-            console.log('📥 State update:', state);
+        console.log('🔌 Socket ready:', socket.id);
+
+        // OLD game events (fallback)
+        socket.on('game:your-role' as any, (data: any) => {
+            console.log('🎭 game:your-role:', data);
+            setGameState(prev => ({
+                ...prev,
+                isImpostor: data.isImpostor || data.role === 'IMPOSTOR',
+                word: data.word,
+                gameId: data.gameId,
+                players: (data.players || []).map((p: any) => ({
+                    id: p.id, socketId: p.socketId, name: p.name,
+                    avatarColor: p.avatarColor || '#c51111', isAlive: true,
+                })),
+            }));
+            setShowRoleReveal(true);
+            setTimeout(() => { setShowRoleReveal(false); setGameState(p => ({ ...p, phase: 'CLUES' })); }, 5000);
+        });
+
+        socket.on('game:clue-received' as any, (data: any) => {
+            setGameState(prev => ({ ...prev, clues: [...prev.clues, { playerId: data.playerId, playerName: data.playerName, clue: data.clue }] }));
+        });
+
+        socket.on('game:phase-changed' as any, (data: any) => {
+            setGameState(prev => ({ ...prev, phase: data.phase, timeRemaining: data.duration || 30 }));
+        });
+
+        // NEW impostor events
+        socket.on('impostor:state' as any, (state: Partial<GameState>) => {
+            console.log('📥 impostor:state:', state);
             setGameState(prev => ({ ...prev, ...state }));
         });
 
@@ -181,6 +237,9 @@ export default function ImpostorGamePage() {
         });
 
         return () => {
+            socket.off('game:your-role');
+            socket.off('game:clue-received');
+            socket.off('game:phase-changed');
             socket.off('impostor:state');
             socket.off('impostor:role');
             socket.off('impostor:clue');
