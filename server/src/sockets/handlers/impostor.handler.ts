@@ -40,8 +40,12 @@ const FOOTBALL_WORDS = [
 
 export function handleImpostorEvents(socket: TypedSocket, io: TypedServer) {
 
-    // Start game
-    socket.on('impostor:start', async ({ roomCode }) => {
+    logger.info(`🎮 Impostor handlers ready for socket ${socket.id}`);
+
+    // Start game - use 'as any' because event type is not defined
+    socket.on('impostor:start' as any, async (data: { roomCode: string }) => {
+        const { roomCode } = data || {};
+        logger.info(`🚀 impostor:start from ${socket.id}, roomCode: ${roomCode}`);
         try {
             const room = await prisma.room.findFirst({
                 where: { roomCode },
