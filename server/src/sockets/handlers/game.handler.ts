@@ -264,10 +264,28 @@ export function handleGameEvents(socket: TypedSocket, io: TypedServer) {
         }
     });
 
-    // Send clue
+    // Send clue - track turns
+    const clueTracking = new Map<string, { currentTurn: number, playersSpoken: Set<string> }>();
+
     socket.on('game:clue', async ({ roomId, gameId, clue, round }) => {
         try {
             await gameService.registerClue(gameId, socket.id, clue, round);
+
+            // Get room data
+            const room = await prisma.room.findUnique({
+                where: { id: roomId },
+                include: { players: true },
+            });
+
+            if (!room) return;
+
+            // Initialize tracking for this room if needed
+            if (!clueTracking.has(roomId)) {
+                clueTracking.set(roomId, { currentTurn: 0, playersSpoken: new Set() });
+            }
+
+            const tracking = clueTracking.get(roomId)!;
+            tracking.playersSpoken.add(socket.id);
 
             // Broadcast the clue to everyone
             io.to(roomId).emit('game:clue-received', {
@@ -276,6 +294,39 @@ export function handleGameEvents(socket: TypedSocket, io: TypedServer) {
                 clue,
                 timestamp: Date.now(),
             });
+
+            // Calculate next turn
+            const activePlayers = room.players.filter(p => !p.socketId.startsWith('bot_eliminated'));
+            tracking.currentTurn++;
+
+            // Check if all players have spoken
+            if (tracking.playersSpoken.size >= activePlayers.length) {
+                // All players done - emit phase change to discussion
+                logger.info(`All players have given clues in room ${roomId}, advancing to discussion`);
+
+                const settings = room.settings ? JSON.parse(room.settings) : { discussionDuration: 45 };
+
+                io.to(roomId).emit('game:phase-changed', {
+                    phase: 'DISCUSSION',
+                    duration: settings.discussionDuration || 45,
+                    round: round,
+                });
+
+                // Reset tracking for next round
+                tracking.playersSpoken.clear();
+                tracking.currentTurn = 0;
+            } else {
+                // Advance to next player
+                const nextPlayer = activePlayers[tracking.currentTurn % activePlayers.length];
+                if (nextPlayer) {
+                    io.to(roomId).emit('game:turn-changed', {
+                        currentPlayerId: nextPlayer.socketId,
+                        currentPlayerName: nextPlayer.name,
+                        turnNumber: tracking.currentTurn + 1,
+                        totalPlayers: activePlayers.length,
+                    });
+                }
+            }
 
             logger.debug(`Clue from ${socket.data.playerName}: ${clue}`);
         } catch (error: any) {

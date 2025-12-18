@@ -8,9 +8,10 @@ import GuessWhoMenuPage from './pages/guessWho/GuessWhoMenuPage';
 import GuessWhoGamePage from './pages/guessWho/GuessWhoGamePage';
 import GuessWhoLobbyPage from './pages/guessWho/GuessWhoLobbyPage';
 import ImpostorMenuPage from './pages/ImpostorMenuPage';
+import AdminPage from './pages/AdminPage';
 import MusicRadio from './components/MusicRadio';
 
-const APP_VERSION = '1.8.0';
+const APP_VERSION = '1.9.0';
 
 function App() {
     return (
@@ -34,6 +35,9 @@ function App() {
 
                 {/* Impostor Menu */}
                 <Route path="/impostor/menu" element={<ImpostorMenuPage />} />
+
+                {/* Admin Panel */}
+                <Route path="/admin" element={<AdminPage />} />
 
                 {/* Redirect unknown routes to intro */}
                 <Route path="*" element={<Navigate to="/" replace />} />

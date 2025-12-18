@@ -233,6 +233,27 @@ export default function GamePage() {
             }
         });
 
+        // Listen for phase changes from server
+        socket.on('game:phase-changed', (data: { phase: string, duration: number, round: number }) => {
+            console.log('📍 Phase changed to:', data.phase);
+
+            if (data.phase === 'DISCUSSION') {
+                setPhase('DISCUSSION');
+                setTimeRemaining(data.duration);
+            } else if (data.phase === 'VOTING') {
+                setPhase('VOTING');
+                setTimeRemaining(data.duration);
+                setHasVoted(false);
+                setSelectedVote('');
+                votesRef.current = {};
+                setVotes({});
+            } else if (data.phase === 'CLUES') {
+                setPhase('CLUES');
+                setTimeRemaining(data.duration);
+                setCurrentTurnIndex(0);
+            }
+        });
+
         // Listen for next round event
         socket.on('game:next-round', (data: { round: number }) => {
             console.log('🔄 Next round:', data.round);
@@ -257,6 +278,7 @@ export default function GamePage() {
             socket.off('game:clue-received');
             socket.off('game:chat-message');
             socket.off('game:turn-changed');
+            socket.off('game:phase-changed');
             socket.off('game:next-round');
         };
     }, [socket]);
