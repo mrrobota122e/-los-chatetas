@@ -1,16 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSocket } from '../../hooks/useSocket';
-import styles from './ImpostorGamePage.v3.module.css';
+import styles from './ImpostorGamePage.amongus.module.css';
 
-// Types
 interface Player {
     id: string;
     socketId: string;
     name: string;
     avatarColor: string;
     isAlive: boolean;
-    hasVoted?: boolean;
 }
 
 interface GameState {
@@ -22,14 +20,23 @@ interface GameState {
     players: Player[];
     currentTurnId: string | null;
     timeRemaining: number;
-    votes: Record<string, string[]>;
     clues: { playerId: string; playerName: string; clue: string }[];
-    eliminatedPlayer: Player | null;
     winner: 'IMPOSTOR' | 'CREW' | null;
 }
 
+const PLAYER_COLORS = [
+    '#c51111', // Red
+    '#132ed1', // Blue  
+    '#117f2d', // Green
+    '#ed54ba', // Pink
+    '#ef7d0d', // Orange
+    '#f5f557', // Yellow
+    '#3f474e', // Black
+    '#d6e0f0', // White
+];
+
 export default function ImpostorGamePage() {
-    const { roomCode } = useParams<{ roomCode: string }>();
+    const { roomCode } = useParams();
     const navigate = useNavigate();
     const { socket } = useSocket();
 
@@ -42,9 +49,7 @@ export default function ImpostorGamePage() {
         players: [],
         currentTurnId: null,
         timeRemaining: 30,
-        votes: {},
         clues: [],
-        eliminatedPlayer: null,
         winner: null,
     });
 
@@ -53,14 +58,12 @@ export default function ImpostorGamePage() {
     const [chatInput, setChatInput] = useState('');
     const [chatMessages, setChatMessages] = useState<{ sender: string; text: string }[]>([]);
     const [showRoleReveal, setShowRoleReveal] = useState(false);
-    const [showEliminationReveal, setShowEliminationReveal] = useState(false);
 
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
     const myPlayer = gameState.players.find(p => socket && p.socketId === socket.id);
     const isMyTurn = gameState.currentTurnId === socket?.id;
     const amAlive = myPlayer?.isAlive !== false;
 
-    // Load initial state from localStorage
+    // Load initial state
     useEffect(() => {
         const savedGame = localStorage.getItem('currentGame');
         if (savedGame) {
@@ -71,11 +74,11 @@ export default function ImpostorGamePage() {
                     gameId: data.gameId || '',
                     word: data.word || null,
                     isImpostor: data.isImpostor || data.role === 'IMPOSTOR',
-                    players: (data.players || []).map((p: any) => ({
+                    players: (data.players || []).map((p: any, idx: number) => ({
                         id: p.id,
                         socketId: p.socketId,
                         name: p.name,
-                        avatarColor: p.avatarColor || '#c51111',
+                        avatarColor: PLAYER_COLORS[idx % PLAYER_COLORS.length],
                         isAlive: true,
                     })),
                     phase: 'CLUES',
@@ -92,41 +95,8 @@ export default function ImpostorGamePage() {
     useEffect(() => {
         if (!socket) return;
 
-        // Sync state on join (for late joiners)
         socket.emit('impostor:sync', { roomCode });
 
-        // --- OLD GAME EVENTS (FALLBACK) ---
-        socket.on('game:your-role' as any, (data: any) => {
-            setGameState(prev => ({
-                ...prev,
-                isImpostor: data.isImpostor || data.role === 'IMPOSTOR',
-                word: data.word,
-                gameId: data.gameId,
-                players: (data.players || []).map((p: any) => ({
-                    id: p.id, socketId: p.socketId, name: p.name,
-                    avatarColor: p.avatarColor || '#c51111', isAlive: true,
-                })),
-            }));
-            setShowRoleReveal(true);
-            setTimeout(() => { setShowRoleReveal(false); setGameState(p => ({ ...p, phase: 'CLUES' })); }, 5000);
-        });
-
-        socket.on('game:clue-received' as any, (data: any) => {
-            setGameState(prev => ({ ...prev, clues: [...prev.clues, { playerId: data.playerId, playerName: data.playerName, clue: data.clue }] }));
-        });
-
-        socket.on('game:phase-changed' as any, (data: any) => {
-            setGameState(prev => ({ ...prev, phase: data.phase, timeRemaining: data.duration || 30 }));
-        });
-
-        socket.on('game:turn-changed' as any, (data: any) => {
-            setGameState(prev => ({
-                ...prev,
-                currentTurnId: data.currentPlayerId,
-            }));
-        });
-
-        // --- NEW IMPOSTOR EVENTS ---
         socket.on('impostor:state' as any, (state: Partial<GameState>) => {
             setGameState(prev => ({ ...prev, ...state }));
         });
@@ -167,110 +137,45 @@ export default function ImpostorGamePage() {
                 timeRemaining: data.timeRemaining,
                 round: data.round ?? prev.round,
             }));
-            if (data.phase === 'VOTING') {
-                setMyVote(null);
-            }
-        });
-
-        socket.on('impostor:vote' as any, (data: { votes: Record<string, string[]> }) => {
-            setGameState(prev => ({ ...prev, votes: data.votes }));
+            if (data.phase === 'VOTING') setMyVote(null);
         });
 
         socket.on('impostor:chat' as any, (data: { sender: string; text: string }) => {
             setChatMessages(prev => [...prev, data]);
         });
 
-        socket.on('impostor:elimination' as any, (data: { player: Player; wasImpostor: boolean; gameOver: boolean; winner?: string }) => {
-            setGameState(prev => ({
-                ...prev,
-                eliminatedPlayer: { ...data.player, isImpostor: data.wasImpostor } as any,
-                phase: 'RESULTS',
-            }));
-            setShowEliminationReveal(true);
-
-            setTimeout(() => {
-                setShowEliminationReveal(false);
-                if (data.gameOver) {
-                    setGameState(prev => ({
-                        ...prev,
-                        phase: 'GAME_OVER',
-                        winner: data.winner as 'IMPOSTOR' | 'CREW',
-                    }));
-                } else {
-                    setGameState(prev => ({
-                        ...prev,
-                        phase: 'CLUES',
-                        round: prev.round + 1,
-                        clues: [],
-                        votes: {},
-                        eliminatedPlayer: null,
-                        players: prev.players.map(p =>
-                            p.id === data.player.id ? { ...p, isAlive: false } : p
-                        ),
-                    }));
-                }
-            }, 6000);
-        });
-
-        socket.on('impostor:no-elimination' as any, (data: { reason: string }) => {
-            setGameState(prev => ({
-                ...prev,
-                phase: 'RESULTS',
-                eliminatedPlayer: null,
-            }));
-            setTimeout(() => {
-                setGameState(prev => ({
-                    ...prev,
-                    phase: 'CLUES',
-                    round: prev.round + 1,
-                    clues: [],
-                    votes: {},
-                }));
-            }, 4000);
-        });
-
         return () => {
-            socket.off('game:your-role');
-            socket.off('game:clue-received');
-            socket.off('game:phase-changed');
-            socket.off('game:turn-changed');
             socket.off('impostor:state');
             socket.off('impostor:role');
             socket.off('impostor:clue');
             socket.off('impostor:turn');
             socket.off('impostor:phase');
-            socket.off('impostor:vote');
             socket.off('impostor:chat');
-            socket.off('impostor:elimination');
-            socket.off('impostor:no-elimination');
         };
-    }, [socket]);
+    }, [socket, roomCode]);
 
-    // Timer countdown
+    // Timer
     useEffect(() => {
-        if (gameState.phase === 'WAITING' || gameState.phase === 'RESULTS' || gameState.phase === 'GAME_OVER') return;
-        if (timerRef.current) clearInterval(timerRef.current);
-        timerRef.current = setInterval(() => {
+        if (gameState.phase === 'WAITING' || gameState.phase === 'RESULTS') return;
+        const timer = setInterval(() => {
             setGameState(prev => {
                 if (prev.timeRemaining <= 1) return prev;
                 return { ...prev, timeRemaining: prev.timeRemaining - 1 };
             });
         }, 1000);
-        return () => { if (timerRef.current) clearInterval(timerRef.current); };
+        return () => clearInterval(timer);
     }, [gameState.phase]);
 
     // Actions
     const handleSendClue = () => {
         if (!clueInput.trim() || !isMyTurn || !socket) return;
         socket.emit('impostor:send-clue', { roomCode, clue: clueInput });
-        socket.emit('game:send-clue', { clue: clueInput });
         setClueInput('');
     };
 
     const handleSendChat = () => {
         if (!chatInput.trim() || !socket) return;
         socket.emit('impostor:send-chat', { roomCode, text: chatInput });
-        socket.emit('game:send-chat', { message: chatInput });
         setChatMessages(prev => [...prev, { sender: myPlayer?.name || 'Tú', text: chatInput }]);
         setChatInput('');
     };
@@ -278,32 +183,21 @@ export default function ImpostorGamePage() {
     const handleVote = (playerId: string) => {
         if (myVote || !socket || !amAlive) return;
         socket.emit('impostor:vote', { roomCode, targetId: playerId });
-        socket.emit('game:vote', { votedPlayerId: playerId });
         setMyVote(playerId);
     };
 
-    // Helper for circular positioning
-    const getPlayerPosition = (index: number, total: number) => {
-        const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
-        const radius = 220;
-        return {
-            left: `calc(50% + ${Math.cos(angle) * radius}px - 50px)`,
-            top: `calc(50% + ${Math.sin(angle) * radius}px - 50px)`,
-        };
-    };
-
-    // Render Role Reveal
+    // Role Reveal
     if (showRoleReveal) {
         return (
             <div className={styles.overlay}>
                 <div className={styles.roleCard}>
                     <div className={styles.roleIcon}>{gameState.isImpostor ? '👹' : '🛡️'}</div>
-                    <h1 className={`${styles.roleTitle} ${gameState.isImpostor ? styles.impostorText : styles.crewText}`}>
+                    <h1 className={`${styles.roleTitle} ${gameState.isImpostor ? styles.impostor : styles.crew}`}>
                         {gameState.isImpostor ? 'IMPOSTOR' : 'TRIPULANTE'}
                     </h1>
                     {!gameState.isImpostor && gameState.word && (
-                        <div style={{ fontSize: '2rem', marginTop: '20px', color: '#fff' }}>
-                            Palabra: <strong style={{ color: '#4facfe' }}>{gameState.word}</strong>
+                        <div style={{ fontSize: '1.5rem', marginTop: '20px', color: '#c9d1d9' }}>
+                            Palabra: <strong style={{ color: '#58a6ff' }}>{gameState.word}</strong>
                         </div>
                     )}
                 </div>
@@ -311,30 +205,32 @@ export default function ImpostorGamePage() {
         );
     }
 
-    // Main Game UI
     return (
         <div className={styles.container}>
-            <div className={styles.bgOverlay} />
+            <div className={styles.background} />
 
             {/* Header */}
-            <header className={styles.header}>
+            <div className={styles.header}>
                 <div className={styles.phases}>
-                    <div className={`${styles.phase} ${gameState.phase === 'CLUES' ? styles.activePhase : ''}`}>PISTAS</div>
-                    <div className={`${styles.phase} ${gameState.phase === 'DISCUSSION' ? styles.activePhase : ''}`}>DEBATE</div>
-                    <div className={`${styles.phase} ${gameState.phase === 'VOTING' ? styles.activePhase : ''}`}>VOTAR</div>
+                    <div className={`${styles.phase} ${gameState.phase === 'CLUES' ? styles.phaseActive : ''}`}>PISTAS</div>
+                    <div className={`${styles.phase} ${gameState.phase === 'DISCUSSION' ? styles.phaseActive : ''}`}>DEBATE</div>
+                    <div className={`${styles.phase} ${gameState.phase === 'VOTING' ? styles.phaseActive : ''}`}>VOTAR</div>
                 </div>
-                <div className={`${styles.timer} ${gameState.timeRemaining <= 10 ? styles.critical : ''}`}>
+                <div className={`${styles.timer} ${gameState.timeRemaining <= 10 ? styles.warning : ''}`}>
                     {Math.floor(gameState.timeRemaining / 60)}:{(gameState.timeRemaining % 60).toString().padStart(2, '0')}
                 </div>
-            </header>
+            </div>
 
             {/* Left Panel: Clues */}
-            <div className={`${styles.sidePanel} ${styles.leftPanel}`}>
-                <div className={styles.panelHeader}>📝 PISTAS ({gameState.clues.length})</div>
+            <div className={styles.panel}>
+                <div className={styles.panelHeader}>
+                    📝 PISTAS ({gameState.clues.length})
+                </div>
                 <div className={styles.panelContent}>
                     {gameState.clues.map((clue, i) => (
                         <div key={i} className={styles.message}>
-                            <strong>{clue.playerName}</strong> {clue.clue}
+                            <strong>{clue.playerName}</strong>
+                            {clue.clue}
                         </div>
                     ))}
                 </div>
@@ -353,79 +249,78 @@ export default function ImpostorGamePage() {
                 )}
             </div>
 
-            {/* Center: Meeting Table */}
-            <main className={styles.main}>
-                <div className={styles.tableContainer}>
+            {/* Meeting Room */}
+            <div className={styles.main}>
+                <div className={styles.meetingRoom}>
                     <div className={styles.table}>
                         <button className={styles.emergencyBtn}>
                             <span>🚨</span>
-                            <p>EMERGENCY</p>
+                            EMERGENCY
                         </button>
                     </div>
 
-                    {/* Players */}
+                    {/* Players as Among Us beans */}
                     {gameState.players.map((player, i) => (
                         <div
                             key={player.id}
-                            className={`${styles.playerSlot} ${player.socketId === gameState.currentTurnId ? styles.speaking : ''} ${!player.isAlive ? styles.dead : ''}`}
-                            style={getPlayerPosition(i, gameState.players.length)}
+                            className={`${styles.character} ${styles[`char${i}`]} ${player.socketId === gameState.currentTurnId ? styles.speaking : ''
+                                } ${!player.isAlive ? styles.dead : ''}`}
                         >
-                            <div className={styles.avatar3D} style={{ backgroundColor: player.avatarColor }}>
-                                {player.name.charAt(0).toUpperCase()}
-                                {!player.isAlive && <span className={styles.deadIcon}>💀</span>}
+                            <div className={styles.bean}>
+                                <div className={styles.beanBody} style={{ '--player-color': player.avatarColor } as any}>
+                                    <div className={styles.beanVisor} />
+                                    <div className={styles.beanPack} />
+                                </div>
                             </div>
-                            <div className={styles.playerName}>
+                            <div className={styles.characterName}>
                                 {player.name} {player.socketId === socket?.id && '(TÚ)'}
                             </div>
                         </div>
                     ))}
                 </div>
-            </main>
+            </div>
 
             {/* Right Panel: Chat/Voting */}
-            <div className={`${styles.sidePanel} ${styles.rightPanel}`}>
+            <div className={styles.panel}>
                 {gameState.phase === 'VOTING' ? (
                     <>
                         <div className={styles.panelHeader}>🗳️ VOTACIÓN</div>
                         <div className={styles.panelContent}>
-                            <div className={styles.votingGrid}>
-                                {gameState.players.filter(p => p.isAlive && p.socketId !== socket?.id).map(player => (
-                                    <button
-                                        key={player.id}
-                                        className={`${styles.voteBtn} ${myVote === player.id ? styles.selected : ''}`}
-                                        onClick={() => handleVote(player.id)}
-                                        disabled={!!myVote}
-                                        style={{
-                                            padding: '1rem',
-                                            background: 'rgba(255,255,255,0.1)',
-                                            border: myVote === player.id ? '2px solid #00d9ff' : '1px solid rgba(255,255,255,0.2)',
-                                            borderRadius: '8px',
-                                            color: '#fff',
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '0.5rem'
-                                        }}
-                                    >
-                                        <div style={{ width: 20, height: 20, borderRadius: '50%', background: player.avatarColor }}></div>
-                                        {player.name}
-                                    </button>
-                                ))}
+                            {gameState.players.filter(p => p.isAlive && p.socketId !== socket?.id).map(player => (
                                 <button
-                                    onClick={() => handleVote('skip')}
+                                    key={player.id}
+                                    onClick={() => handleVote(player.id)}
                                     disabled={!!myVote}
                                     style={{
-                                        padding: '1rem',
-                                        background: 'rgba(255,255,255,0.1)',
-                                        border: myVote === 'skip' ? '2px solid #888' : '1px solid rgba(255,255,255,0.2)',
-                                        borderRadius: '8px',
-                                        color: '#aaa',
-                                        cursor: 'pointer'
+                                        padding: '0.75rem',
+                                        background: myVote === player.id ? '#238636' : 'rgba(255,255,255,0.05)',
+                                        border: `1px solid ${myVote === player.id ? '#238636' : 'rgba(255,255,255,0.1)'}`,
+                                        borderRadius: '4px',
+                                        color: '#fff',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem'
                                     }}
                                 >
-                                    ⏭️ Saltar Voto
+                                    <div style={{ width: 16, height: 16, borderRadius: '50%', background: player.avatarColor }} />
+                                    {player.name}
                                 </button>
-                            </div>
+                            ))}
+                            <button
+                                onClick={() => handleVote('skip')}
+                                disabled={!!myVote}
+                                style={{
+                                    padding: '0.75rem',
+                                    background: myVote === 'skip' ? '#6e7681' : 'rgba(255,255,255,0.05)',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    borderRadius: '4px',
+                                    color: '#c9d1d9',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                ⏭️ Saltar Voto
+                            </button>
                         </div>
                     </>
                 ) : (
@@ -434,7 +329,8 @@ export default function ImpostorGamePage() {
                         <div className={styles.panelContent}>
                             {chatMessages.map((msg, i) => (
                                 <div key={i} className={styles.message}>
-                                    <strong>{msg.sender}</strong> {msg.text}
+                                    <strong>{msg.sender}</strong>
+                                    {msg.text}
                                 </div>
                             ))}
                         </div>

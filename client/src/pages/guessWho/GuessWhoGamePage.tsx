@@ -139,6 +139,11 @@ export default function GuessWhoGamePage() {
                         setGamePhase('playing');
                     });
 
+                    // Chat listener for multiplayer
+                    socket.on('guesswho:chat', (data: { sender: string, message: string }) => {
+                        setChatHistory(prev => [...prev, { sender: data.sender, text: data.message }]);
+                    });
+
                     socket.on('guesswho:chat-message', (data: { sender: string, text: string }) => {
                         setChatHistory(prev => [...prev, data]);
                     });
@@ -150,6 +155,14 @@ export default function GuessWhoGamePage() {
                     socket.on('guesswho:game-over', (data: { winnerId: string, opponentSecret: Player }) => {
                         setRevealOpponent(data.opponentSecret);
                         endGame(data.winnerId === socket.id ? 'me' : 'opponent');
+                    });
+
+                    // Game ended (final guess result)
+                    socket.on('guesswho:game-ended', (data: { winner: string, opponentSecretPlayer: string }) => {
+                        const iWon = data.winner === socket.id;
+                        const revealPlayer = ALL_PLAYERS.find(p => p.id === data.opponentSecretPlayer);
+                        if (revealPlayer) setRevealOpponent(revealPlayer);
+                        endGame(iWon ? 'me' : 'opponent');
                     });
                 }
             }

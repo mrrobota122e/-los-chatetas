@@ -139,6 +139,27 @@ export function handleGuessWhoEvents(socket: TypedSocket, io: TypedServer) {
         logger.debug(`Chat message in room ${roomId}: ${text}`);
     });
 
+    // Chat handler for multiplayer free chat
+    socket.on('guesswho:send-chat', async ({ roomId, message }) => {
+        try {
+            const game = games.get(roomId);
+            if (!game) return;
+
+            const player = game.players[socket.id];
+            if (!player) return;
+
+            // Broadcast to entire room
+            io.to(roomId).emit('guesswho:chat', {
+                sender: player.name,
+                message
+            });
+
+            logger.debug(`Chat from ${player.name}: ${message}`);
+        } catch (error) {
+            logger.error('Error in guesswho:send-chat:', error);
+        }
+    });
+
     // Opponent answers
     socket.on('guesswho:answer', ({ roomId, answer }) => {
         const game = games.get(roomId);
