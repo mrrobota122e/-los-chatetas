@@ -200,9 +200,64 @@ export default function GamePage() {
         socket.on('game:started', handleGameStarted);
         socket.on('game:your-role', handleYourRole);
 
+        // Listen for clues from other players
+        socket.on('game:clue-received', (data: { playerId: string, playerName: string, clue: string }) => {
+            console.log('📝 Clue received from', data.playerName, ':', data.clue);
+
+            // Add clue to list (only if not from me)
+            if (data.playerId !== socket.id) {
+                setClues(prev => [...prev, { sender: data.playerName, text: data.clue, type: 'clue' }]);
+            }
+
+            // Mark player as having spoken
+            setPlayers(prev => prev.map(p =>
+                p.socketId === data.playerId ? { ...p, status: 'done', hasSpoken: true } : p
+            ));
+        });
+
+        // Listen for chat messages from other players
+        socket.on('game:chat-message', (data: { playerId: string, playerName: string, message: string }) => {
+            if (data.playerId !== socket.id) {
+                setChatMessages(prev => [...prev, { sender: data.playerName, text: data.message, type: 'chat' }]);
+            }
+        });
+
+        // Listen for turn changes
+        socket.on('game:turn-changed', (data: { currentPlayerId: string, currentPlayerName: string, turnNumber: number }) => {
+            console.log('🔄 Turn changed to', data.currentPlayerName);
+
+            // Find player index by socketId
+            const playerIndex = players.findIndex(p => p.socketId === data.currentPlayerId);
+            if (playerIndex >= 0) {
+                setCurrentTurnIndex(playerIndex);
+            }
+        });
+
+        // Listen for next round event
+        socket.on('game:next-round', (data: { round: number }) => {
+            console.log('🔄 Next round:', data.round);
+            setRound(data.round);
+            setPhase('CLUES');
+            setTimeRemaining(settingsRef.current.turnDuration);
+            setCurrentTurnIndex(0);
+            setClues([]);
+            setChatMessages([]);
+            setHasVoted(false);
+            setSelectedVote('');
+            votesRef.current = {};
+            setVotes({});
+            setPlayers(prev => prev.map(p =>
+                p.status !== 'eliminated' ? { ...p, hasSpoken: false, status: 'idle' } : p
+            ));
+        });
+
         return () => {
             socket.off('game:started', handleGameStarted);
             socket.off('game:your-role', handleYourRole);
+            socket.off('game:clue-received');
+            socket.off('game:chat-message');
+            socket.off('game:turn-changed');
+            socket.off('game:next-round');
         };
     }, [socket]);
 
@@ -569,6 +624,15 @@ export default function GamePage() {
     const handleSendChat = () => {
         if (!chatInput.trim() || amEliminated) return;
         setChatMessages(prev => [...prev, { sender: myPlayer?.name || 'Tú', text: chatInput, type: 'chat' }]);
+
+        // Send to server for sync with other players
+        if (socket && roomId) {
+            socket.emit('game:chat', {
+                roomId: roomId,
+                message: chatInput
+            });
+        }
+
         setChatInput('');
     };
 

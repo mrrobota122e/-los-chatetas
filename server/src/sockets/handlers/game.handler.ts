@@ -283,6 +283,23 @@ export function handleGameEvents(socket: TypedSocket, io: TypedServer) {
         }
     });
 
+    // Send chat message
+    socket.on('game:chat', async ({ roomId, message }) => {
+        try {
+            // Broadcast the chat to everyone in room
+            io.to(roomId).emit('game:chat-message', {
+                playerId: socket.id,
+                playerName: socket.data.playerName || 'Unknown',
+                message,
+                timestamp: Date.now(),
+            });
+
+            logger.debug(`Chat from ${socket.data.playerName}: ${message}`);
+        } catch (error: any) {
+            logger.error('Error sending chat:', error);
+        }
+    });
+
     // Vote
     socket.on('game:vote', async ({ roomId, gameId, targetPlayerId, round, voterId }) => {
         try {
