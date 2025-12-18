@@ -1,21 +1,26 @@
 @echo off
 echo ==========================================
-echo      AARON STUD10S - MANUAL DEPLOY
+echo      v2.2.0 IMPOSTOR GAME COMPLETE
 echo ==========================================
 echo.
-echo 1. Adding files...
+echo Adding all files...
 git add -A
 
 echo.
-echo 2. Committing changes (v2.1.3)...
-git commit -m "v2.1.3: Manual Deploy via Batch Script"
+echo Committing v2.2.0...
+git commit -m "v2.2.0: Complete Impostor Game - Dual Chats + Animations"
 
 echo.
-echo 3. Pushing to GitHub...
+echo Pushing to GitHub...
 git push
 
 echo.
 echo ==========================================
-echo      DEPLOY COMPLETE (Check for errors)
+echo      DEPLOY COMPLETE
 echo ==========================================
+echo.
+echo Wait 2 minutes, then:
+echo 1. Press Ctrl+Shift+R (hard refresh)
+echo 2. Check tab title says "v2.2.0"
+echo.
 pause

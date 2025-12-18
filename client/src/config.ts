@@ -1,6 +1,6 @@
 // App Configuration
 // UPDATE VERSION WITH EVERY CHANGE!
-export const APP_VERSION = '2.1.5';
+export const APP_VERSION = '2.2.0';
 
 export const CONFIG = {
     version: APP_VERSION,
