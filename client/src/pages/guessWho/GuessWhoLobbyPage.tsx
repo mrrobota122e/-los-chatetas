@@ -33,10 +33,12 @@ export default function GuessWhoLobbyPage() {
             if (roomData.roomCode === roomCode) {
                 setRoomId(roomData.roomId);
                 setIsHost(true);
-                socket.emit('room:get-state', { roomCode });
                 localStorage.removeItem('currentRoom');
             }
         }
+
+        // Always request room state to sync players
+        socket.emit('room:get-state', { roomCode });
 
         socket.on('room:state', (data: { roomId: string; players: Player[]; hostId: string }) => {
             setRoomId(data.roomId);

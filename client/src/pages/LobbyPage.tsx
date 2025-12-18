@@ -45,10 +45,12 @@ export default function LobbyPage() {
                 setRoomId(roomData.roomId);
                 setIsHost(true);
                 setMaxPlayers(roomData.maxPlayers || 10);
-                socket.emit('room:get-state', { roomCode });
                 localStorage.removeItem('currentRoom');
             }
         }
+
+        // Always request room state to sync players (for both host and guests)
+        socket.emit('room:get-state', { roomCode });
 
         socket.on('room:state', (data) => {
             setRoomId(data.roomId);
