@@ -8,10 +8,11 @@ import GuessWhoMenuPage from './pages/guessWho/GuessWhoMenuPage';
 import GuessWhoGamePage from './pages/guessWho/GuessWhoGamePage';
 import GuessWhoLobbyPage from './pages/guessWho/GuessWhoLobbyPage';
 import ImpostorMenuPage from './pages/ImpostorMenuPage';
+import ImpostorGamePage from './pages/ImpostorGame/ImpostorGamePage';
 import AdminPage from './pages/AdminPage';
 import MusicRadio from './components/MusicRadio';
 
-const APP_VERSION = '1.9.0';
+const APP_VERSION = '2.0.0';
 
 function App() {
     return (
@@ -35,6 +36,7 @@ function App() {
 
                 {/* Impostor Menu */}
                 <Route path="/impostor/menu" element={<ImpostorMenuPage />} />
+                <Route path="/impostor/game/:roomCode" element={<ImpostorGamePage />} />
 
                 {/* Admin Panel */}
                 <Route path="/admin" element={<AdminPage />} />
