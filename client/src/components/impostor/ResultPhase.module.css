@@ -1,0 +1,171 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px;
+    text-align: center;
+}
+
+.loader {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(0, 217, 255, 0.1);
+    border-top-color: rgba(0, 217, 255, 1);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.animation {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.playerEjected {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 0, 85, 0.8) 0%, rgba(179, 102, 255, 0.8) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: 900;
+    color: white;
+    animation: eject 2s ease-out forwards;
+    box-shadow: 0 0 40px rgba(255, 0, 85, 0.6);
+    z-index: 2;
+}
+
+.ejectEffect {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 0, 85, 0.4) 0%, transparent 70%);
+    animation: pulse 2s ease-out infinite;
+}
+
+.icon {
+    font-size: 5rem;
+    animation: bounce 0.6s ease;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 900;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.titleSuccess {
+    color: rgba(0, 255, 136, 1);
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+}
+
+.titleDanger {
+    color: rgba(255, 0, 85, 1);
+    text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.message {
+    padding: 20px 40px;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.verdict {
+    padding: 40px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.verdict h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.verdict p {
+    font-size: 1.3rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.verdictSuccess {
+    background: rgba(0, 255, 136, 0.1);
+    border: 3px solid rgba(0, 255, 136, 0.5);
+    color: rgba(0, 255, 136, 1);
+}
+
+.verdictDanger {
+    background: rgba(255, 0, 85, 0.1);
+    border: 3px solid rgba(255, 0, 85, 0.5);
+    color: rgba(255, 0, 85, 1);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes eject {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translate(0, -50px) scale(0.8);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translate(100px, -150px) scale(0.3) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.2);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}

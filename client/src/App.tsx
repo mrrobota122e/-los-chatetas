@@ -9,6 +9,8 @@ import ResultsPage from './pages/ResultsPage';
 import GuessWhoMenuPage from './pages/guessWho/GuessWhoMenuPage';
 import GuessWhoGamePage from './pages/guessWho/GuessWhoGamePage';
 import GuessWhoLobbyPage from './pages/guessWho/GuessWhoLobbyPage';
+import ImpostorMenuPage from './pages/ImpostorV2/ImpostorMenuPage';
+import ImpostorGamePage from './pages/ImpostorV2/ImpostorGamePage';
 import AdminPage from './pages/AdminPage';
 import MusicRadio from './components/MusicRadio';
 import { APP_VERSION } from './config';
@@ -98,6 +100,10 @@ function App() {
                 <Route path="/guess-who/lobby/:roomCode" element={<GuessWhoLobbyPage />} />
                 <Route path="/guess-who/join/:roomCode" element={<GuessWhoLobbyPage />} />
                 <Route path="/guess-who/game" element={<GuessWhoGamePage />} />
+
+                {/* Impostor V2 routes */}
+                <Route path="/impostor-v2/menu" element={<ImpostorMenuPage />} />
+                <Route path="/impostor-v2/game/:roomCode" element={<ImpostorGamePage />} />
 
                 {/* Admin Panel */}
                 <Route path="/admin" element={<AdminPage />} />

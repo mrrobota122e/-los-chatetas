@@ -1,0 +1,280 @@
+.container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(179, 102, 255, 0.1) 0%, transparent 50%),
+        linear-gradient(180deg, #0a0a0f 0%, #15151f 100%);
+    z-index: -1;
+}
+
+.backButton {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 12px 24px;
+    background: rgba(31, 31, 51, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.backButton:hover {
+    background: rgba(31, 31, 51, 0.8);
+    border-color: rgba(0, 217, 255, 0.5);
+    transform: translateX(-5px);
+}
+
+.content {
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    animation: fadeIn 0.6s ease;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 4rem;
+    font-weight: 900;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.titleWord {
+    background: linear-gradient(135deg, #00d9ff 0%, #b366ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px rgba(0, 217, 255, 0.3);
+    animation: glow 2s ease-in-out infinite;
+}
+
+.titleSubtext {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 10px;
+}
+
+.menuCard {
+    padding: 40px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.input {
+    padding: 16px 20px;
+    background: rgba(10, 10, 15, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 18px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input:focus {
+    border-color: rgba(0, 217, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+}
+
+.input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.divider span {
+    padding: 0 15px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.createButton,
+.joinButton {
+    padding: 18px 36px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.createButton {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.2) 0%, rgba(0, 217, 255, 0.1) 100%);
+}
+
+.createButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.4);
+}
+
+.createButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.joinButton {
+    background: rgba(31, 31, 51, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.joinButton:hover:not(:disabled) {
+    border-color: rgba(179, 102, 255, 0.5);
+    box-shadow: 0 0 20px rgba(179, 102, 255, 0.3);
+}
+
+.joinButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.infoPanel {
+    padding: 30px;
+    border-radius: 16px;
+}
+
+.infoPanel h3 {
+    margin: 0 0 20px 0;
+    font-size: 1.5rem;
+    color: rgba(0, 217, 255, 1);
+}
+
+.infoPanel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.infoPanel li {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    padding-left: 25px;
+    position: relative;
+}
+
+.infoPanel li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: rgba(0, 217, 255, 0.6);
+    font-weight: bold;
+}
+
+.infoPanel strong {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 40px rgba(0, 217, 255, 0.3);
+    }
+
+    50% {
+        text-shadow: 0 0 60px rgba(0, 217, 255, 0.5), 0 0 80px rgba(179, 102, 255, 0.3);
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .titleSubtext {
+        font-size: 1.2rem;
+    }
+
+    .menuCard {
+        padding: 30px 20px;
+    }
+}
