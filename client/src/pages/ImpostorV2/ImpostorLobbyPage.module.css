@@ -1,0 +1,249 @@
+.container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 40%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(179, 102, 255, 0.1) 0%, transparent 50%),
+        linear-gradient(180deg, #0a0a0f 0%, #15151f 100%);
+    z-index: -1;
+}
+
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 20px;
+}
+
+.loader {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(0, 217, 255, 0.1);
+    border-top-color: rgba(0, 217, 255, 1);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-radius: 16px;
+}
+
+.roomInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.roomCode {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0;
+    color: white;
+}
+
+.playerCount {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+.leaveButton {
+    padding: 12px 24px;
+    background: rgba(255, 0, 85, 0.2);
+    border: 1px solid rgba(255, 0, 85, 0.5);
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.leaveButton:hover {
+    background: rgba(255, 0, 85, 0.3);
+    box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.playersSection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgba(0, 217, 255, 1);
+    margin: 0;
+}
+
+.playersList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.playerCard {
+    padding: 20px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.3s ease;
+}
+
+.playerCard.me {
+    border: 2px solid rgba(0, 217, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+}
+
+.playerAvatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.4) 0%, rgba(179, 102, 255, 0.4) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.playerInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.playerName {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+}
+
+.hostBadge {
+    font-size: 0.85rem;
+    color: rgba(255, 200, 0, 1);
+    font-weight: 600;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.startButton {
+    padding: 20px 60px;
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.3) 0%, rgba(0, 217, 255, 0.2) 100%);
+    font-size: 1.4rem;
+    font-weight: 800;
+    border-radius: 14px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.startButton:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+}
+
+.startButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.waitingMessage {
+    padding: 20px 40px;
+    border-radius: 14px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+}
+
+.infoPanel {
+    padding: 25px;
+    border-radius: 14px;
+}
+
+.infoPanel h4 {
+    font-size: 1.2rem;
+    color: rgba(0, 217, 255, 1);
+    margin: 0 0 15px 0;
+}
+
+.infoPanel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.infoPanel li {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    padding-left: 20px;
+    position: relative;
+}
+
+.infoPanel li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: rgba(0, 217, 255, 0.7);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
