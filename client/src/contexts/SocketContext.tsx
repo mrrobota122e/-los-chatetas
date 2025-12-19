@@ -69,3 +69,6 @@ export function useSocketContext() {
     }
     return context;
 }
+
+// Export alias for compatibility
+export const useSocket = useSocketContext;

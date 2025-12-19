@@ -181,7 +181,7 @@ export default function MenuPage() {
                         {/* Impostor Card */}
                         <motion.button
                             className={`${styles.gameCard} ${styles.impostorCard}`}
-                            onClick={() => handleGameSelect('/impostor/menu')}
+                            onClick={() => handleGameSelect('/impostor-v2/menu')}
                             onMouseEnter={() => setHoveredCard('impostor')}
                             onMouseLeave={() => setHoveredCard(null)}
                             whileHover={{ scale: 1.02, y: -8 }}
