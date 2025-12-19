@@ -9,6 +9,12 @@ export interface ClientToServerEvents {
     'room:get-state': (data: { roomCode: string }) => void;
     'player:ready': (data: { roomId: string; isReady: boolean }) => void;
 
+    // Impostor V2 Events
+    'impostor:start-game': (data: { roomId: string }) => void;
+    'impostor:send-clue': (data: { roomId: string; clue: string }) => void;
+    'impostor:chat-message': (data: { roomId: string; message: string }) => void;
+    'impostor:vote': (data: { roomId: string; targetPlayerId: string }) => void;
+
     // Guess Who Events
     'guesswho:select-player': (data: { roomId: string; playerId: string }) => void;
     'guesswho:ask-question': (data: { roomId: string; question: string; questionId?: string }) => void;
@@ -38,6 +44,17 @@ export interface ServerToClientEvents {
     'room:player-joined': (data: { player: any; totalPlayers: number }) => void;
     'room:player-left': (data: { playerId: string; playerName: string; totalPlayers: number }) => void;
     'room:error': (data: { code: string; message: string }) => void;
+
+    // Impostor V2 Events
+    'impostor:state-changed': (data: { state: string; context: any; duration: number }) => void;
+    'impostor:role-assigned': (data: { footballer: any | null; isImpostor: boolean }) => void;
+    'impostor:turn-changed': (data: { playerId: string; playerName: string; duration: number }) => void;
+    'impostor:chat-locked': (data: { chatType: 'turn' | 'discussion' | 'all' }) => void;
+    'impostor:chat-unlocked': (data: { chatType: 'turn' | 'discussion'; allowedPlayer?: string }) => void;
+    'impostor:clue-received': (data: { playerId: string; playerName: string; clue: string }) => void;
+    'impostor:votes-tallied': (data: { results: Record<string, number>; eliminated: string | null; tie: boolean }) => void;
+    'impostor:player-eliminated': (data: { playerId: string; playerName: string; wasImpostor: boolean }) => void;
+    'impostor:game-ended': (data: { winner: 'crew' | 'impostor'; impostorId: string; footballer: string }) => void;
 
     // Guess Who Events
     'guesswho:start-selection': () => void;

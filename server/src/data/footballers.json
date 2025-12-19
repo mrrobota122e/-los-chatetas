@@ -1,0 +1,302 @@
+[
+    {
+        "name": "Lionel Messi",
+        "team": "Inter Miami",
+        "position": "Delantero",
+        "nationality": "Argentina"
+    },
+    {
+        "name": "Cristiano Ronaldo",
+        "team": "Al Nassr",
+        "position": "Delantero",
+        "nationality": "Portugal"
+    },
+    {
+        "name": "Neymar Jr",
+        "team": "Al Hilal",
+        "position": "Delantero",
+        "nationality": "Brasil"
+    },
+    {
+        "name": "Kylian Mbappé",
+        "team": "Real Madrid",
+        "position": "Delantero",
+        "nationality": "Francia"
+    },
+    {
+        "name": "Erling Haaland",
+        "team": "Manchester City",
+        "position": "Delantero",
+        "nationality": "Noruega"
+    },
+    {
+        "name": "Kevin De Bruyne",
+        "team": "Manchester City",
+        "position": "Centrocampista",
+        "nationality": "Bélgica"
+    },
+    {
+        "name": "Mohamed Salah",
+        "team": "Liverpool",
+        "position": "Delantero",
+        "nationality": "Egipto"
+    },
+    {
+        "name": "Robert Lewandowski",
+        "team": "Barcelona",
+        "position": "Delantero",
+        "nationality": "Polonia"
+    },
+    {
+        "name": "Luka Modrić",
+        "team": "Real Madrid",
+        "position": "Centrocampista",
+        "nationality": "Croacia"
+    },
+    {
+        "name": "Virgil van Dijk",
+        "team": "Liverpool",
+        "position": "Defensa",
+        "nationality": "Países Bajos"
+    },
+    {
+        "name": "Karim Benzema",
+        "team": "Al Ittihad",
+        "position": "Delantero",
+        "nationality": "Francia"
+    },
+    {
+        "name": "Sadio Mané",
+        "team": "Al Nassr",
+        "position": "Delantero",
+        "nationality": "Senegal"
+    },
+    {
+        "name": "Thibaut Courtois",
+        "team": "Real Madrid",
+        "position": "Portero",
+        "nationality": "Bélgica"
+    },
+    {
+        "name": "Alisson Becker",
+        "team": "Liverpool",
+        "position": "Portero",
+        "nationality": "Brasil"
+    },
+    {
+        "name": "Manuel Neuer",
+        "team": "Bayern München",
+        "position": "Portero",
+        "nationality": "Alemania"
+    },
+    {
+        "name": "Harry Kane",
+        "team": "Bayern München",
+        "position": "Delantero",
+        "nationality": "Inglaterra"
+    },
+    {
+        "name": "Vinicius Jr",
+        "team": "Real Madrid",
+        "position": "Delantero",
+        "nationality": "Brasil"
+    },
+    {
+        "name": "Jude Bellingham",
+        "team": "Real Madrid",
+        "position": "Centrocampista",
+        "nationality": "Inglaterra"
+    },
+    {
+        "name": "Phil Foden",
+        "team": "Manchester City",
+        "position": "Centrocampista",
+        "nationality": "Inglaterra"
+    },
+    {
+        "name": "Rodri",
+        "team": "Manchester City",
+        "position": "Centrocampista",
+        "nationality": "España"
+    },
+    {
+        "name": "Bruno Fernandes",
+        "team": "Manchester United",
+        "position": "Centrocampista",
+        "nationality": "Portugal"
+    },
+    {
+        "name": "Son Heung-min",
+        "team": "Tottenham",
+        "position": "Delantero",
+        "nationality": "Corea del Sur"
+    },
+    {
+        "name": "Bukayo Saka",
+        "team": "Arsenal",
+        "position": "Delantero",
+        "nationality": "Inglaterra"
+    },
+    {
+        "name": "Martin Ødegaard",
+        "team": "Arsenal",
+        "position": "Centrocampista",
+        "nationality": "Noruega"
+    },
+    {
+        "name": "Declan Rice",
+        "team": "Arsenal",
+        "position": "Centrocampista",
+        "nationality": "Inglaterra"
+    },
+    {
+        "name": "Antoine Griezmann",
+        "team": "Atlético Madrid",
+        "position": "Delantero",
+        "nationality": "Francia"
+    },
+    {
+        "name": "Jan Oblak",
+        "team": "Atlético Madrid",
+        "position": "Portero",
+        "nationality": "Eslovenia"
+    },
+    {
+        "name": "Federico Valverde",
+        "team": "Real Madrid",
+        "position": "Centrocampista",
+        "nationality": "Uruguay"
+    },
+    {
+        "name": "Pedri",
+        "team": "Barcelona",
+        "position": "Centrocampista",
+        "nationality": "España"
+    },
+    {
+        "name": "Gavi",
+        "team": "Barcelona",
+        "position": "Centrocampista",
+        "nationality": "España"
+    },
+    {
+        "name": "Rafael Leão",
+        "team": "AC Milan",
+        "position": "Delantero",
+        "nationality": "Portugal"
+    },
+    {
+        "name": "Theo Hernández",
+        "team": "AC Milan",
+        "position": "Defensa",
+        "nationality": "Francia"
+    },
+    {
+        "name": "N'Golo Kanté",
+        "team": "Al Ittihad",
+        "position": "Centrocampista",
+        "nationality": "Francia"
+    },
+    {
+        "name": "Joshua Kimmich",
+        "team": "Bayern München",
+        "position": "Centrocampista",
+        "nationality": "Alemania"
+    },
+    {
+        "name": "Jamal Musiala",
+        "team": "Bayern München",
+        "position": "Centrocampista",
+        "nationality": "Alemania"
+    },
+    {
+        "name": "Trent Alexander-Arnold",
+        "team": "Liverpool",
+        "position": "Defensa",
+        "nationality": "Inglaterra"
+    },
+    {
+        "name": "Rúben Dias",
+        "team": "Manchester City",
+        "position": "Defensa",
+        "nationality": "Portugal"
+    },
+    {
+        "name": "João Félix",
+        "team": "Barcelona",
+        "position": "Delantero",
+        "nationality": "Portugal"
+    },
+    {
+        "name": "Vinícius Júnior",
+        "team": "Real Madrid",
+        "position": "Delantero",
+        "nationality": "Brasil"
+    },
+    {
+        "name": "Eduardo Camavinga",
+        "team": "Real Madrid",
+        "position": "Centrocampista",
+        "nationality": "Francia"
+    },
+    {
+        "name": "Casemiro",
+        "team": "Manchester United",
+        "position": "Centrocampista",
+        "nationality": "Brasil"
+    },
+    {
+        "name": "Marcus Rashford",
+        "team": "Manchester United",
+        "position": "Delantero",
+        "nationality": "Inglaterra"
+    },
+    {
+        "name": "Bernardo Silva",
+        "team": "Manchester City",
+        "position": "Centrocampista",
+        "nationality": "Portugal"
+    },
+    {
+        "name": "Jack Grealish",
+        "team": "Manchester City",
+        "position": "Delantero",
+        "nationality": "Inglaterra"
+    },
+    {
+        "name": "Raheem Sterling",
+        "team": "Chelsea",
+        "position": "Delantero",
+        "nationality": "Inglaterra"
+    },
+    {
+        "name": "Enzo Fernández",
+        "team": "Chelsea",
+        "position": "Centrocampista",
+        "nationality": "Argentina"
+    },
+    {
+        "name": "Christopher Nkunku",
+        "team": "Chelsea",
+        "position": "Delantero",
+        "nationality": "Francia"
+    },
+    {
+        "name": "Serge Gnabry",
+        "team": "Bayern München",
+        "position": "Delantero",
+        "nationality": "Alemania"
+    },
+    {
+        "name": "Leroy Sané",
+        "team": "Bayern München",
+        "position": "Delantero",
+        "nationality": "Alemania"
+    },
+    {
+        "name": "Thomas Müller",
+        "team": "Bayern München",
+        "position": "Delantero",
+        "nationality": "Alemania"
+    }
+]
