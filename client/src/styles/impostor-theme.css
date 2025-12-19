@@ -1,52 +1,40 @@
-/* Tailwind Base */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Impostor V2 Theme - Pure CSS (No Tailwind) */
 
 /* Glassmorphism Utilities */
-@layer utilities {
-    .glass {
-        background: rgba(31, 31, 51, 0.4);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .glass-strong {
-        background: rgba(31, 31, 51, 0.6);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    .neon-border-blue {
-        border: 2px solid rgba(0, 217, 255, 0.5);
-        box-shadow: 0 0 15px rgba(0, 217, 255, 0.3),
-            inset 0 0 15px rgba(0, 217, 255, 0.1);
-    }
-
-    .neon-border-red {
-        border: 2px solid rgba(255, 0, 85, 0.5);
-        box-shadow: 0 0 15px rgba(255, 0, 85, 0.3),
-            inset 0 0 15px rgba(255, 0, 85, 0.1);
-    }
-
-    .neon-text-blue {
-        color: #00d9ff;
-        text-shadow: 0 0 10px rgba(0, 217, 255, 0.8),
-            0 0 20px rgba(0, 217, 255, 0.4);
-    }
-
-    .neon-text-red {
-        color: #ff0055;
-        text-shadow: 0 0 10px rgba(255, 0, 85, 0.8),
-            0 0 20px rgba(255, 0, 85, 0.4);
-    }
+.glass {
+    background: rgba(31, 31, 51, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Dark mode base */
-@layer base {
-    body {
-        @apply bg-impostor-dark-900 text-white;
-    }
+.glass-strong {
+    background: rgba(31, 31, 51, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.neon-border-blue {
+    border: 2px solid rgba(0, 217, 255, 0.5);
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.3),
+        inset 0 0 15px rgba(0, 217, 255, 0.1);
+}
+
+.neon-border-red {
+    border: 2px solid rgba(255, 0, 85, 0.5);
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.3),
+        inset 0 0 15px rgba(255, 0, 85, 0.1);
+}
+
+.neon-text-blue {
+    color: #00d9ff;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.8),
+        0 0 20px rgba(0, 217, 255, 0.4);
+}
+
+.neon-text-red {
+    color: #ff0055;
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.8),
+        0 0 20px rgba(255, 0, 85, 0.4);
 }
