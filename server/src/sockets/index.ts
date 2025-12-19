@@ -5,7 +5,6 @@ import { handleRoomEvents } from './handlers/room.handler.js';
 import { handleGameEvents } from './handlers/game.handler.js';
 import { handleChatEvents } from './handlers/chat.handler.js';
 import { handleGuessWhoEvents } from './handlers/guessWho.handler.js';
-import { handleImpostorEvents } from './handlers/impostor.handler.js';
 import { handleConnection } from './handlers/connection.handler.js';
 
 export type TypedServer = SocketIOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
@@ -29,9 +28,6 @@ export function setupSocketHandlers(io: TypedServer) {
 
         // Handle Guess Who events
         handleGuessWhoEvents(socket, io);
-
-        // Handle new Impostor events
-        handleImpostorEvents(socket, io);
 
         socket.on('disconnect', (reason) => {
             logger.info(`Client disconnected: ${socket.id}, reason: ${reason}`);

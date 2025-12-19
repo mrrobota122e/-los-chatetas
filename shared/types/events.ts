@@ -9,11 +9,6 @@ export interface ClientToServerEvents {
     'room:get-state': (data: { roomCode: string }) => void;
     'player:ready': (data: { roomId: string; isReady: boolean }) => void;
 
-    // Game events (Impostor)
-    'game:start': (data: { roomId: string }) => void;
-    'game:clue': (data: { roomId: string; gameId: string; clue: string; round: number }) => void;
-    'game:vote': (data: { roomId: string; gameId: string; targetPlayerId: string; round: number; voterId?: string }) => void;
-
     // Guess Who Events
     'guesswho:select-player': (data: { roomId: string; playerId: string }) => void;
     'guesswho:ask-question': (data: { roomId: string; question: string; questionId?: string }) => void;
@@ -43,20 +38,6 @@ export interface ServerToClientEvents {
     'room:player-joined': (data: { player: any; totalPlayers: number }) => void;
     'room:player-left': (data: { playerId: string; playerName: string; totalPlayers: number }) => void;
     'room:error': (data: { code: string; message: string }) => void;
-
-    // Game events (Impostor)
-    'game:started': (data: { gameId: string; totalRounds: number; roundDuration: number; mode: string; settings?: any; players?: any[] }) => void;
-    'game:word-assigned': (data: { word: string | null; isImpostor: boolean; role: string }) => void;
-    'game:your-role': (data: { gameId: string; roomId: string; word: string | null; isImpostor: boolean; role: string; players: any[]; totalRounds: number }) => void;
-    'game:phase-changed': (data: { phase: string; duration: number; round: number; totalRounds: number }) => void;
-    'game:turn-changed': (data: { currentPlayerId: string; currentPlayerName: string; turnDuration: number; turnNumber?: number; totalPlayers?: number }) => void;
-    'game:clue-received': (data: { playerId: string; playerName: string; clue: string; timestamp: number }) => void;
-    'game:vote-confirmed': () => void;
-    'game:vote-count-updated': (data: { totalVotes: number; required: number }) => void;
-    'game:votes-revealed': (data: { voteCount: Record<string, number>; eliminatedPlayerId: string; eliminatedPlayerName: string }) => void;
-    'game:player-eliminated': (data: { playerId: string; playerName: string; wasImpostor: boolean; gameEnded: boolean; winner?: string }) => void;
-    'game:no-elimination': (data: { reason: string; message: string }) => void;
-    'game:ended': (data: { winner: string; impostorId: string; impostorName: string; word: string; statistics: any }) => void;
 
     // Guess Who Events
     'guesswho:start-selection': () => void;
