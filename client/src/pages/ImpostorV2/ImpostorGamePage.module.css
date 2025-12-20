@@ -1,81 +1,565 @@
+/* IMPOSTOR GAME - AMONG US THEME */
+
 .container {
-    position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: linear-gradient(180deg, #0a0a1f 0%, #1a0a2a 100%);
+    color: white;
+    position: relative;
     overflow: hidden;
 }
 
 .background {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 30% 40%, rgba(0, 217, 255, 0.08) 0%, transparent 60%),
-        radial-gradient(circle at 70% 70%, rgba(179, 102, 255, 0.08) 0%, transparent 60%),
-        linear-gradient(180deg, #0a0a0f 0%, #15151f 100%);
-    z-index: -1;
+    inset: 0;
+    background-image:
+        radial-gradient(2px 2px at 80px 40px, white, transparent),
+        radial-gradient(1px 1px at 200px 100px, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(2px 2px at 400px 200px, white, transparent),
+        radial-gradient(1px 1px at 600px 80px, rgba(255, 255, 255, 0.6), transparent);
+    background-size: 700px 400px;
+    opacity: 0.4;
+    z-index: 0;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 20px 30px;
+    background: rgba(30, 30, 60, 0.9);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    z-index: 10;
 }
 
-.roundInfo {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: rgba(0, 217, 255, 1);
-    text-transform: uppercase;
-    letter-spacing: 2px;
+.phaseTitle {
+    font-size: 1.5rem;
+    font-weight: 800;
 }
 
-.leaveButton {
-    padding: 10px 20px;
-    background: rgba(255, 0, 85, 0.2);
-    border: 1px solid rgba(255, 0, 85, 0.5);
-    border-radius: 8px;
-    color: white;
+.timer {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #00ff88;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+}
+
+.roundBadge {
+    padding: 8px 20px;
+    background: rgba(197, 17, 17, 0.3);
+    border-radius: 20px;
     font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
 }
 
-.leaveButton:hover {
-    background: rgba(255, 0, 85, 0.3);
-    box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
+/* Players Bar */
+.playersBar {
+    display: flex;
+    gap: 15px;
+    padding: 15px 20px;
+    background: rgba(20, 20, 40, 0.8);
+    overflow-x: auto;
+    z-index: 10;
 }
 
+.playerIcon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px;
+    background: rgba(50, 50, 80, 0.5);
+    border-radius: 12px;
+    min-width: 70px;
+    transition: all 0.3s;
+}
+
+.playerIcon.me {
+    border: 2px solid #00ff88;
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.playerIcon.dead {
+    opacity: 0.3;
+    filter: grayscale(1);
+}
+
+.playerIcon span {
+    font-size: 11px;
+    text-align: center;
+}
+
+/* Mini Bean */
+.miniBean {
+    width: 35px;
+    height: 42px;
+    position: relative;
+}
+
+.miniBean::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #c51111 0%, #8b0000 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+.miniBean::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 4px;
+    width: 12px;
+    height: 8px;
+    background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 100%);
+    border-radius: 40% 60% 60% 40%;
+}
+
+/* Game Area */
 .gameArea {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 30px;
+    z-index: 10;
 }
 
+/* ROLE REVEAL */
+.roleReveal {
+    text-align: center;
+    animation: fadeIn 0.5s;
+}
+
+.roleCard {
+    padding: 50px 60px;
+    border-radius: 24px;
+    max-width: 500px;
+}
+
+.roleCard.crew {
+    background: linear-gradient(135deg, rgba(0, 100, 200, 0.3) 0%, rgba(0, 50, 100, 0.3) 100%);
+    border: 3px solid rgba(0, 150, 255, 0.5);
+}
+
+.roleCard.impostor {
+    background: linear-gradient(135deg, rgba(200, 0, 0, 0.3) 0%, rgba(100, 0, 0, 0.3) 100%);
+    border: 3px solid rgba(255, 50, 50, 0.5);
+}
+
+.roleIcon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.roleCard h2 {
+    font-size: 1.8rem;
+    margin: 0 0 15px 0;
+}
+
+.secretWord {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #00ff88;
+    text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+    margin: 20px 0;
+}
+
+.roleCard p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* CLUES PHASE */
+.cluesPhase {
+    width: 100%;
+    max-width: 700px;
+}
+
+.turnIndicator {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: rgba(30, 30, 60, 0.8);
+    border-radius: 12px;
+}
+
+.turnIndicator strong {
+    color: #00d9ff;
+}
+
+.turnIndicator .myTurn {
+    color: #00ff88;
+    animation: pulse 1s infinite;
+}
+
+.cluesList {
+    background: rgba(20, 20, 40, 0.6);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.clueItem {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.clueItem:last-child {
+    border-bottom: none;
+}
+
+.clueName {
+    color: #00d9ff;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.clueText {
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+}
+
+.clueInput {
+    display: flex;
+    gap: 10px;
+}
+
+.clueInput input {
+    flex: 1;
+    padding: 16px 20px;
+    background: rgba(20, 20, 40, 0.8);
+    border: 2px solid rgba(0, 217, 255, 0.3);
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+.clueInput input:focus {
+    border-color: #00d9ff;
+}
+
+.clueInput button {
+    padding: 16px 30px;
+    background: linear-gradient(135deg, #117f2d 0%, #0a5a1e 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.clueInput button:hover {
+    transform: translateY(-2px);
+}
+
+/* DISCUSSION PHASE */
+.discussionPhase {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chatArea {
+    background: rgba(20, 20, 40, 0.7);
+    border-radius: 16px;
+    padding: 20px;
+    height: 350px;
+    overflow-y: auto;
+}
+
+.chatMessage {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chatMessage strong {
+    color: #00d9ff;
+    margin-right: 8px;
+}
+
+.systemMessage {
+    color: #ffd700;
+    font-style: italic;
+    text-align: center;
+}
+
+.chatInput {
+    display: flex;
+    gap: 10px;
+}
+
+.chatInput input {
+    flex: 1;
+    padding: 16px 20px;
+    background: rgba(20, 20, 40, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+.chatInput button {
+    padding: 16px 30px;
+    background: linear-gradient(135deg, #132ed1 0%, #0a1a6b 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* VOTING PHASE */
+.votingPhase {
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+}
+
+.votingPhase>p {
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.voteGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.voteCard {
+    padding: 25px;
+    background: rgba(30, 30, 60, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    position: relative;
+}
+
+.voteCard:hover:not(:disabled) {
+    border-color: #c51111;
+    background: rgba(197, 17, 17, 0.2);
+    transform: translateY(-5px);
+}
+
+.voteCard.selected {
+    border-color: #c51111;
+    background: rgba(197, 17, 17, 0.3);
+}
+
+.voteCard:disabled {
+    cursor: default;
+}
+
+.voteBean {
+    width: 50px;
+    height: 60px;
+    position: relative;
+}
+
+.voteBean::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #c51111 0%, #8b0000 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+
+.voteBean::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 6px;
+    width: 16px;
+    height: 10px;
+    background: #38bdf8;
+    border-radius: 40% 60% 60% 40%;
+}
+
+.voteCount {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    background: #c51111;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* ELIMINATION PHASE */
+.eliminationPhase {
+    text-align: center;
+    animation: fadeIn 0.5s;
+}
+
+.eliminationCard {
+    padding: 60px;
+    border-radius: 24px;
+}
+
+.eliminationCard.wasImpostor {
+    background: linear-gradient(135deg, rgba(0, 200, 100, 0.3) 0%, rgba(0, 100, 50, 0.3) 100%);
+    border: 3px solid #00ff88;
+}
+
+.eliminationCard.wasNotImpostor {
+    background: linear-gradient(135deg, rgba(100, 100, 100, 0.3) 0%, rgba(50, 50, 50, 0.3) 100%);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.eliminatedBean {
+    width: 100px;
+    height: 120px;
+    margin: 0 auto 20px;
+    position: relative;
+    animation: floatUp 2s infinite;
+}
+
+.eliminatedBean::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #888 0%, #555 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+
+.eliminationCard h2 {
+    font-size: 2rem;
+    margin: 0 0 10px 0;
+}
+
+.eliminationCard h3 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+/* GAME END */
+.gameEnd {
+    text-align: center;
+    animation: fadeIn 0.5s;
+}
+
+.winnerCard {
+    padding: 60px 80px;
+    border-radius: 24px;
+}
+
+.winnerCard.crewWins {
+    background: linear-gradient(135deg, rgba(0, 100, 200, 0.4) 0%, rgba(0, 50, 100, 0.4) 100%);
+    border: 3px solid #00d9ff;
+}
+
+.winnerCard.impostorWins {
+    background: linear-gradient(135deg, rgba(200, 0, 0, 0.4) 0%, rgba(100, 0, 0, 0.4) 100%);
+    border: 3px solid #c51111;
+}
+
+.winnerCard h1 {
+    font-size: 2.5rem;
+    margin: 0 0 30px 0;
+}
+
+.winnerCard p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.winnerCard strong {
+    color: #00ff88;
+}
+
+.winnerCard button {
+    margin-top: 30px;
+    padding: 18px 50px;
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.winnerCard button:hover {
+    transform: translateY(-3px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+@keyframes floatUp {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Loading */
 .loadingContainer {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    gap: 30px;
-    background: linear-gradient(180deg, #0a0a0f 0%, #15151f 100%);
+    gap: 20px;
+    background: #0a0a1f;
 }
 
 .loader {
     width: 60px;
     height: 60px;
-    border: 4px solid rgba(0, 217, 255, 0.1);
-    border-top-color: rgba(0, 217, 255, 1);
+    border: 4px solid rgba(197, 17, 17, 0.2);
+    border-top-color: #c51111;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -83,5 +567,20 @@
 @keyframes spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .phaseTitle {
+        font-size: 1.2rem;
+    }
+
+    .voteGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
