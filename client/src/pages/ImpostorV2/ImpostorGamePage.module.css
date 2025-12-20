@@ -1,4 +1,4 @@
-/* IMPOSTOR FÚTBOL - STADIUM STANDS ONLY */
+/* IMPOSTOR - SPACE THEME (ORIGINAL STYLE) */
 
 .container {
     min-height: 100vh;
@@ -7,206 +7,186 @@
     position: relative;
     overflow: hidden;
     font-family: 'Segoe UI', -apple-system, sans-serif;
-    background: #1a1a2a;
 }
 
-/* ===== STADIUM STANDS BACKGROUND ===== */
+/* ===== SPACE BACKGROUND ===== */
 .spaceBackground {
     position: absolute;
     inset: 0;
+    background: linear-gradient(180deg, #0a0a1f 0%, #1a0a2e 40%, #0d1028 70%, #050510 100%);
     z-index: 0;
-    background: linear-gradient(180deg, #252540 0%, #1a1a30 50%, #0d1520 100%);
 }
 
-/* Top stands */
-.spaceBackground::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 35%;
-    background:
-        repeating-linear-gradient(0deg,
-            rgba(80, 80, 100, 0.4) 0px,
-            rgba(80, 80, 100, 0.4) 8px,
-            rgba(60, 60, 80, 0.4) 8px,
-            rgba(60, 60, 80, 0.4) 16px);
-}
-
-/* Stadium lights effect */
+/* Stars */
 .nebula {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 200px 400px at 5% 0%, rgba(255, 255, 220, 0.25) 0%, transparent 50%),
-        radial-gradient(ellipse 200px 400px at 95% 0%, rgba(255, 255, 220, 0.25) 0%, transparent 50%),
-        radial-gradient(ellipse 300px 150px at 50% 100%, rgba(80, 200, 100, 0.15) 0%, transparent 60%);
+        radial-gradient(ellipse at 15% 25%, rgba(120, 50, 200, 0.15) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 75%, rgba(200, 50, 120, 0.1) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 50%, rgba(50, 100, 200, 0.08) 0%, transparent 55%);
+    animation: nebulaMove 25s ease-in-out infinite;
 }
 
-/* ANIMATED CROWD */
-.stars {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 35%;
-    overflow: hidden;
-}
-
-/* Crowd row 1 */
-.stars::before {
-    content: '👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥';
-    position: absolute;
-    top: 20%;
-    left: 0;
-    font-size: 14px;
-    letter-spacing: 2px;
-    white-space: nowrap;
-    animation: crowdWave1 3s ease-in-out infinite;
-    filter: brightness(0.7);
-}
-
-/* Crowd row 2 */
-.stars::after {
-    content: '👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤';
-    position: absolute;
-    top: 45%;
-    left: 0;
-    font-size: 16px;
-    letter-spacing: 3px;
-    white-space: nowrap;
-    animation: crowdWave2 2.5s ease-in-out infinite;
-    filter: brightness(0.8);
-}
-
-@keyframes crowdWave1 {
+@keyframes nebulaMove {
 
     0%,
     100% {
-        transform: translateY(0);
-    }
-
-    25% {
-        transform: translateY(-5px);
-    }
-
-    50% {
-        transform: translateY(0);
-    }
-
-    75% {
-        transform: translateY(-3px);
-    }
-}
-
-@keyframes crowdWave2 {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    30% {
-        transform: translateY(-6px);
-    }
-
-    60% {
-        transform: translateY(0);
-    }
-
-    80% {
-        transform: translateY(-4px);
-    }
-}
-
-/* More crowd rows */
-.shootingStar {
-    position: absolute;
-    top: 8%;
-    left: 0;
-    right: 0;
-    font-size: 12px;
-    text-align: center;
-    filter: brightness(0.6);
-    animation: crowdCheer 2s ease-in-out infinite;
-    background: none;
-    width: auto;
-    height: auto;
-}
-
-.shootingStar::before {
-    content: '🧑🧑‍🦱👨👩🧑‍🦰👨‍🦱🧑👨‍🦳👩‍🦰🧑‍🦱👨👩🧑‍🦰👨‍🦱🧑👨‍🦳👩‍🦰🧑‍🦱👨👩🧑‍🦰👨‍🦱🧑👨‍🦳👩‍🦰🧑‍🦱👨👩🧑‍🦰👨‍🦱🧑👨‍🦳👩‍🦰🧑‍🦱👨';
-    letter-spacing: 4px;
-}
-
-.shootingStar::after {
-    content: '👩🧑‍🦱👨👨‍🦳🧑‍🦰👩‍🦱🧑👨👩🧑‍🦱👨👨‍🦳🧑‍🦰👩‍🦱🧑👨👩🧑‍🦱👨👨‍🦳🧑‍🦰👩‍🦱🧑👨👩🧑‍🦱👨👨‍🦳🧑‍🦰👩‍🦱🧑👨👩🧑‍🦱👨👨‍🦳🧑‍🦰👩‍🦱';
-    display: block;
-    margin-top: 10px;
-    letter-spacing: 3px;
-}
-
-@keyframes crowdCheer {
-
-    0%,
-    100% {
+        opacity: 0.8;
         transform: scale(1);
     }
 
     50% {
-        transform: scale(1.05) translateY(-3px);
+        opacity: 1;
+        transform: scale(1.05);
     }
 }
 
-/* Football field */
+/* Twinkling stars */
+.stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(2px 2px at 50px 40px, #fff, transparent),
+        radial-gradient(1px 1px at 150px 100px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 280px 70px, #fff, transparent),
+        radial-gradient(1px 1px at 400px 150px, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(2px 2px at 520px 50px, #fff, transparent),
+        radial-gradient(1px 1px at 650px 120px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 780px 80px, #fff, transparent),
+        radial-gradient(1px 1px at 900px 110px, rgba(255, 255, 255, 0.6), transparent);
+    background-size: 950px 200px;
+    animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Shooting star */
+.shootingStar {
+    position: absolute;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #fff, rgba(180, 180, 255, 0.8), transparent);
+    top: 15%;
+    left: -150px;
+    animation: shootStar 6s linear infinite;
+    filter: drop-shadow(0 0 4px #fff);
+}
+
+@keyframes shootStar {
+    0% {
+        left: -150px;
+        top: 12%;
+        opacity: 0;
+        transform: rotate(-15deg);
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    40% {
+        left: 110%;
+        top: 30%;
+        opacity: 1;
+    }
+
+    41%,
+    100% {
+        opacity: 0;
+        left: 110%;
+    }
+}
+
+/* BLACK HOLES */
 .particlesContainer {
     position: absolute;
-    bottom: 0;
-    left: -5%;
-    right: -5%;
-    height: 45%;
-    background:
-        radial-gradient(circle 70px at 50% 25%, transparent 68px, rgba(255, 255, 255, 0.25) 68px, rgba(255, 255, 255, 0.25) 72px, transparent 72px),
-        linear-gradient(90deg, transparent 49.5%, rgba(255, 255, 255, 0.25) 49.5%, rgba(255, 255, 255, 0.25) 50.5%, transparent 50.5%),
-        repeating-linear-gradient(90deg,
-            rgba(35, 130, 55, 1) 0px,
-            rgba(35, 130, 55, 1) 8%,
-            rgba(30, 110, 45, 1) 8%,
-            rgba(30, 110, 45, 1) 16%);
-    transform: perspective(350px) rotateX(20deg);
-    transform-origin: bottom center;
-    z-index: 1;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
 }
 
 .particle {
-    display: none;
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #000 0%, #000 40%, rgba(100, 50, 150, 0.8) 60%, rgba(150, 50, 200, 0.4) 80%, transparent 100%);
+    box-shadow:
+        0 0 30px rgba(100, 50, 150, 0.6),
+        inset 0 0 20px rgba(0, 0, 0, 0.8);
+    animation: blackHoleFloat 8s ease-in-out infinite, blackHoleSpin 15s linear infinite;
+    opacity: 0.7;
 }
 
-/* ===== HEADER - SMALLER ===== */
+.particle:nth-child(odd) {
+    width: 45px;
+    height: 45px;
+    animation-delay: -3s;
+    animation-duration: 10s;
+}
+
+.particle:nth-child(3n) {
+    width: 70px;
+    height: 70px;
+    animation-delay: -5s;
+}
+
+@keyframes blackHoleFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-20px) scale(1.1);
+    }
+}
+
+@keyframes blackHoleSpin {
+    from {
+        filter: hue-rotate(0deg);
+    }
+
+    to {
+        filter: hue-rotate(360deg);
+    }
+}
+
+/* ===== HEADER ===== */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 20px;
-    background: rgba(20, 25, 35, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 2px solid rgba(80, 200, 120, 0.3);
+    padding: 12px 25px;
+    background: rgba(20, 15, 40, 0.9);
+    backdrop-filter: blur(15px);
+    border-bottom: 2px solid rgba(197, 17, 17, 0.4);
     z-index: 100;
-    min-height: 50px;
 }
 
 .roundBadge {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
-    background: linear-gradient(135deg, rgba(50, 150, 100, 0.5) 0%, rgba(30, 100, 70, 0.5) 100%);
-    border: 1px solid rgba(80, 200, 120, 0.5);
-    border-radius: 18px;
-    color: #60ff90;
+    gap: 8px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, rgba(197, 17, 17, 0.3) 0%, rgba(139, 0, 0, 0.3) 100%);
+    border: 1px solid rgba(197, 17, 17, 0.5);
+    border-radius: 20px;
+    color: #ff6666;
     font-weight: 800;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .roundIcon {
@@ -224,19 +204,19 @@
 }
 
 .phaseGlow {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 900;
     color: #fff;
     text-transform: uppercase;
     letter-spacing: 3px;
-    text-shadow: 0 0 15px rgba(80, 200, 120, 0.4);
+    text-shadow: 0 0 20px rgba(197, 17, 17, 0.5);
 }
 
-/* Timer smaller */
+/* Timer */
 .timerContainer {
     position: relative;
-    width: 45px;
-    height: 45px;
+    width: 55px;
+    height: 55px;
 }
 
 .timerSvg {
@@ -247,17 +227,17 @@
 
 .timerBg {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.15);
-    stroke-width: 5;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 6;
 }
 
 .timerFill {
     fill: none;
-    stroke: #60ff90;
-    stroke-width: 5;
+    stroke: #00ff88;
+    stroke-width: 6;
     stroke-linecap: round;
     transition: stroke-dasharray 1s linear;
-    filter: drop-shadow(0 0 8px rgba(96, 255, 144, 0.5));
+    filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));
 }
 
 .timerText {
@@ -266,20 +246,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 900;
     color: white;
 }
 
-/* ===== GAME AREA - MORE SPACE ===== */
+/* ===== GAME AREA ===== */
 .gameArea {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10;
-    padding: 5px 15px 15px;
-    min-height: 0;
+    padding: 15px 20px;
 }
 
 /* ===== INTRO ===== */
@@ -289,8 +268,8 @@
 }
 
 .introBean {
-    width: 110px;
-    height: 132px;
+    width: 120px;
+    height: 144px;
     margin: 0 auto 25px;
     position: relative;
     animation: introBounce 1s ease-in-out infinite;
@@ -330,7 +309,7 @@
 }
 
 .introTitle {
-    font-size: 2.8rem;
+    font-size: 3rem;
     font-weight: 900;
     color: white;
     margin: 0;
@@ -339,13 +318,13 @@
 
 .introSubtitle {
     font-size: 1.2rem;
-    color: #60ff90;
+    color: #00d9ff;
     margin: 8px 0 25px;
     letter-spacing: 4px;
 }
 
 .loadingBar {
-    width: 160px;
+    width: 180px;
     height: 6px;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 3px;
@@ -356,7 +335,7 @@
 .loadingFill {
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, #60ff90, #00d9ff, #60ff90);
+    background: linear-gradient(90deg, #c51111, #00d9ff, #c51111);
     background-size: 200% 100%;
     animation: loadingMove 1s linear infinite;
 }
@@ -378,9 +357,9 @@
 }
 
 .roleCard {
-    padding: 40px 60px;
+    padding: 45px 65px;
     border-radius: 24px;
-    max-width: 480px;
+    max-width: 500px;
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(15px);
@@ -405,14 +384,14 @@
 }
 
 .crewCard {
-    background: linear-gradient(135deg, rgba(30, 80, 50, 0.9) 0%, rgba(15, 50, 30, 0.9) 100%);
-    border: 2px solid rgba(80, 255, 144, 0.5);
-    box-shadow: 0 20px 60px rgba(50, 200, 100, 0.3);
+    background: linear-gradient(135deg, rgba(0, 80, 160, 0.7) 0%, rgba(0, 40, 100, 0.7) 100%);
+    border: 2px solid rgba(0, 150, 255, 0.5);
+    box-shadow: 0 20px 60px rgba(0, 100, 200, 0.3);
 }
 
 .impostorCard {
-    background: linear-gradient(135deg, rgba(150, 20, 20, 0.9) 0%, rgba(80, 10, 10, 0.9) 100%);
-    border: 2px solid rgba(255, 80, 80, 0.6);
+    background: linear-gradient(135deg, rgba(170, 20, 20, 0.8) 0%, rgba(100, 10, 10, 0.8) 100%);
+    border: 2px solid rgba(255, 70, 70, 0.6);
     box-shadow: 0 20px 60px rgba(255, 50, 50, 0.35);
     animation: impostorPulse 1.5s ease-in-out infinite;
 }
@@ -434,15 +413,15 @@
 .voteBean,
 .resultBean,
 .ejectBean {
-    width: 70px;
-    height: 84px;
+    width: 80px;
+    height: 96px;
     margin: 0 auto 18px;
     position: relative;
 }
 
 .roleBean {
-    width: 100px;
-    height: 120px;
+    width: 110px;
+    height: 132px;
 }
 
 .roleBean::before,
@@ -482,7 +461,7 @@
 }
 
 .impostorTitle {
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: #ff5555;
     margin: 0 0 12px;
     text-shadow: 0 0 30px rgba(255, 50, 50, 0.7);
@@ -500,10 +479,10 @@
 }
 
 .secretWord {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     font-weight: 900;
-    color: #60ff90;
-    text-shadow: 0 0 30px rgba(96, 255, 144, 0.6);
+    color: #00ff88;
+    text-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
     margin: 14px 0;
 }
 
@@ -515,15 +494,15 @@
 /* ===== MEETING ROOM ===== */
 .meetingRoom {
     width: 100%;
-    max-width: 850px;
+    max-width: 900px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
 }
 
 .tableArea {
     position: relative;
-    height: 250px;
+    height: 280px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -544,37 +523,37 @@
     }
 
     50% {
-        transform: translateY(-6px);
+        transform: translateY(-8px);
     }
 }
 
 .tableTop {
-    width: 140px;
-    height: 140px;
-    background: linear-gradient(145deg, #1a3020 0%, #0d2015 100%);
+    width: 160px;
+    height: 160px;
+    background: linear-gradient(145deg, #2a2a4a 0%, #1a1a3a 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 0 35px rgba(80, 255, 144, 0.06);
-    border: 2px solid rgba(80, 255, 144, 0.25);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 35px rgba(100, 100, 150, 0.1);
+    border: 3px solid rgba(150, 150, 200, 0.2);
 }
 
 .tableTop span {
-    color: rgba(80, 255, 144, 0.45);
+    color: rgba(150, 150, 200, 0.4);
     font-weight: 900;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     letter-spacing: 2px;
 }
 
 .tableReflection {
     position: absolute;
-    bottom: -28px;
+    bottom: -30px;
     left: 50%;
     transform: translateX(-50%) scaleY(-0.2);
-    width: 140px;
-    height: 140px;
-    background: linear-gradient(to bottom, rgba(26, 48, 32, 0.2) 0%, transparent 100%);
+    width: 160px;
+    height: 160px;
+    background: linear-gradient(to bottom, rgba(42, 42, 74, 0.2) 0%, transparent 100%);
     border-radius: 50%;
     filter: blur(8px);
 }
@@ -588,24 +567,24 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-100px) rotate(calc(-1 * var(--seat-angle)));
+    transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-110px) rotate(calc(-1 * var(--seat-angle)));
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .playerSeat.activeSeat {
-    transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-100px) rotate(calc(-1 * var(--seat-angle))) scale(1.15);
+    transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-110px) rotate(calc(-1 * var(--seat-angle))) scale(1.18);
     z-index: 100;
 }
 
 .playerGlow {
     position: absolute;
-    width: 90px;
-    height: 90px;
-    background: radial-gradient(circle, rgba(80, 255, 144, 0.2) 0%, transparent 70%);
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(197, 17, 17, 0.2) 0%, transparent 70%);
     border-radius: 50%;
     opacity: 0;
 }
@@ -620,7 +599,7 @@
     0%,
     100% {
         transform: scale(1);
-        opacity: 0.6;
+        opacity: 0.5;
     }
 
     50% {
@@ -630,8 +609,8 @@
 }
 
 .playerBean {
-    width: 50px;
-    height: 60px;
+    width: 55px;
+    height: 66px;
     position: relative;
     transition: transform 0.3s;
 }
@@ -648,27 +627,27 @@
     }
 
     50% {
-        transform: translateY(-5px);
+        transform: translateY(-6px);
     }
 }
 
 .typing {
     position: absolute;
-    bottom: -18px;
+    bottom: -20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 4px;
-    padding: 5px 10px;
+    padding: 6px 12px;
     background: rgba(255, 255, 255, 0.97);
     border-radius: 10px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
 }
 
 .typing span {
     width: 6px;
     height: 6px;
-    background: #2a8a50;
+    background: #c51111;
     border-radius: 50%;
     animation: typingDot 1s infinite;
 }
@@ -698,10 +677,9 @@
     color: white;
     font-size: 10px;
     font-weight: 700;
-    background: rgba(15, 30, 20, 0.9);
+    background: rgba(30, 20, 50, 0.9);
     padding: 3px 10px;
     border-radius: 10px;
-    border: 1px solid rgba(80, 255, 144, 0.2);
     max-width: 80px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -710,16 +688,16 @@
 
 .clueBubble {
     position: absolute;
-    top: -45px;
+    top: -48px;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, #fff 0%, #e8ffe8 100%);
-    color: #1a4a2a;
-    padding: 7px 12px;
+    background: linear-gradient(135deg, #fff 0%, #f0f0ff 100%);
+    color: #2a2a4a;
+    padding: 8px 14px;
     border-radius: 12px;
     font-size: 10px;
     font-weight: 600;
-    max-width: 130px;
+    max-width: 140px;
     text-align: center;
     box-shadow: 0 5px 18px rgba(0, 0, 0, 0.3);
     animation: bubbleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -736,7 +714,7 @@
     left: 50%;
     transform: translateX(-50%);
     border: 7px solid transparent;
-    border-top-color: #e8ffe8;
+    border-top-color: #f0f0ff;
 }
 
 @keyframes bubbleIn {
@@ -753,11 +731,11 @@
 
 /* ===== BOTTOM PANEL ===== */
 .bottomPanel {
-    background: rgba(15, 25, 20, 0.95);
+    background: rgba(25, 20, 45, 0.95);
     backdrop-filter: blur(20px);
     border-radius: 18px;
-    padding: 16px;
-    border: 1px solid rgba(80, 255, 144, 0.2);
+    padding: 18px;
+    border: 1px solid rgba(150, 150, 200, 0.15);
     box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.35);
 }
 
@@ -784,8 +762,8 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 12px;
-    font-size: 1rem;
+    margin-bottom: 14px;
+    font-size: 1.05rem;
     color: rgba(255, 255, 255, 0.85);
 }
 
@@ -813,9 +791,9 @@
 
 .inputGroup input {
     flex: 1;
-    padding: 12px 18px;
-    background: rgba(10, 25, 18, 0.9);
-    border: 2px solid rgba(80, 255, 144, 0.2);
+    padding: 13px 18px;
+    background: rgba(15, 10, 30, 0.9);
+    border: 2px solid rgba(150, 150, 200, 0.2);
     border-radius: 12px;
     color: white;
     font-size: 14px;
@@ -823,13 +801,13 @@
 }
 
 .inputGroup input:focus {
-    border-color: #60ff90;
-    box-shadow: 0 0 15px rgba(96, 255, 144, 0.2);
+    border-color: #00d9ff;
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.2);
 }
 
 .sendBtn {
-    padding: 12px 25px;
-    background: linear-gradient(135deg, #2a9a55 0%, #1a7a40 100%);
+    padding: 13px 26px;
+    background: linear-gradient(135deg, #c51111 0%, #8b0000 100%);
     border: none;
     border-radius: 12px;
     color: white;
@@ -841,7 +819,7 @@
 
 .sendBtn:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(42, 154, 85, 0.4);
+    box-shadow: 0 8px 25px rgba(197, 17, 17, 0.4);
 }
 
 .btnGlow {
@@ -853,23 +831,23 @@
 
 /* Chat */
 .chatHeader {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     font-size: 0.95rem;
-    color: rgba(80, 255, 144, 0.8);
+    color: rgba(0, 217, 255, 0.8);
 }
 
 .chatMessages {
-    height: 110px;
+    height: 120px;
     overflow-y: auto;
-    background: rgba(10, 25, 18, 0.6);
+    background: rgba(15, 10, 30, 0.6);
     border-radius: 12px;
     padding: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .chatMsg {
     padding: 7px 0;
-    border-bottom: 1px solid rgba(80, 255, 144, 0.1);
+    border-bottom: 1px solid rgba(150, 150, 200, 0.1);
     font-size: 12px;
     color: white;
     animation: msgIn 0.3s;
@@ -905,7 +883,7 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 .votingTitle span {
@@ -920,19 +898,19 @@
 
 .voteGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
     gap: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 .voteCard {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    padding: 12px 10px;
-    background: rgba(20, 45, 30, 0.7);
-    border: 2px solid rgba(80, 255, 144, 0.2);
+    gap: 7px;
+    padding: 14px 10px;
+    background: rgba(35, 30, 60, 0.7);
+    border: 2px solid rgba(150, 150, 200, 0.15);
     border-radius: 14px;
     color: white;
     cursor: pointer;
@@ -941,8 +919,8 @@
 }
 
 .voteCard:hover:not(:disabled) {
-    border-color: rgba(255, 90, 90, 0.6);
-    background: rgba(100, 35, 35, 0.5);
+    border-color: rgba(197, 17, 17, 0.6);
+    background: rgba(120, 30, 30, 0.4);
     transform: translateY(-4px) scale(1.02);
 }
 
@@ -956,8 +934,8 @@
 }
 
 .voteBean {
-    width: 40px;
-    height: 48px;
+    width: 42px;
+    height: 50px;
 }
 
 .voteName {
@@ -974,7 +952,7 @@
     right: -5px;
     width: 20px;
     height: 20px;
-    background: linear-gradient(135deg, #ff5555 0%, #cc3030 100%);
+    background: linear-gradient(135deg, #c51111 0%, #8b0000 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -995,9 +973,9 @@
 }
 
 .skipButton {
-    padding: 10px 35px;
-    background: rgba(70, 70, 70, 0.5);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 11px 35px;
+    background: rgba(70, 60, 90, 0.5);
+    border: 2px solid rgba(150, 150, 200, 0.2);
     border-radius: 12px;
     color: white;
     font-weight: 700;
@@ -1007,7 +985,7 @@
 }
 
 .skipButton:hover:not(:disabled) {
-    background: rgba(90, 90, 90, 0.6);
+    background: rgba(90, 80, 110, 0.6);
     transform: scale(1.02);
 }
 
@@ -1020,15 +998,15 @@
 .resultScreen {
     text-align: center;
     animation: fadeIn 0.5s;
-    padding: 35px;
-    background: rgba(15, 35, 25, 0.95);
+    padding: 40px;
+    background: rgba(30, 25, 55, 0.95);
     border-radius: 22px;
     backdrop-filter: blur(20px);
 }
 
 .resultBean {
-    width: 70px;
-    height: 84px;
+    width: 75px;
+    height: 90px;
     margin-bottom: 18px;
 }
 
@@ -1039,7 +1017,7 @@
 
 .resultScreen h2 {
     color: white;
-    font-size: 1.8rem;
+    font-size: 1.9rem;
     margin: 0 0 8px;
 }
 
@@ -1055,8 +1033,8 @@
 }
 
 .ejectBean {
-    width: 120px;
-    height: 144px;
+    width: 130px;
+    height: 156px;
     margin: 0 auto 30px;
     animation: ejectDramatic 4s forwards;
 }
@@ -1104,12 +1082,12 @@
 
     15% {
         transform: scale(1.4);
-        filter: drop-shadow(0 0 50px #60ff90) brightness(1.3);
+        filter: drop-shadow(0 0 50px #00ff88) brightness(1.3);
     }
 
     35% {
         transform: scale(1.2) rotate(270deg);
-        filter: drop-shadow(0 0 70px #60ff90) brightness(1.5);
+        filter: drop-shadow(0 0 70px #00ff88) brightness(1.5);
     }
 
     60% {
@@ -1142,18 +1120,18 @@
 
 .ejectText h1 {
     color: white;
-    font-size: 2.2rem;
+    font-size: 2.3rem;
     margin: 0 0 12px;
 }
 
 .ejectText h2 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     margin: 0 0 12px;
 }
 
 .greenText {
-    color: #60ff90;
-    text-shadow: 0 0 30px rgba(96, 255, 144, 0.7);
+    color: #00ff88;
+    text-shadow: 0 0 30px rgba(0, 255, 136, 0.7);
 }
 
 .grayText {
@@ -1168,19 +1146,19 @@
 /* Game End */
 .gameEndScreen {
     text-align: center;
-    padding: 45px 60px;
+    padding: 50px 65px;
     border-radius: 24px;
     animation: zoomIn 0.5s;
 }
 
 .crewWins {
-    background: linear-gradient(135deg, rgba(30, 90, 55, 0.95) 0%, rgba(15, 55, 35, 0.95) 100%);
-    border: 3px solid #60ff90;
-    box-shadow: 0 25px 70px rgba(50, 180, 100, 0.45);
+    background: linear-gradient(135deg, rgba(0, 80, 160, 0.9) 0%, rgba(0, 40, 100, 0.9) 100%);
+    border: 3px solid #00d9ff;
+    box-shadow: 0 25px 70px rgba(0, 150, 200, 0.4);
 }
 
 .impostorWins {
-    background: linear-gradient(135deg, rgba(140, 25, 25, 0.95) 0%, rgba(75, 10, 10, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(160, 25, 25, 0.9) 0%, rgba(90, 10, 10, 0.9) 100%);
     border: 3px solid #ff5555;
     box-shadow: 0 25px 70px rgba(200, 50, 50, 0.45);
 }
@@ -1190,7 +1168,7 @@
 }
 
 .endIcon {
-    font-size: 3.5rem;
+    font-size: 4rem;
     margin-bottom: 15px;
     animation: endIconBounce 1s infinite;
 }
@@ -1208,7 +1186,7 @@
 }
 
 .gameEndScreen h1 {
-    font-size: 2.8rem;
+    font-size: 3rem;
     color: white;
     margin: 0 0 8px;
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
@@ -1217,11 +1195,11 @@
 .gameEndScreen h2 {
     font-size: 1.2rem;
     color: rgba(255, 255, 255, 0.8);
-    margin: 0 0 22px;
+    margin: 0 0 24px;
 }
 
 .endDetails {
-    margin-bottom: 22px;
+    margin-bottom: 24px;
 }
 
 .endDetails p {
@@ -1231,16 +1209,16 @@
 }
 
 .endDetails strong {
-    color: #60ff90;
+    color: #00ff88;
 }
 
 .endButton {
-    padding: 14px 45px;
-    background: linear-gradient(135deg, #2a9a55 0%, #1a7a40 100%);
+    padding: 15px 50px;
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
     border: none;
     border-radius: 14px;
     color: white;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 800;
     cursor: pointer;
     transition: all 0.3s;
@@ -1248,7 +1226,7 @@
 
 .endButton:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 35px rgba(42, 154, 85, 0.5);
+    box-shadow: 0 12px 35px rgba(124, 58, 237, 0.5);
 }
 
 /* Emergency */
@@ -1260,6 +1238,19 @@
     align-items: center;
     justify-content: center;
     z-index: 2000;
+    animation: emergencyFlash 0.2s infinite;
+}
+
+@keyframes emergencyFlash {
+
+    0%,
+    100% {
+        background: rgba(0, 0, 0, 0.95);
+    }
+
+    50% {
+        background: rgba(50, 0, 0, 0.95);
+    }
 }
 
 .emergencyContent {
@@ -1268,7 +1259,7 @@
 }
 
 .emergencyIcon {
-    font-size: 4.5rem;
+    font-size: 5rem;
     margin-bottom: 15px;
     animation: emergencyShake 0.1s infinite;
 }
@@ -1290,7 +1281,7 @@
 }
 
 .emergencyContent h1 {
-    font-size: 2.2rem;
+    font-size: 2.3rem;
     color: #ff5555;
     text-shadow: 0 0 40px rgba(255, 50, 50, 0.8);
     animation: emergencyTextPulse 0.25s infinite;
@@ -1351,29 +1342,32 @@
 }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 900px) {
+@media (max-width: 800px) {
     .tableArea {
-        height: 220px;
+        height: 250px;
     }
 
     .playerSeat {
-        transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-85px) rotate(calc(-1 * var(--seat-angle)));
+        transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-95px) rotate(calc(-1 * var(--seat-angle)));
     }
 
     .playerBean {
-        width: 42px;
-        height: 50px;
+        width: 48px;
+        height: 58px;
     }
 
     .tableTop {
-        width: 110px;
-        height: 110px;
+        width: 130px;
+        height: 130px;
     }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 600px) {
     .header {
-        padding: 5px 12px;
+        padding: 8px 15px;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
     }
 
     .phaseGlow {
@@ -1382,58 +1376,58 @@
     }
 
     .timerContainer {
-        width: 38px;
-        height: 38px;
+        width: 45px;
+        height: 45px;
     }
 
     .timerText {
-        font-size: 0.85rem;
+        font-size: 1rem;
     }
 
     .tableArea {
-        height: 190px;
+        height: 210px;
     }
 
     .tableTop {
-        width: 90px;
-        height: 90px;
+        width: 100px;
+        height: 100px;
     }
 
     .playerSeat {
-        transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-70px) rotate(calc(-1 * var(--seat-angle)));
+        transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-80px) rotate(calc(-1 * var(--seat-angle)));
     }
 
     .playerBean {
-        width: 35px;
-        height: 42px;
+        width: 40px;
+        height: 48px;
     }
 
     .playerLabel {
-        font-size: 8px;
-        padding: 2px 6px;
+        font-size: 9px;
+        padding: 2px 7px;
     }
 
     .clueBubble {
         font-size: 9px;
-        padding: 5px 8px;
-        top: -38px;
-        max-width: 100px;
+        padding: 6px 10px;
+        top: -42px;
+        max-width: 110px;
     }
 
     .roleCard {
-        padding: 30px 25px;
+        padding: 32px 25px;
     }
 
     .secretWord {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
 
     .introTitle {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
 
     .bottomPanel {
-        padding: 12px;
+        padding: 14px;
     }
 
     .voteGrid {
@@ -1446,11 +1440,31 @@
     }
 
     .voteBean {
+        width: 35px;
+        height: 42px;
+    }
+
+    .voteName {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    .voteGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .playerSeat {
+        transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-65px) rotate(calc(-1 * var(--seat-angle)));
+    }
+
+    .playerBean {
         width: 32px;
         height: 38px;
     }
 
-    .voteName {
-        font-size: 9px;
+    .tableTop {
+        width: 80px;
+        height: 80px;
     }
 }

@@ -1,4 +1,4 @@
-/* IMPOSTOR LOBBY - STADIUM THEME */
+/* IMPOSTOR LOBBY - SPACE THEME */
 
 .container {
     position: relative;
@@ -6,71 +6,61 @@
     display: flex;
     flex-direction: column;
     padding: 15px;
-    background: linear-gradient(180deg, #252540 0%, #1a1a30 50%, #0d1520 100%);
+    background: linear-gradient(180deg, #0a0a1f 0%, #1a0a2e 50%, #050510 100%);
     overflow: hidden;
 }
 
-/* Stadium stands background */
+/* Stars background */
 .background {
     position: absolute;
     inset: 0;
+    background-image:
+        radial-gradient(2px 2px at 80px 50px, white, transparent),
+        radial-gradient(1px 1px at 200px 100px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 350px 150px, white, transparent),
+        radial-gradient(1px 1px at 500px 80px, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(2px 2px at 650px 120px, white, transparent),
+        radial-gradient(1px 1px at 800px 60px, rgba(255, 255, 255, 0.8), transparent);
+    background-size: 900px 200px;
+    opacity: 0.6;
     z-index: 0;
-    overflow: hidden;
+    animation: twinkle 4s ease-in-out infinite;
 }
 
-.background::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 30%;
-    background:
-        repeating-linear-gradient(0deg,
-            rgba(80, 80, 100, 0.35) 0px,
-            rgba(80, 80, 100, 0.35) 10px,
-            rgba(60, 60, 80, 0.35) 10px,
-            rgba(60, 60, 80, 0.35) 20px);
-}
-
-/* Animated crowd */
-.background::after {
-    content: '👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥👤👥';
-    position: absolute;
-    top: 8%;
-    left: 0;
-    font-size: 16px;
-    letter-spacing: 3px;
-    white-space: nowrap;
-    filter: brightness(0.7);
-    animation: crowdWave 3s ease-in-out infinite;
-}
-
-@keyframes crowdWave {
+@keyframes twinkle {
 
     0%,
     100% {
-        transform: translateY(0);
+        opacity: 0.5;
     }
 
     50% {
-        transform: translateY(-5px);
+        opacity: 0.8;
     }
 }
 
-/* Stadium lights */
+/* Nebula effect */
+.background::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(120, 50, 200, 0.12) 0%, transparent 45%),
+        radial-gradient(ellipse at 80% 70%, rgba(200, 50, 120, 0.08) 0%, transparent 40%);
+}
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 25px;
-    background: rgba(20, 30, 25, 0.95);
+    padding: 18px 25px;
+    background: rgba(25, 20, 50, 0.9);
     border-radius: 16px;
-    border: 2px solid rgba(80, 255, 144, 0.3);
+    border: 2px solid rgba(197, 17, 17, 0.4);
     margin-bottom: 20px;
     z-index: 10;
     backdrop-filter: blur(15px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
 .roomInfo {
@@ -81,7 +71,7 @@
 
 .roomCode {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: white;
     display: flex;
     align-items: center;
@@ -89,11 +79,11 @@
 }
 
 .roomCode span {
-    color: #60ff90;
+    color: #00ff88;
     font-weight: 900;
-    font-size: 1.8rem;
-    letter-spacing: 4px;
-    text-shadow: 0 0 20px rgba(96, 255, 144, 0.4);
+    font-size: 1.7rem;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
 }
 
 .playerCount {
@@ -117,7 +107,6 @@
 .leaveButton:hover {
     background: linear-gradient(135deg, rgba(200, 50, 50, 0.5) 0%, rgba(150, 30, 30, 0.5) 100%);
     transform: scale(1.02);
-    box-shadow: 0 5px 20px rgba(255, 80, 80, 0.3);
 }
 
 .content {
@@ -132,17 +121,17 @@
 }
 
 .playersSection {
-    background: rgba(20, 35, 28, 0.9);
-    border: 2px solid rgba(80, 255, 144, 0.2);
+    background: rgba(25, 20, 50, 0.85);
+    border: 2px solid rgba(150, 100, 200, 0.25);
     border-radius: 20px;
     padding: 25px;
     backdrop-filter: blur(15px);
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
 }
 
 .sectionTitle {
     margin: 0 0 18px 0;
-    color: #60ff90;
+    color: #00d9ff;
     font-size: 1.1rem;
     display: flex;
     align-items: center;
@@ -150,7 +139,7 @@
 }
 
 .sectionTitle::before {
-    content: '⚽';
+    content: '👥';
 }
 
 .playersList {
@@ -164,21 +153,21 @@
     align-items: center;
     gap: 12px;
     padding: 14px 18px;
-    background: rgba(15, 30, 22, 0.8);
-    border: 2px solid rgba(80, 255, 144, 0.15);
+    background: rgba(20, 15, 40, 0.8);
+    border: 2px solid rgba(150, 100, 200, 0.15);
     border-radius: 14px;
     transition: all 0.3s;
 }
 
 .playerCard:hover {
     transform: translateY(-3px);
-    border-color: rgba(80, 255, 144, 0.3);
+    border-color: rgba(150, 100, 200, 0.3);
 }
 
 .playerCard.me {
-    border-color: rgba(96, 255, 144, 0.5);
-    background: linear-gradient(135deg, rgba(50, 150, 90, 0.3) 0%, rgba(30, 100, 60, 0.3) 100%);
-    box-shadow: 0 5px 25px rgba(80, 255, 144, 0.2);
+    border-color: rgba(0, 255, 136, 0.5);
+    background: linear-gradient(135deg, rgba(0, 120, 80, 0.25) 0%, rgba(0, 80, 50, 0.25) 100%);
+    box-shadow: 0 5px 25px rgba(0, 255, 136, 0.15);
 }
 
 .playerCard.bot {
@@ -254,7 +243,7 @@
 
 .startButton {
     padding: 16px 50px;
-    background: linear-gradient(135deg, #1a9a50 0%, #107a35 100%);
+    background: linear-gradient(135deg, #c51111 0%, #8b0000 100%);
     border: none;
     border-radius: 14px;
     color: white;
@@ -262,12 +251,12 @@
     font-weight: 800;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 8px 30px rgba(26, 154, 80, 0.4);
+    box-shadow: 0 8px 30px rgba(197, 17, 17, 0.4);
 }
 
 .startButton:hover:not(:disabled) {
     transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(26, 154, 80, 0.5);
+    box-shadow: 0 12px 40px rgba(197, 17, 17, 0.5);
 }
 
 .startButton:disabled {
@@ -301,8 +290,8 @@
     align-items: center;
     gap: 20px;
     padding: 40px;
-    background: rgba(20, 35, 28, 0.8);
-    border: 2px solid rgba(80, 255, 144, 0.2);
+    background: rgba(25, 20, 50, 0.8);
+    border: 2px solid rgba(150, 100, 200, 0.2);
     border-radius: 20px;
     text-align: center;
 }
@@ -352,7 +341,7 @@
 }
 
 .waitingText strong {
-    color: #60ff90;
+    color: #00d9ff;
 }
 
 /* Loading dots */
@@ -365,7 +354,7 @@
 .loadingDots span {
     width: 10px;
     height: 10px;
-    background: #60ff90;
+    background: #c51111;
     border-radius: 50%;
     animation: loadingDot 1.2s infinite;
 }
@@ -400,7 +389,7 @@
     }
 
     .header {
-        padding: 12px 18px;
+        padding: 14px 18px;
         flex-direction: column;
         gap: 12px;
         text-align: center;
@@ -408,11 +397,11 @@
 
     .roomCode {
         justify-content: center;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .roomCode span {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .leaveButton {
@@ -433,18 +422,18 @@
     }
 
     .playerAvatar {
-        width: 36px;
-        height: 43px;
+        width: 38px;
+        height: 46px;
     }
 
     .playerAvatar::before {
-        width: 30px;
-        height: 36px;
+        width: 32px;
+        height: 38px;
     }
 
     .playerAvatar::after {
-        width: 11px;
-        height: 8px;
+        width: 12px;
+        height: 9px;
         top: 10px;
         left: 3px;
     }
@@ -478,13 +467,13 @@
     }
 
     .playerAvatar {
-        width: 30px;
-        height: 36px;
+        width: 32px;
+        height: 38px;
     }
 
     .playerAvatar::before {
-        width: 26px;
-        height: 31px;
+        width: 28px;
+        height: 33px;
     }
 
     .playerName {
