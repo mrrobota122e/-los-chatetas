@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSocket } from '../../contexts/SocketContext';
 import styles from './CluesPhase.module.css';
 
-interface CluesPhasePr ops {
+interface CluesPhaseProps {
     roomCode: string;
     players: any[];
     currentRound: number;

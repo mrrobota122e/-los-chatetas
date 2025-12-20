@@ -1,7 +1,4 @@
-/* Tailwind CSS Directives */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Global Styles */
 
 /* CSS Reset and Base Styles */
 *,
@@ -124,5 +121,3 @@ body {
   width: 100vw;
   height: 100vh;
 }
-
-/* Animations will be imported separately */
