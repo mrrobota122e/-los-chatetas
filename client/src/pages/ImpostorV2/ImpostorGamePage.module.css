@@ -1,5 +1,6 @@
 /* ========================================
-   IMPOSTOR FÚTBOL - AMONG US STYLE
+   IMPOSTOR FÚTBOL - ULTRA PREMIUM DESIGN
+   3D Effects, Glassmorphism, Particles
    ======================================== */
 
 .container {
@@ -8,41 +9,133 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', -apple-system, sans-serif;
 }
 
-/* ===== SPACE BACKGROUND ===== */
+/* ===== ANIMATED BACKGROUND ===== */
 .spaceBackground {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, #0a0a1a 0%, #1a0a2e 50%, #050510 100%);
+    background: linear-gradient(135deg, #0d0d1a 0%, #1a0a2e 40%, #0a1628 70%, #050510 100%);
     z-index: 0;
+}
+
+.nebula {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(139, 0, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(255, 0, 100, 0.1) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 100, 255, 0.08) 0%, transparent 60%);
+    animation: nebulaMove 20s ease-in-out infinite;
+}
+
+@keyframes nebulaMove {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    50% {
+        transform: scale(1.1) rotate(5deg);
+    }
 }
 
 .stars {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 200%;
+    height: 200%;
     background-image:
-        radial-gradient(2px 2px at 50px 30px, white, transparent),
-        radial-gradient(1px 1px at 150px 100px, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(2px 2px at 300px 70px, white, transparent),
-        radial-gradient(1px 1px at 450px 200px, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(2px 2px at 600px 100px, white, transparent),
-        radial-gradient(1px 1px at 750px 50px, rgba(255, 255, 255, 0.8), transparent);
+        radial-gradient(2px 2px at 100px 50px, #fff, transparent),
+        radial-gradient(1px 1px at 200px 150px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 300px 80px, #fff, transparent),
+        radial-gradient(1px 1px at 400px 200px, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(2px 2px at 500px 120px, #fff, transparent),
+        radial-gradient(1px 1px at 600px 180px, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(2px 2px at 700px 60px, #fff, transparent);
     background-size: 800px 300px;
-    animation: twinkle 4s ease-in-out infinite;
+    animation: starsMove 100s linear infinite;
 }
 
-@keyframes twinkle {
+@keyframes starsMove {
+    from {
+        transform: translate(0, 0);
+    }
 
-    0%,
-    100% {
-        opacity: 0.7;
+    to {
+        transform: translate(-400px, -150px);
+    }
+}
+
+.shootingStar {
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, white, transparent);
+    top: 20%;
+    left: -100px;
+    animation: shoot 4s ease-in-out infinite;
+    animation-delay: 2s;
+}
+
+@keyframes shoot {
+    0% {
+        left: -100px;
+        top: 20%;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
     }
 
     50% {
+        left: 110%;
+        top: 40%;
         opacity: 1;
+    }
+
+    51% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* ===== PARTICLES ===== */
+.particlesContainer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: particleFloat 8s ease-out forwards;
+}
+
+@keyframes particleFloat {
+    0% {
+        opacity: 0;
+        transform: scale(0) translateY(0);
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-200px) scale(0);
     }
 }
 
@@ -51,37 +144,70 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 25px;
-    background: rgba(20, 20, 40, 0.95);
-    border-bottom: 3px solid rgba(197, 17, 17, 0.5);
+    padding: 15px 30px;
+    background: rgba(15, 15, 35, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 100;
 }
 
 .roundBadge {
-    padding: 8px 20px;
-    background: rgba(197, 17, 17, 0.3);
-    border: 2px solid rgba(197, 17, 17, 0.6);
-    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, rgba(197, 17, 17, 0.3) 0%, rgba(139, 0, 0, 0.3) 100%);
+    border: 1px solid rgba(197, 17, 17, 0.5);
+    border-radius: 25px;
     color: white;
     font-weight: 700;
+    font-size: 14px;
+}
+
+.roundIcon {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .phaseTitle {
-    font-size: 1.4rem;
-    font-weight: 800;
+    text-align: center;
+}
+
+.phaseGlow {
+    font-size: 1.6rem;
+    font-weight: 900;
     color: white;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 4px;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    animation: textPulse 2s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+
+    0%,
+    100% {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+
+    50% {
+        text-shadow: 0 0 50px rgba(255, 255, 255, 0.5), 0 0 80px rgba(0, 217, 255, 0.3);
+    }
 }
 
 /* ===== CIRCULAR TIMER ===== */
-.timerCircle {
-    width: 60px;
-    height: 60px;
+.timerContainer {
     position: relative;
+    width: 70px;
+    height: 70px;
 }
 
-.timerCircle svg {
+.timerSvg {
     width: 100%;
     height: 100%;
     transform: rotate(-90deg);
@@ -90,29 +216,31 @@
 .timerBg {
     fill: none;
     stroke: rgba(255, 255, 255, 0.1);
-    stroke-width: 3;
+    stroke-width: 8;
 }
 
 .timerFill {
     fill: none;
+    stroke: url(#timerGradient);
     stroke: #00ff88;
-    stroke-width: 3;
+    stroke-width: 8;
     stroke-linecap: round;
     transition: stroke-dasharray 1s linear;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));
 }
 
-.timerCircle span {
+.timerText {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    font-weight: 800;
+    font-size: 1.5rem;
+    font-weight: 900;
     color: white;
 }
 
-/* ===== MAIN GAME AREA ===== */
+/* ===== GAME AREA ===== */
 .gameArea {
     flex: 1;
     display: flex;
@@ -125,35 +253,107 @@
 /* ===== INTRO SCREEN ===== */
 .introScreen {
     text-align: center;
-    animation: fadeIn 0.5s;
+    animation: fadeInUp 0.5s;
 }
 
-.introLogo {
-    font-size: 6rem;
-    animation: bounce 1s infinite;
+.introBean {
+    width: 140px;
+    height: 168px;
+    margin: 0 auto 30px;
+    position: relative;
+    animation: introBounce 1s ease-in-out infinite;
 }
 
-.introScreen h1 {
-    font-size: 3rem;
-    color: white;
-    margin: 20px 0 10px;
-    text-shadow: 0 0 30px rgba(197, 17, 17, 0.5);
+.introBean::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #c51111 0%, #8b0000 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow:
+        inset -15px -10px 30px rgba(0, 0, 0, 0.3),
+        inset 10px 10px 20px rgba(255, 255, 255, 0.1),
+        0 20px 60px rgba(197, 17, 17, 0.4);
 }
 
-.introScreen p {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 1.2rem;
+.introBean::after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 8%;
+    width: 40%;
+    height: 25%;
+    background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 50%, #0ea5e9 100%);
+    border-radius: 40% 60% 60% 40% / 50% 50% 50% 50%;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
 }
 
-@keyframes bounce {
+@keyframes introBounce {
 
     0%,
     100% {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 
     50% {
-        transform: translateY(-20px);
+        transform: translateY(-30px) scale(1.05);
+    }
+}
+
+.introTitle {
+    font-size: 4rem;
+    font-weight: 900;
+    color: white;
+    margin: 0;
+    text-shadow:
+        0 4px 0 #8b0000,
+        0 8px 30px rgba(197, 17, 17, 0.5);
+    animation: titleGlow 2s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+
+    0%,
+    100% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(1.2);
+    }
+}
+
+.introSubtitle {
+    font-size: 1.5rem;
+    color: #00d9ff;
+    margin: 10px 0 40px;
+    letter-spacing: 5px;
+}
+
+.loadingBar {
+    width: 200px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.loadingFill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #00d9ff, #00ff88);
+    background-size: 200% 100%;
+    animation: loadingMove 1s linear infinite;
+}
+
+@keyframes loadingMove {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
     }
 }
 
@@ -164,59 +364,145 @@
 }
 
 .roleCard {
-    padding: 50px 80px;
-    border-radius: 24px;
+    padding: 60px 80px;
+    border-radius: 30px;
     max-width: 550px;
-}
-
-.crewCard {
-    background: linear-gradient(135deg, rgba(0, 100, 200, 0.3) 0%, rgba(0, 50, 100, 0.3) 100%);
-    border: 4px solid rgba(0, 150, 255, 0.6);
-}
-
-.impostorCard {
-    background: linear-gradient(135deg, rgba(200, 0, 0, 0.4) 0%, rgba(100, 0, 0, 0.4) 100%);
-    border: 4px solid rgba(255, 50, 50, 0.7);
-    animation: pulse 1.5s infinite;
-}
-
-.roleBeanLarge {
-    width: 120px;
-    height: 140px;
-    margin: 0 auto 30px;
     position: relative;
+    overflow: hidden;
 }
 
-.roleBeanLarge::before {
+.roleCard::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--bean-color, #c51111);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    border: 4px solid rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+    animation: shimmer 3s infinite;
 }
 
-.roleBeanLarge::after {
+@keyframes shimmer {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.crewCard {
+    background: linear-gradient(135deg, rgba(0, 80, 180, 0.4) 0%, rgba(0, 40, 100, 0.4) 100%);
+    border: 2px solid rgba(0, 150, 255, 0.5);
+    box-shadow:
+        0 20px 60px rgba(0, 100, 200, 0.3),
+        inset 0 0 60px rgba(0, 100, 200, 0.1);
+}
+
+.impostorCard {
+    background: linear-gradient(135deg, rgba(180, 0, 0, 0.4) 0%, rgba(100, 0, 0, 0.4) 100%);
+    border: 2px solid rgba(255, 50, 50, 0.6);
+    box-shadow:
+        0 20px 60px rgba(255, 0, 0, 0.3),
+        inset 0 0 60px rgba(255, 0, 0, 0.1);
+    animation: impostorPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes impostorPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 20px 60px rgba(255, 0, 0, 0.3), inset 0 0 60px rgba(255, 0, 0, 0.1);
+    }
+
+    50% {
+        box-shadow: 0 20px 80px rgba(255, 0, 0, 0.5), inset 0 0 80px rgba(255, 0, 0, 0.2);
+    }
+}
+
+.roleBean,
+.playerBean,
+.voteBean,
+.resultBean,
+.ejectBean {
+    width: 100px;
+    height: 120px;
+    margin: 0 auto 25px;
+    position: relative;
+}
+
+.roleBean {
+    width: 130px;
+    height: 156px;
+}
+
+.roleBean::before,
+.playerBean::before,
+.voteBean::before,
+.resultBean::before,
+.ejectBean::before {
     content: '';
     position: absolute;
-    top: 28%;
-    left: 10%;
-    width: 40%;
-    height: 25%;
-    background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 100%);
+    inset: 0;
+    background: linear-gradient(180deg, var(--bean-color, #c51111) 0%, color-mix(in srgb, var(--bean-color, #c51111), black 30%) 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow:
+        inset -12px -8px 25px rgba(0, 0, 0, 0.4),
+        inset 8px 8px 15px rgba(255, 255, 255, 0.1),
+        0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.beanVisor {
+    position: absolute;
+    top: 22%;
+    left: 8%;
+    width: 42%;
+    height: 28%;
+    background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 50%, #0ea5e9 100%);
     border-radius: 40% 60% 60% 40% / 50% 50% 50% 50%;
+    box-shadow:
+        0 0 15px rgba(56, 189, 248, 0.5),
+        inset 5px 5px 10px rgba(255, 255, 255, 0.3);
+    z-index: 1;
+}
+
+.beanBackpack {
+    position: absolute;
+    right: -8%;
+    top: 30%;
+    width: 20%;
+    height: 30%;
+    background: linear-gradient(180deg, var(--bean-color, #c51111), color-mix(in srgb, var(--bean-color, #c51111), black 30%));
+    border-radius: 0 50% 50% 0;
+    box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .impostorTitle {
     font-size: 2.5rem;
     color: #ff4444;
     margin: 0 0 15px;
-    text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+    text-shadow: 0 0 40px rgba(255, 0, 0, 0.6);
+    animation: impostorTextPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes impostorTextPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+.impostorHint {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
 }
 
 .roleCard h2 {
-    font-size: 1.5rem;
-    color: white;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.3rem;
     margin: 0 0 10px;
 }
 
@@ -224,19 +510,36 @@
     font-size: 3.5rem;
     font-weight: 900;
     color: #00ff88;
-    text-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
+    text-shadow:
+        0 0 30px rgba(0, 255, 136, 0.5),
+        0 0 60px rgba(0, 255, 136, 0.3);
     margin: 20px 0;
+    animation: wordPulse 2s ease-in-out infinite;
+}
+
+@keyframes wordPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+    }
+
+    50% {
+        transform: scale(1.02);
+        text-shadow: 0 0 50px rgba(0, 255, 136, 0.7);
+    }
 }
 
 .roleCard p {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
 }
 
 /* ===== MEETING ROOM ===== */
 .meetingRoom {
     width: 100%;
-    max-width: 900px;
+    max-width: 1000px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -244,28 +547,62 @@
 
 .tableArea {
     position: relative;
-    height: 350px;
+    height: 380px;
     display: flex;
     align-items: center;
     justify-content: center;
+    perspective: 1000px;
 }
 
-.table {
-    width: 180px;
-    height: 180px;
-    background: linear-gradient(135deg, #2a2a4a 0%, #1a1a3a 100%);
-    border: 4px solid rgba(255, 255, 255, 0.1);
+.table3D {
+    position: relative;
+    transform-style: preserve-3d;
+    animation: tableFloat 4s ease-in-out infinite;
+}
+
+@keyframes tableFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotateX(10deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotateX(10deg);
+    }
+}
+
+.tableTop {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(145deg, #2a2a5a 0%, #1a1a4a 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        inset 0 0 40px rgba(255, 255, 255, 0.05);
+    border: 3px solid rgba(255, 255, 255, 0.1);
 }
 
-.table span {
+.tableTop span {
     color: rgba(255, 255, 255, 0.3);
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+}
+
+.tableReflection {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%) scaleY(-0.3);
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(to bottom, rgba(42, 42, 90, 0.3) 0%, transparent 100%);
+    border-radius: 50%;
+    filter: blur(10px);
 }
 
 .playersCircle {
@@ -278,90 +615,156 @@
     left: 50%;
     top: 50%;
     transform:
-        translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-140px) rotate(calc(-1 * var(--seat-angle)));
+        translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-160px) rotate(calc(-1 * var(--seat-angle)));
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    transition: all 0.3s;
+    gap: 8px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.playerSeat.active {
+.playerSeat.activeSeat {
     transform:
-        translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-140px) rotate(calc(-1 * var(--seat-angle))) scale(1.2);
+        translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-160px) rotate(calc(-1 * var(--seat-angle))) scale(1.25);
+    z-index: 100;
+}
+
+.playerGlow {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.activeSeat .playerGlow {
+    opacity: 1;
+    animation: glowPulse 1s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
 }
 
 .playerBean {
-    width: 60px;
-    height: 72px;
+    width: 70px;
+    height: 84px;
     position: relative;
-    transition: all 0.3s;
+    transition: transform 0.3s;
 }
 
-.playerBean::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--bean-color, #c51111);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    border: 3px solid rgba(0, 0, 0, 0.3);
+.activeSeat .playerBean {
+    animation: activeBounce 0.5s ease-in-out infinite;
 }
 
-.playerBean::after {
-    content: '';
-    position: absolute;
-    top: 22%;
-    left: 8%;
-    width: 38%;
-    height: 22%;
-    background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 100%);
-    border-radius: 40% 60% 60% 40%;
+@keyframes activeBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
 }
 
-.speakingIndicator {
+.typing {
     position: absolute;
-    top: -20px;
+    bottom: -25px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 1.5rem;
-    animation: bounce 0.5s infinite;
+    display: flex;
+    gap: 5px;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
 
-.playerName {
+.typing span {
+    width: 8px;
+    height: 8px;
+    background: #666;
+    border-radius: 50%;
+    animation: typingDot 1s infinite;
+}
+
+.typing span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingDot {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-8px);
+    }
+}
+
+.playerLabel {
     color: white;
     font-size: 12px;
-    font-weight: 600;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 3px 10px;
-    border-radius: 10px;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 5px 12px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
 }
 
 .clueBubble {
     position: absolute;
-    top: -50px;
+    top: -60px;
     left: 50%;
     transform: translateX(-50%);
-    background: white;
-    color: #333;
-    padding: 8px 15px;
-    border-radius: 12px;
-    font-size: 11px;
-    max-width: 150px;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    color: #222;
+    padding: 10px 18px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    max-width: 180px;
     text-align: center;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-    animation: bubbleIn 0.3s;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    animation: bubbleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.clueBubble::after {
-    content: '';
+.skippedClue {
+    background: linear-gradient(135deg, #ff9999 0%, #ffcccc 100%);
+    color: #880000;
+}
+
+.bubbleTail {
     position: absolute;
-    bottom: -8px;
+    bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
-    border: 8px solid transparent;
-    border-top-color: white;
-    border-bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 12px solid #f0f0f0;
 }
 
 @keyframes bubbleIn {
@@ -378,238 +781,302 @@
 
 /* ===== BOTTOM PANEL ===== */
 .bottomPanel {
-    background: rgba(20, 20, 40, 0.95);
-    border-radius: 20px;
-    padding: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 15, 40, 0.9);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
 }
 
-.clueInput,
-.chatInputRow {
+.cluesPanel,
+.chatPanel,
+.votingPanel {
+    animation: fadeInUp 0.3s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.turnInfo {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 10px;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
 }
 
-.clueInput input,
-.chatInputRow input {
+.turnIcon {
+    font-size: 1.5rem;
+    animation: micPulse 1s infinite;
+}
+
+@keyframes micPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.inputGroup {
+    display: flex;
+    gap: 12px;
+}
+
+.inputGroup input {
     flex: 1;
-    padding: 15px 20px;
-    background: rgba(10, 10, 20, 0.8);
+    padding: 16px 24px;
+    background: rgba(10, 10, 30, 0.8);
     border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    border-radius: 16px;
     color: white;
     font-size: 16px;
     outline: none;
+    transition: all 0.3s;
 }
 
-.clueInput input:focus,
-.chatInputRow input:focus {
+.inputGroup input:focus {
     border-color: #00d9ff;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
 }
 
-.clueInput button,
-.chatInputRow button {
-    padding: 15px 30px;
-    background: linear-gradient(135deg, #117f2d 0%, #0a5a1e 100%);
+.sendBtn {
+    padding: 16px 35px;
+    background: linear-gradient(135deg, #00cc66 0%, #009944 100%);
     border: none;
-    border-radius: 12px;
+    border-radius: 16px;
     color: white;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 16px;
     cursor: pointer;
-    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
 }
 
-.clueInput button:hover,
-.chatInputRow button:hover {
+.sendBtn:hover {
     transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 200, 100, 0.4);
 }
 
-.waitingMessage {
-    text-align: center;
-    color: rgba(255, 255, 255, 0.7);
+.btnGlow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+    animation: shimmer 2s infinite;
+}
+
+/* ===== CHAT ===== */
+.chatHeader {
+    margin-bottom: 15px;
     font-size: 1.1rem;
-    padding: 15px;
-}
-
-.waitingMessage strong {
-    color: #00d9ff;
-}
-
-/* ===== DISCUSSION ===== */
-.discussionPanel {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .chatMessages {
-    height: 150px;
+    height: 160px;
     overflow-y: auto;
-    background: rgba(10, 10, 20, 0.5);
-    border-radius: 12px;
+    background: rgba(10, 10, 30, 0.5);
+    border-radius: 16px;
     padding: 15px;
+    margin-bottom: 15px;
 }
 
 .chatMsg {
-    padding: 8px 0;
+    padding: 10px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     font-size: 14px;
     color: white;
+    animation: msgIn 0.3s;
+}
+
+@keyframes msgIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .chatSender {
     font-weight: 700;
-    margin-right: 8px;
+    margin-right: 10px;
 }
 
 .systemMsg {
     text-align: center;
     color: #ffd700;
+    font-weight: 700;
     font-style: italic;
-    font-weight: 600;
 }
 
 /* ===== VOTING ===== */
-.votingPanel {
-    text-align: center;
-}
-
-.votingPanel h3 {
-    color: white;
-    margin: 0 0 20px;
-    font-size: 1.3rem;
-}
-
-.voteOptions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-}
-
-.voteButton {
+.votingTitle {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
-    background: rgba(40, 40, 70, 0.8);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.votingTitle span {
+    font-size: 2rem;
+}
+
+.votingTitle h3 {
     color: white;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.voteGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.voteCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 15px;
+    background: rgba(30, 30, 70, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: white;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s;
     position: relative;
 }
 
-.voteButton:hover:not(:disabled) {
-    border-color: #c51111;
+.voteCard:hover:not(:disabled) {
+    border-color: rgba(197, 17, 17, 0.6);
     background: rgba(197, 17, 17, 0.2);
-    transform: scale(1.05);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(197, 17, 17, 0.3);
 }
 
-.voteButton:disabled {
+.voteCard.voted {
     opacity: 0.6;
     cursor: default;
 }
 
-.voteButton.skipVote {
-    background: rgba(100, 100, 100, 0.4);
-}
-
-.voteBeanMini {
-    width: 35px;
-    height: 42px;
+.voteBeanWrap {
     position: relative;
 }
 
-.voteBeanMini::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--bean-color, #c51111);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+.voteBean {
+    width: 55px;
+    height: 66px;
 }
 
-.voteBeanMini::after {
-    content: '';
-    position: absolute;
-    top: 25%;
-    left: 10%;
-    width: 35%;
-    height: 20%;
-    background: #38bdf8;
-    border-radius: 40% 60% 60% 40%;
+.voteName {
+    font-weight: 700;
+    font-size: 13px;
 }
 
 .voteCount {
     position: absolute;
     top: -8px;
     right: -8px;
-    width: 24px;
-    height: 24px;
-    background: #c51111;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #c51111 0%, #8b0000 100%);
     border-radius: 50%;
-    font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    box-shadow: 0 4px 15px rgba(197, 17, 17, 0.5);
+    animation: countPop 0.3s;
 }
 
-/* ===== VOTING RESULT ===== */
-.votingResult {
+@keyframes countPop {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+.skipButton {
+    padding: 15px 50px;
+    background: rgba(100, 100, 100, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.skipButton:hover:not(:disabled) {
+    background: rgba(100, 100, 100, 0.6);
+    transform: scale(1.02);
+}
+
+.skipButton:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* ===== RESULT ===== */
+.resultScreen {
     text-align: center;
     animation: fadeIn 0.5s;
+    padding: 50px;
+    background: rgba(20, 20, 50, 0.8);
+    border-radius: 30px;
+    backdrop-filter: blur(20px);
 }
 
-.ejectedText,
-.noEject {
-    padding: 40px 60px;
-    background: rgba(30, 30, 60, 0.8);
-    border-radius: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.1);
+.resultBean {
+    width: 100px;
+    height: 120px;
+    margin-bottom: 25px;
 }
 
-.ejectedBean {
-    width: 80px;
-    height: 96px;
-    margin: 0 auto 20px;
-    position: relative;
+.noEjectIcon {
+    font-size: 5rem;
+    margin-bottom: 20px;
 }
 
-.ejectedBean::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--bean-color, #c51111);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-}
-
-.ejectedBean::after {
-    content: '';
-    position: absolute;
-    top: 25%;
-    left: 10%;
-    width: 35%;
-    height: 20%;
-    background: #38bdf8;
-    border-radius: 40% 60% 60% 40%;
-}
-
-.ejectedText h2,
-.noEject h2 {
+.resultScreen h2 {
     color: white;
-    font-size: 2rem;
-    margin: 0;
+    font-size: 2.5rem;
+    margin: 0 0 10px;
 }
 
-.ejectedText h3,
-.noEject h3 {
+.resultScreen h3 {
     color: rgba(255, 255, 255, 0.6);
     font-size: 1.3rem;
-    margin: 10px 0 0;
+    margin: 0;
 }
 
 /* ===== EXPULSION ===== */
@@ -618,81 +1085,60 @@
     animation: fadeIn 0.3s;
 }
 
-.expulsionBean {
-    width: 140px;
-    height: 168px;
-    margin: 0 auto 30px;
-    position: relative;
-    animation: eject 2s forwards;
+.ejectBean {
+    width: 160px;
+    height: 192px;
+    margin: 0 auto 40px;
+    animation: ejectAnimation 3s forwards;
 }
 
-.expulsionBean::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--bean-color, #c51111);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    border: 4px solid rgba(0, 0, 0, 0.3);
-}
-
-.expulsionBean::after {
-    content: '';
-    position: absolute;
-    top: 25%;
-    left: 10%;
-    width: 35%;
-    height: 20%;
-    background: #38bdf8;
-    border-radius: 40% 60% 60% 40%;
-}
-
-.expulsionBean.wasImpostor {
-    animation: ejectGreen 2s forwards;
-}
-
-@keyframes eject {
+@keyframes ejectAnimation {
     0% {
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
         opacity: 1;
     }
 
-    50% {
-        transform: scale(0.8) rotate(180deg);
+    30% {
+        transform: scale(1.1) rotate(20deg);
     }
 
     100% {
-        transform: scale(0) translateY(-200px) rotate(360deg);
+        transform: scale(0) translateY(-500px) rotate(720deg);
         opacity: 0;
     }
 }
 
-@keyframes ejectGreen {
+.ejectBean.wasImpostor {
+    animation: ejectImpostor 3s forwards;
+}
+
+@keyframes ejectImpostor {
     0% {
         transform: scale(1);
         opacity: 1;
         filter: drop-shadow(0 0 0 transparent);
     }
 
-    50% {
-        transform: scale(1.2);
-        filter: drop-shadow(0 0 30px #00ff88);
+    30% {
+        transform: scale(1.3);
+        filter: drop-shadow(0 0 50px #00ff88);
     }
 
     100% {
-        transform: scale(0) rotate(720deg);
+        transform: scale(0) rotate(1080deg);
         opacity: 0;
     }
 }
 
-.expulsionText {
-    animation: textReveal 1s 1s forwards;
+.ejectText {
+    animation: ejectTextIn 1s 1.5s forwards;
     opacity: 0;
 }
 
-@keyframes textReveal {
+@keyframes ejectTextIn {
     from {
         opacity: 0;
-        transform: scale(0.8);
+        transform: scale(0.5);
     }
 
     to {
@@ -701,49 +1147,78 @@
     }
 }
 
-.expulsionText h1 {
+.ejectText h1 {
     color: white;
     font-size: 3rem;
     margin: 0 0 15px;
 }
 
-.expulsionText h2 {
+.ejectText h2 {
     font-size: 2rem;
-    margin: 0;
+    margin: 0 0 15px;
 }
 
-.textGreen {
+.greenText {
     color: #00ff88;
-    text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+    text-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
 }
 
-.textRed {
+.grayText {
     color: #888;
+}
+
+.ejectText p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1rem;
 }
 
 /* ===== GAME END ===== */
 .gameEndScreen {
     text-align: center;
     padding: 60px 80px;
-    border-radius: 24px;
+    border-radius: 30px;
     animation: zoomIn 0.5s;
 }
 
 .crewWins {
-    background: linear-gradient(135deg, rgba(0, 100, 200, 0.4) 0%, rgba(0, 50, 100, 0.4) 100%);
-    border: 4px solid #00d9ff;
+    background: linear-gradient(135deg, rgba(0, 100, 200, 0.5) 0%, rgba(0, 50, 100, 0.5) 100%);
+    border: 3px solid #00d9ff;
+    box-shadow: 0 30px 80px rgba(0, 100, 200, 0.4);
 }
 
 .impostorWins {
-    background: linear-gradient(135deg, rgba(200, 0, 0, 0.4) 0%, rgba(100, 0, 0, 0.4) 100%);
-    border: 4px solid #c51111;
+    background: linear-gradient(135deg, rgba(180, 0, 0, 0.5) 0%, rgba(100, 0, 0, 0.5) 100%);
+    border: 3px solid #c51111;
+    box-shadow: 0 30px 80px rgba(200, 0, 0, 0.4);
+}
+
+.endContent {
+    position: relative;
+}
+
+.endIcon {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    animation: endIconBounce 1s infinite;
+}
+
+@keyframes endIconBounce {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 .gameEndScreen h1 {
-    font-size: 3.5rem;
+    font-size: 4rem;
     color: white;
-    margin: 0 0 15px;
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    margin: 0 0 10px;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
 }
 
 .gameEndScreen h2 {
@@ -752,67 +1227,96 @@
     margin: 0 0 30px;
 }
 
-.gameEndScreen p {
-    font-size: 1.1rem;
+.endDetails {
+    margin-bottom: 30px;
+}
+
+.endDetails p {
     color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
     margin: 8px 0;
 }
 
-.gameEndScreen strong {
+.endDetails strong {
     color: #00ff88;
 }
 
-.gameEndScreen button {
-    margin-top: 30px;
-    padding: 18px 50px;
+.endButton {
+    padding: 18px 60px;
     background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
     border: none;
-    border-radius: 14px;
+    border-radius: 16px;
     color: white;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
     transition: all 0.3s;
 }
 
-.gameEndScreen button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+.endButton:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(124, 58, 237, 0.5);
 }
 
-/* ===== EMERGENCY OVERLAY ===== */
+/* ===== EMERGENCY ===== */
 .emergencyOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(255, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.9);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
-    animation: emergencyFlash 0.5s infinite;
-}
-
-.emergencyText {
-    font-size: 3rem;
-    font-weight: 900;
-    color: white;
-    text-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
-    animation: emergencyPulse 0.3s infinite;
+    z-index: 2000;
+    animation: emergencyFlash 0.2s infinite;
 }
 
 @keyframes emergencyFlash {
 
     0%,
     100% {
-        background: rgba(255, 0, 0, 0.1);
+        background: rgba(0, 0, 0, 0.9);
     }
 
     50% {
-        background: rgba(255, 0, 0, 0.25);
+        background: rgba(50, 0, 0, 0.9);
     }
 }
 
-@keyframes emergencyPulse {
+.emergencyContent {
+    text-align: center;
+    position: relative;
+}
+
+.emergencyIcon {
+    font-size: 6rem;
+    margin-bottom: 20px;
+    animation: emergencyShake 0.1s infinite;
+}
+
+@keyframes emergencyShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px) rotate(-2deg);
+    }
+
+    75% {
+        transform: translateX(5px) rotate(2deg);
+    }
+}
+
+.emergencyContent h1 {
+    font-size: 3rem;
+    color: #ff4444;
+    text-shadow: 0 0 50px rgba(255, 0, 0, 0.8);
+    animation: emergencyTextPulse 0.3s infinite;
+}
+
+@keyframes emergencyTextPulse {
 
     0%,
     100% {
@@ -821,6 +1325,26 @@
 
     50% {
         transform: scale(1.05);
+    }
+}
+
+.emergencyPulse {
+    position: absolute;
+    inset: -100px;
+    border: 5px solid rgba(255, 0, 0, 0.5);
+    border-radius: 50%;
+    animation: pulsing 1s infinite;
+}
+
+@keyframes pulsing {
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
     }
 }
 
@@ -847,57 +1371,52 @@
     }
 }
 
-@keyframes pulse {
-
-    0%,
-    100% {
-        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
-    }
-
-    50% {
-        box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
-    }
-}
-
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .header {
-        flex-wrap: wrap;
-        gap: 10px;
         padding: 10px 15px;
     }
 
-    .phaseTitle {
-        font-size: 1rem;
+    .phaseGlow {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
     }
 
     .tableArea {
-        height: 280px;
+        height: 300px;
     }
 
-    .table {
-        width: 120px;
-        height: 120px;
+    .tableTop {
+        width: 140px;
+        height: 140px;
     }
 
     .playerSeat {
-        transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-100px) rotate(calc(-1 * var(--seat-angle)));
+        transform: translate(-50%, -50%) rotate(var(--seat-angle)) translateY(-120px) rotate(calc(-1 * var(--seat-angle)));
     }
 
     .playerBean {
-        width: 45px;
-        height: 54px;
+        width: 50px;
+        height: 60px;
+    }
+
+    .roleCard {
+        padding: 40px 30px;
     }
 
     .secretWord {
         font-size: 2.5rem;
     }
 
-    .roleCard {
-        padding: 30px 40px;
+    .introTitle {
+        font-size: 2.5rem;
     }
 
-    .emergencyText {
+    .emergencyContent h1 {
         font-size: 2rem;
+    }
+
+    .voteGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
