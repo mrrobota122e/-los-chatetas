@@ -1,40 +1,40 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSocket } from '../../contexts/SocketContext';
 import styles from './ImpostorGamePage.module.css';
 
-// Football players for the word
+// ============== CONSTANTES ==============
 const FOOTBALLERS = [
     'Messi', 'Cristiano Ronaldo', 'Neymar', 'Mbappé', 'Haaland',
-    'Vinicius Jr', 'Bellingham', 'Salah', 'De Bruyne', 'Modric',
-    'Benzema', 'Lewandowski', 'Kane', 'Son', 'Pedri'
+    'Vinicius Jr', 'Bellingham', 'Salah', 'De Bruyne', 'Modric'
 ];
 
-// Bot names
-const BOT_NAMES = ['MbappéBot', 'MessiBot', 'HaalandBot', 'ViniBot', 'BellinghamBot'];
+const BOT_NAMES = ['Pepito', 'Juan', 'Carlos', 'María', 'Pedro'];
+const BEAN_COLORS = ['#c51111', '#132ed1', '#117f2d', '#ed54ba', '#ef7d0d', '#f5f557', '#3f474e', '#d6e0f0'];
 
-// Generate random clue for bots
 const BOT_CLUES = [
-    'Juega en Europa', 'Es muy rápido', 'Gana muchos trofeos',
-    'Es delantero', 'Viste de blanco', 'Es sudamericano',
-    'Mete muchos goles', 'Es muy técnico', 'Tiene tatuajes',
-    'Es joven', 'Juega en LaLiga', 'Es famoso'
+    'Juega en Europa', 'Es delantero', 'Ganó el Balón de Oro', 'Es muy rápido',
+    'Viste de blanco a veces', 'Ha jugado en España', 'Es sudamericano',
+    'Tiene muchos goles', 'Es joven todavía', 'Es famoso mundialmente'
 ];
 
-type Phase = 'ROLE_REVEAL' | 'CLUES' | 'DISCUSSION' | 'VOTING' | 'ELIMINATION' | 'GAME_END';
+type Phase = 'INTRO' | 'ROLE_REVEAL' | 'CLUES' | 'DISCUSSION' | 'VOTING' | 'VOTING_RESULT' | 'EXPULSION' | 'GAME_END';
 
 interface Player {
     id: string;
     name: string;
+    color: string;
     isBot: boolean;
     isImpostor: boolean;
     isAlive: boolean;
-    hasVoted?: boolean;
-    votesAgainst: number;
+    clue?: string;
+    votedFor?: string | null;
+    votes: number;
 }
 
 interface ChatMessage {
+    id: number;
     sender: string;
+    senderColor: string;
     text: string;
     isSystem?: boolean;
 }
@@ -42,42 +42,80 @@ interface ChatMessage {
 export default function ImpostorGamePage() {
     const { roomCode } = useParams<{ roomCode: string }>();
     const navigate = useNavigate();
-    const { socket } = useSocket();
 
-    // Game state
-    const [phase, setPhase] = useState<Phase>('ROLE_REVEAL');
+    // Game State
+    const [phase, setPhase] = useState<Phase>('INTRO');
     const [players, setPlayers] = useState<Player[]>([]);
-    const [secretWord, setSecretWord] = useState<string>('');
+    const [secretWord, setSecretWord] = useState('');
     const [isImpostor, setIsImpostor] = useState(false);
-    const [timer, setTimer] = useState(30);
-    const [currentTurn, setCurrentTurn] = useState(0);
-    const [clues, setClues] = useState<{ player: string; clue: string }[]>([]);
-    const [myClue, setMyClue] = useState('');
+    const [timer, setTimer] = useState(0);
+    const [maxTimer, setMaxTimer] = useState(0);
+    const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
     const [chat, setChat] = useState<ChatMessage[]>([]);
     const [chatInput, setChatInput] = useState('');
-    const [selectedVote, setSelectedVote] = useState<string | null>(null);
+    const [myClue, setMyClue] = useState('');
     const [hasVoted, setHasVoted] = useState(false);
     const [eliminatedPlayer, setEliminatedPlayer] = useState<Player | null>(null);
     const [winner, setWinner] = useState<'CREW' | 'IMPOSTOR' | null>(null);
     const [round, setRound] = useState(1);
+    const [showEmergency, setShowEmergency] = useState(false);
 
-    const myId = useRef(socket?.id || `player-${Date.now()}`);
+    const myId = useRef(`player-${Date.now()}`);
     const chatRef = useRef<HTMLDivElement>(null);
+    const msgIdRef = useRef(0);
 
-    // Initialize game
+    // ============== INICIALIZACIÓN ==============
     useEffect(() => {
         initializeGame();
     }, []);
 
-    // Timer effect
+    const initializeGame = () => {
+        const playerName = localStorage.getItem('globalPlayerName') || 'Tú';
+
+        // Create players with colors
+        const gamePlayers: Player[] = [
+            { id: myId.current, name: playerName, color: BEAN_COLORS[0], isBot: false, isImpostor: false, isAlive: true, votes: 0 }
+        ];
+
+        // Add 4 bots
+        BOT_NAMES.slice(0, 4).forEach((name, i) => {
+            gamePlayers.push({
+                id: `bot-${i}`,
+                name,
+                color: BEAN_COLORS[i + 1],
+                isBot: true,
+                isImpostor: false,
+                isAlive: true,
+                votes: 0
+            });
+        });
+
+        // Pick impostor (70% bot, 30% player)
+        const impostorIndex = Math.random() < 0.3 ? 0 : Math.floor(Math.random() * 4) + 1;
+        gamePlayers[impostorIndex].isImpostor = true;
+
+        // Secret word
+        const word = FOOTBALLERS[Math.floor(Math.random() * FOOTBALLERS.length)];
+
+        setPlayers(gamePlayers);
+        setSecretWord(word);
+        setIsImpostor(gamePlayers[0].isImpostor);
+
+        // Start intro
+        setPhase('INTRO');
+        setTimer(3);
+        setMaxTimer(3);
+    };
+
+    // ============== TIMER ==============
     useEffect(() => {
         if (timer <= 0) {
-            handleTimerEnd();
+            handlePhaseEnd();
             return;
         }
 
         const interval = setInterval(() => {
-            setTimer(prev => prev - 1);
+            setTimer(prev => Math.max(0, prev - 1));
         }, 1000);
 
         return () => clearInterval(interval);
@@ -90,167 +128,187 @@ export default function ImpostorGamePage() {
         }
     }, [chat]);
 
-    const initializeGame = () => {
-        const playerName = localStorage.getItem('globalPlayerName') || 'Jugador';
-
-        // Create players (1 real + bots)
-        const gamePlayers: Player[] = [
-            { id: myId.current, name: playerName, isBot: false, isImpostor: false, isAlive: true, votesAgainst: 0 }
-        ];
-
-        // Add 4 bots
-        BOT_NAMES.slice(0, 4).forEach((name, i) => {
-            gamePlayers.push({
-                id: `bot-${i}`,
-                name,
-                isBot: true,
-                isImpostor: false,
-                isAlive: true,
-                votesAgainst: 0
-            });
-        });
-
-        // Pick random impostor (30% chance for real player, 70% for bot)
-        const impostorIndex = Math.random() < 0.3 ? 0 : Math.floor(Math.random() * 4) + 1;
-        gamePlayers[impostorIndex].isImpostor = true;
-
-        // Pick secret word
-        const word = FOOTBALLERS[Math.floor(Math.random() * FOOTBALLERS.length)];
-
-        setPlayers(gamePlayers);
-        setSecretWord(word);
-        setIsImpostor(gamePlayers[0].isImpostor);
-        setPhase('ROLE_REVEAL');
-        setTimer(8);
-    };
-
-    const handleTimerEnd = () => {
+    // ============== TRANSICIONES ==============
+    const handlePhaseEnd = useCallback(() => {
         switch (phase) {
+            case 'INTRO':
+                setPhase('ROLE_REVEAL');
+                setTimer(6);
+                setMaxTimer(6);
+                break;
+
             case 'ROLE_REVEAL':
                 setPhase('CLUES');
-                setTimer(20);
-                setCurrentTurn(0);
+                setCurrentPlayerIndex(0);
+                setTimer(15);
+                setMaxTimer(15);
                 break;
+
             case 'CLUES':
-                // Bot gives clue
-                if (players[currentTurn]?.isBot) {
-                    const randomClue = BOT_CLUES[Math.floor(Math.random() * BOT_CLUES.length)];
-                    setClues(prev => [...prev, { player: players[currentTurn].name, clue: randomClue }]);
+                const alivePlayers = players.filter(p => p.isAlive);
+                const currentPlayer = alivePlayers[currentPlayerIndex];
+
+                // Bot auto-clue
+                if (currentPlayer?.isBot && !currentPlayer.clue) {
+                    const clue = BOT_CLUES[Math.floor(Math.random() * BOT_CLUES.length)];
+                    setPlayers(prev => prev.map(p =>
+                        p.id === currentPlayer.id ? { ...p, clue } : p
+                    ));
                 }
 
-                if (currentTurn < players.filter(p => p.isAlive).length - 1) {
-                    setCurrentTurn(prev => prev + 1);
-                    setTimer(20);
+                if (currentPlayerIndex < alivePlayers.length - 1) {
+                    setCurrentPlayerIndex(prev => prev + 1);
+                    setTimer(15);
+                    setMaxTimer(15);
                 } else {
-                    setPhase('DISCUSSION');
-                    setTimer(60);
-                    setChat([{ sender: 'Sistema', text: '💬 ¡Discusión abierta! Descubre al impostor.', isSystem: true }]);
+                    // All clues done
+                    setShowEmergency(true);
+                    setTimeout(() => {
+                        setShowEmergency(false);
+                        setPhase('DISCUSSION');
+                        setTimer(45);
+                        setMaxTimer(45);
+                        addSystemMessage('💬 ¡DISCUSIÓN ABIERTA!');
+                    }, 2000);
                 }
                 break;
+
             case 'DISCUSSION':
                 setPhase('VOTING');
-                setTimer(30);
+                setTimer(20);
+                setMaxTimer(20);
+                addSystemMessage('🗳️ ¡HORA DE VOTAR!');
                 break;
+
             case 'VOTING':
                 processVotes();
                 break;
-            case 'ELIMINATION':
-                checkWinCondition();
+
+            case 'VOTING_RESULT':
+                if (eliminatedPlayer) {
+                    setPhase('EXPULSION');
+                    setTimer(5);
+                    setMaxTimer(5);
+                } else {
+                    checkWinOrNextRound();
+                }
+                break;
+
+            case 'EXPULSION':
+                checkWinOrNextRound();
                 break;
         }
+    }, [phase, currentPlayerIndex, players, eliminatedPlayer]);
+
+    // ============== HELPERS ==============
+    const addSystemMessage = (text: string) => {
+        setChat(prev => [...prev, {
+            id: ++msgIdRef.current,
+            sender: '',
+            senderColor: '',
+            text,
+            isSystem: true
+        }]);
     };
 
-    const handleSubmitClue = () => {
-        if (!myClue.trim() || currentTurn !== 0) return;
+    const addChatMessage = (sender: string, color: string, text: string) => {
+        setChat(prev => [...prev, {
+            id: ++msgIdRef.current,
+            sender,
+            senderColor: color,
+            text
+        }]);
+    };
 
-        setClues(prev => [...prev, { player: players[0].name, clue: myClue.trim() }]);
+    // ============== ACCIONES ==============
+    const handleSubmitClue = () => {
+        if (!myClue.trim()) return;
+
+        const alivePlayers = players.filter(p => p.isAlive);
+        if (alivePlayers[currentPlayerIndex]?.id !== myId.current) return;
+
+        setPlayers(prev => prev.map(p =>
+            p.id === myId.current ? { ...p, clue: myClue.trim() } : p
+        ));
         setMyClue('');
 
-        // Move to next turn
-        if (currentTurn < players.filter(p => p.isAlive).length - 1) {
-            setCurrentTurn(prev => prev + 1);
-            setTimer(20);
+        // Move to next
+        if (currentPlayerIndex < alivePlayers.length - 1) {
+            setCurrentPlayerIndex(prev => prev + 1);
+            setTimer(15);
 
-            // Bots give clues automatically
-            setTimeout(() => simulateBotClue(), 2000);
+            // Bot auto-clue after delay
+            setTimeout(() => {
+                const nextPlayer = alivePlayers[currentPlayerIndex + 1];
+                if (nextPlayer?.isBot) {
+                    const clue = BOT_CLUES[Math.floor(Math.random() * BOT_CLUES.length)];
+                    setPlayers(prev => prev.map(p =>
+                        p.id === nextPlayer.id ? { ...p, clue } : p
+                    ));
+                }
+            }, 2000);
         } else {
-            setPhase('DISCUSSION');
-            setTimer(60);
-        }
-    };
-
-    const simulateBotClue = () => {
-        const alivePlayers = players.filter(p => p.isAlive);
-        if (currentTurn >= alivePlayers.length) return;
-
-        const bot = alivePlayers[currentTurn];
-        if (bot?.isBot) {
-            const randomClue = BOT_CLUES[Math.floor(Math.random() * BOT_CLUES.length)];
-            setClues(prev => [...prev, { player: bot.name, clue: randomClue }]);
-
-            if (currentTurn < alivePlayers.length - 1) {
-                setCurrentTurn(prev => prev + 1);
-                setTimer(20);
-                setTimeout(() => simulateBotClue(), 2000);
-            } else {
+            setShowEmergency(true);
+            setTimeout(() => {
+                setShowEmergency(false);
                 setPhase('DISCUSSION');
-                setTimer(60);
-                setChat([{ sender: 'Sistema', text: '💬 ¡Discusión abierta!', isSystem: true }]);
-            }
+                setTimer(45);
+                setMaxTimer(45);
+            }, 2000);
         }
     };
 
     const handleSendChat = () => {
-        if (!chatInput.trim()) return;
+        if (!chatInput.trim() || phase !== 'DISCUSSION') return;
 
-        setChat(prev => [...prev, { sender: players[0].name, text: chatInput.trim() }]);
+        addChatMessage(players[0].name, players[0].color, chatInput.trim());
         setChatInput('');
 
-        // Bots respond randomly
+        // Bot response
         if (Math.random() > 0.5) {
             setTimeout(() => {
-                const randomBot = players.filter(p => p.isBot && p.isAlive)[Math.floor(Math.random() * 4)];
-                if (randomBot) {
-                    const responses = [
-                        'Hmm... sospechoso 🤔',
-                        'No sé, tú pareces el impostor',
-                        'Yo di una buena pista',
-                        'Votemos por el que dio mala pista'
-                    ];
-                    setChat(prev => [...prev, { sender: randomBot.name, text: responses[Math.floor(Math.random() * responses.length)] }]);
+                const bot = players.filter(p => p.isBot && p.isAlive)[Math.floor(Math.random() * 4)];
+                if (bot) {
+                    const responses = ['Hmm sospechoso...', 'Yo no fui 😅', 'Votemos ya', '¿Quién fue?'];
+                    addChatMessage(bot.name, bot.color, responses[Math.floor(Math.random() * responses.length)]);
                 }
             }, 1500);
         }
     };
 
-    const handleVote = (playerId: string) => {
-        if (hasVoted) return;
-        setSelectedVote(playerId);
-        setHasVoted(true);
+    const handleVote = (targetId: string | null) => {
+        if (hasVoted || phase !== 'VOTING') return;
 
-        // Update votes
+        setHasVoted(true);
         setPlayers(prev => prev.map(p =>
-            p.id === playerId ? { ...p, votesAgainst: p.votesAgainst + 1 } : p
+            p.id === myId.current ? { ...p, votedFor: targetId } : p
         ));
+
+        if (targetId) {
+            setPlayers(prev => prev.map(p =>
+                p.id === targetId ? { ...p, votes: p.votes + 1 } : p
+            ));
+        }
 
         // Bots vote
         setTimeout(() => {
+            const alivePlayers = players.filter(p => p.isAlive);
             setPlayers(prev => {
                 const updated = [...prev];
-                const alivePlayers = updated.filter(p => p.isAlive);
-
-                // Each bot votes randomly
-                updated.filter(p => p.isBot && p.isAlive).forEach(() => {
-                    const targetIndex = Math.floor(Math.random() * alivePlayers.length);
-                    alivePlayers[targetIndex].votesAgainst++;
+                updated.filter(p => p.isBot && p.isAlive).forEach(bot => {
+                    // Bots vote randomly
+                    if (Math.random() > 0.2) {
+                        const targetIdx = Math.floor(Math.random() * alivePlayers.length);
+                        const target = alivePlayers[targetIdx];
+                        const found = updated.find(p => p.id === target.id);
+                        if (found) found.votes++;
+                    }
                 });
-
                 return updated;
             });
 
-            // Process after short delay
-            setTimeout(processVotes, 2000);
-        }, 1500);
+            setTimeout(processVotes, 1500);
+        }, 1000);
     };
 
     const processVotes = () => {
@@ -260,227 +318,281 @@ export default function ImpostorGamePage() {
         let tie = false;
 
         alivePlayers.forEach(p => {
-            if (p.votesAgainst > maxVotes) {
-                maxVotes = p.votesAgainst;
+            if (p.votes > maxVotes) {
+                maxVotes = p.votes;
                 eliminated = p;
                 tie = false;
-            } else if (p.votesAgainst === maxVotes && maxVotes > 0) {
+            } else if (p.votes === maxVotes && maxVotes > 0) {
                 tie = true;
             }
         });
 
-        if (tie || !eliminated) {
-            setChat(prev => [...prev, { sender: 'Sistema', text: '⚖️ ¡Empate! Nadie fue eliminado.', isSystem: true }]);
-            setTimeout(checkWinCondition, 3000);
-        } else {
+        if (tie || maxVotes === 0) {
+            setEliminatedPlayer(null);
+            addSystemMessage('⚖️ EMPATE - Nadie fue expulsado');
+        } else if (eliminated) {
             setEliminatedPlayer(eliminated);
             setPlayers(prev => prev.map(p =>
                 p.id === eliminated!.id ? { ...p, isAlive: false } : p
             ));
-            setPhase('ELIMINATION');
-            setTimer(5);
         }
+
+        setPhase('VOTING_RESULT');
+        setTimer(3);
+        setMaxTimer(3);
     };
 
-    const checkWinCondition = () => {
+    const checkWinOrNextRound = () => {
         const alivePlayers = players.filter(p => p.isAlive);
         const aliveImpostor = alivePlayers.find(p => p.isImpostor);
         const aliveCrew = alivePlayers.filter(p => !p.isImpostor);
 
         if (!aliveImpostor) {
-            // Crew wins
             setWinner('CREW');
             setPhase('GAME_END');
         } else if (aliveCrew.length <= 1) {
-            // Impostor wins
             setWinner('IMPOSTOR');
             setPhase('GAME_END');
         } else {
             // Next round
             setRound(prev => prev + 1);
-            setPlayers(prev => prev.map(p => ({ ...p, votesAgainst: 0, hasVoted: false })));
-            setClues([]);
+            setPlayers(prev => prev.map(p => ({ ...p, votes: 0, votedFor: undefined, clue: undefined })));
             setHasVoted(false);
-            setSelectedVote(null);
             setEliminatedPlayer(null);
+            setCurrentPlayerIndex(0);
             setPhase('CLUES');
-            setCurrentTurn(0);
-            setTimer(20);
+            setTimer(15);
+            setMaxTimer(15);
         }
     };
 
-    const getPhaseTitle = () => {
-        switch (phase) {
-            case 'ROLE_REVEAL': return '🎭 Tu Rol';
-            case 'CLUES': return '📝 Fase de Pistas';
-            case 'DISCUSSION': return '💬 Discusión';
-            case 'VOTING': return '🗳️ Votación';
-            case 'ELIMINATION': return eliminatedPlayer?.isImpostor ? '🎉 ¡ERA EL IMPOSTOR!' : '❌ No era el impostor...';
-            case 'GAME_END': return winner === 'CREW' ? '🏆 ¡TRIPULACIÓN GANA!' : '💀 EL IMPOSTOR GANA';
-            default: return '';
-        }
-    };
+    // ============== RENDER ==============
+    const alivePlayers = players.filter(p => p.isAlive);
+    const currentPlayer = alivePlayers[currentPlayerIndex];
+    const isMyTurn = currentPlayer?.id === myId.current;
+    const timerPercent = maxTimer > 0 ? (timer / maxTimer) * 100 : 0;
 
-    const renderPhase = () => {
-        switch (phase) {
-            case 'ROLE_REVEAL':
-                return (
+    return (
+        <div className={styles.container}>
+            {/* Background */}
+            <div className={styles.spaceBackground}>
+                <div className={styles.stars} />
+            </div>
+
+            {/* Emergency Meeting Overlay */}
+            {showEmergency && (
+                <div className={styles.emergencyOverlay}>
+                    <div className={styles.emergencyText}>🚨 REUNIÓN DE EMERGENCIA 🚨</div>
+                </div>
+            )}
+
+            {/* Header */}
+            <header className={styles.header}>
+                <div className={styles.roundBadge}>Ronda {round}</div>
+                <div className={styles.phaseTitle}>{getPhaseTitle()}</div>
+                <div className={styles.timerCircle}>
+                    <svg viewBox="0 0 36 36">
+                        <path className={styles.timerBg}
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path className={styles.timerFill}
+                            strokeDasharray={`${timerPercent}, 100`}
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                    <span>{timer}</span>
+                </div>
+            </header>
+
+            {/* Main Game Area */}
+            <main className={styles.gameArea}>
+                {phase === 'INTRO' && (
+                    <div className={styles.introScreen}>
+                        <div className={styles.introLogo}>⚽</div>
+                        <h1>IMPOSTOR FÚTBOL</h1>
+                        <p>Preparando partida...</p>
+                    </div>
+                )}
+
+                {phase === 'ROLE_REVEAL' && (
                     <div className={styles.roleReveal}>
-                        <div className={`${styles.roleCard} ${isImpostor ? styles.impostor : styles.crew}`}>
+                        <div className={`${styles.roleCard} ${isImpostor ? styles.impostorCard : styles.crewCard}`}>
+                            <div className={styles.roleBeanLarge} style={{ '--bean-color': players[0]?.color } as any} />
                             {isImpostor ? (
                                 <>
-                                    <div className={styles.roleIcon}>🔪</div>
-                                    <h2>ERES EL IMPOSTOR</h2>
-                                    <p>No sabes quién es el futbolista secreto.<br />¡Finge que lo sabes!</p>
+                                    <h1 className={styles.impostorTitle}>ERES EL IMPOSTOR</h1>
+                                    <p>No sabes quién es el futbolista.<br />¡Finge que lo sabes!</p>
                                 </>
                             ) : (
                                 <>
-                                    <div className={styles.roleIcon}>⚽</div>
-                                    <h2>Tu Futbolista Secreto:</h2>
+                                    <h2>Tu futbolista es:</h2>
                                     <div className={styles.secretWord}>{secretWord}</div>
-                                    <p>Da pistas sin decir el nombre.<br />¡Descubre al impostor!</p>
+                                    <p>Da pistas sin decir el nombre</p>
                                 </>
                             )}
                         </div>
                     </div>
-                );
+                )}
 
-            case 'CLUES':
-                const alivePlayers = players.filter(p => p.isAlive);
-                const currentPlayer = alivePlayers[currentTurn];
-                const isMyTurn = currentPlayer?.id === myId.current;
-
-                return (
-                    <div className={styles.cluesPhase}>
-                        <div className={styles.turnIndicator}>
-                            <span>Turno de: </span>
-                            <strong className={isMyTurn ? styles.myTurn : ''}>{currentPlayer?.name || '...'}</strong>
+                {(phase === 'CLUES' || phase === 'DISCUSSION' || phase === 'VOTING') && (
+                    <div className={styles.meetingRoom}>
+                        {/* Table with players */}
+                        <div className={styles.tableArea}>
+                            <div className={styles.table}>
+                                <span>REUNIÓN</span>
+                            </div>
+                            <div className={styles.playersCircle}>
+                                {alivePlayers.map((player, idx) => (
+                                    <div
+                                        key={player.id}
+                                        className={`${styles.playerSeat} ${phase === 'CLUES' && currentPlayer?.id === player.id ? styles.active : ''}`}
+                                        style={{ '--seat-angle': `${(idx / alivePlayers.length) * 360}deg` } as any}
+                                    >
+                                        <div className={styles.playerBean} style={{ '--bean-color': player.color } as any}>
+                                            {phase === 'CLUES' && currentPlayer?.id === player.id && (
+                                                <div className={styles.speakingIndicator}>💬</div>
+                                            )}
+                                        </div>
+                                        <span className={styles.playerName}>{player.name}</span>
+                                        {player.clue && phase !== 'VOTING' && (
+                                            <div className={styles.clueBubble}>"{player.clue}"</div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
-                        <div className={styles.cluesList}>
-                            {clues.map((clue, i) => (
-                                <div key={i} className={styles.clueItem}>
-                                    <span className={styles.clueName}>{clue.player}:</span>
-                                    <span className={styles.clueText}>"{clue.clue}"</span>
+                        {/* Bottom Panel */}
+                        <div className={styles.bottomPanel}>
+                            {phase === 'CLUES' && isMyTurn && (
+                                <div className={styles.clueInput}>
+                                    <input
+                                        type="text"
+                                        placeholder="Escribe tu pista..."
+                                        value={myClue}
+                                        onChange={e => setMyClue(e.target.value)}
+                                        onKeyPress={e => e.key === 'Enter' && handleSubmitClue()}
+                                        maxLength={50}
+                                        autoFocus
+                                    />
+                                    <button onClick={handleSubmitClue}>ENVIAR</button>
                                 </div>
-                            ))}
-                        </div>
+                            )}
 
-                        {isMyTurn && (
-                            <div className={styles.clueInput}>
-                                <input
-                                    type="text"
-                                    placeholder="Escribe tu pista aquí..."
-                                    value={myClue}
-                                    onChange={e => setMyClue(e.target.value)}
-                                    onKeyPress={e => e.key === 'Enter' && handleSubmitClue()}
-                                    maxLength={100}
-                                    autoFocus
-                                />
-                                <button onClick={handleSubmitClue}>Enviar →</button>
+                            {phase === 'CLUES' && !isMyTurn && (
+                                <div className={styles.waitingMessage}>
+                                    Esperando pista de <strong>{currentPlayer?.name}</strong>...
+                                </div>
+                            )}
+
+                            {phase === 'DISCUSSION' && (
+                                <div className={styles.discussionPanel}>
+                                    <div className={styles.chatMessages} ref={chatRef}>
+                                        {chat.map(msg => (
+                                            <div key={msg.id} className={`${styles.chatMsg} ${msg.isSystem ? styles.systemMsg : ''}`}>
+                                                {!msg.isSystem && (
+                                                    <span className={styles.chatSender} style={{ color: msg.senderColor }}>
+                                                        {msg.sender}:
+                                                    </span>
+                                                )}
+                                                <span>{msg.text}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className={styles.chatInputRow}>
+                                        <input
+                                            type="text"
+                                            placeholder="Escribe..."
+                                            value={chatInput}
+                                            onChange={e => setChatInput(e.target.value)}
+                                            onKeyPress={e => e.key === 'Enter' && handleSendChat()}
+                                        />
+                                        <button onClick={handleSendChat}>→</button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {phase === 'VOTING' && (
+                                <div className={styles.votingPanel}>
+                                    <h3>¿Quién es el impostor?</h3>
+                                    <div className={styles.voteOptions}>
+                                        {alivePlayers.map(player => (
+                                            <button
+                                                key={player.id}
+                                                className={styles.voteButton}
+                                                onClick={() => handleVote(player.id)}
+                                                disabled={hasVoted}
+                                            >
+                                                <div className={styles.voteBeanMini} style={{ '--bean-color': player.color } as any} />
+                                                <span>{player.name}</span>
+                                                {player.votes > 0 && <span className={styles.voteCount}>{player.votes}</span>}
+                                            </button>
+                                        ))}
+                                        <button
+                                            className={`${styles.voteButton} ${styles.skipVote}`}
+                                            onClick={() => handleVote(null)}
+                                            disabled={hasVoted}
+                                        >
+                                            SKIP
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {phase === 'VOTING_RESULT' && (
+                    <div className={styles.votingResult}>
+                        {eliminatedPlayer ? (
+                            <div className={styles.ejectedText}>
+                                <div className={styles.ejectedBean} style={{ '--bean-color': eliminatedPlayer.color } as any} />
+                                <h2>{eliminatedPlayer.name}</h2>
+                                <h3>fue expulsado</h3>
+                            </div>
+                        ) : (
+                            <div className={styles.noEject}>
+                                <h2>EMPATE</h2>
+                                <h3>Nadie fue expulsado</h3>
                             </div>
                         )}
                     </div>
-                );
+                )}
 
-            case 'DISCUSSION':
-                return (
-                    <div className={styles.discussionPhase}>
-                        <div className={styles.chatArea} ref={chatRef}>
-                            {chat.map((msg, i) => (
-                                <div key={i} className={`${styles.chatMessage} ${msg.isSystem ? styles.systemMessage : ''}`}>
-                                    <strong>{msg.sender}:</strong> {msg.text}
-                                </div>
-                            ))}
-                        </div>
-                        <div className={styles.chatInput}>
-                            <input
-                                type="text"
-                                placeholder="Escribe tu mensaje..."
-                                value={chatInput}
-                                onChange={e => setChatInput(e.target.value)}
-                                onKeyPress={e => e.key === 'Enter' && handleSendChat()}
-                            />
-                            <button onClick={handleSendChat}>Enviar</button>
+                {phase === 'EXPULSION' && eliminatedPlayer && (
+                    <div className={styles.expulsionScreen}>
+                        <div className={`${styles.expulsionBean} ${eliminatedPlayer.isImpostor ? styles.wasImpostor : ''}`}
+                            style={{ '--bean-color': eliminatedPlayer.color } as any} />
+                        <div className={styles.expulsionText}>
+                            <h1>{eliminatedPlayer.name}</h1>
+                            <h2 className={eliminatedPlayer.isImpostor ? styles.textGreen : styles.textRed}>
+                                {eliminatedPlayer.isImpostor ? 'ERA EL IMPOSTOR' : 'NO era el impostor'}
+                            </h2>
                         </div>
                     </div>
-                );
+                )}
 
-            case 'VOTING':
-                return (
-                    <div className={styles.votingPhase}>
-                        <p>¿Quién crees que es el impostor?</p>
-                        <div className={styles.voteGrid}>
-                            {players.filter(p => p.isAlive).map(player => (
-                                <button
-                                    key={player.id}
-                                    className={`${styles.voteCard} ${selectedVote === player.id ? styles.selected : ''}`}
-                                    onClick={() => handleVote(player.id)}
-                                    disabled={hasVoted}
-                                >
-                                    <div className={styles.voteBean} />
-                                    <span>{player.name}</span>
-                                    {player.votesAgainst > 0 && (
-                                        <div className={styles.voteCount}>{player.votesAgainst}</div>
-                                    )}
-                                </button>
-                            ))}
-                        </div>
+                {phase === 'GAME_END' && (
+                    <div className={`${styles.gameEndScreen} ${winner === 'CREW' ? styles.crewWins : styles.impostorWins}`}>
+                        <h1>{winner === 'CREW' ? '🏆 VICTORIA' : '💀 DERROTA'}</h1>
+                        <h2>{winner === 'CREW' ? '¡El impostor fue descubierto!' : 'El impostor ha ganado'}</h2>
+                        <p>El futbolista era: <strong>{secretWord}</strong></p>
+                        <p>El impostor era: <strong>{players.find(p => p.isImpostor)?.name}</strong></p>
+                        <button onClick={() => navigate('/impostor-v2/menu')}>VOLVER AL MENÚ</button>
                     </div>
-                );
-
-            case 'ELIMINATION':
-                return (
-                    <div className={styles.eliminationPhase}>
-                        <div className={`${styles.eliminationCard} ${eliminatedPlayer?.isImpostor ? styles.wasImpostor : styles.wasNotImpostor}`}>
-                            <div className={styles.eliminatedBean} />
-                            <h2>{eliminatedPlayer?.name}</h2>
-                            <h3>{eliminatedPlayer?.isImpostor ? '¡ERA EL IMPOSTOR!' : 'No era el impostor...'}</h3>
-                        </div>
-                    </div>
-                );
-
-            case 'GAME_END':
-                return (
-                    <div className={styles.gameEnd}>
-                        <div className={`${styles.winnerCard} ${winner === 'CREW' ? styles.crewWins : styles.impostorWins}`}>
-                            <h1>{winner === 'CREW' ? '🏆 ¡TRIPULACIÓN GANA!' : '💀 IMPOSTOR GANA'}</h1>
-                            <p>El futbolista era: <strong>{secretWord}</strong></p>
-                            <p>El impostor era: <strong>{players.find(p => p.isImpostor)?.name}</strong></p>
-                            <button onClick={() => navigate('/impostor-v2/menu')}>Volver al Menú</button>
-                        </div>
-                    </div>
-                );
-        }
-    };
-
-    return (
-        <div className={styles.container}>
-            <div className={styles.background} />
-
-            <div className={styles.header}>
-                <div className={styles.phaseTitle}>{getPhaseTitle()}</div>
-                <div className={styles.timer}>{timer}s</div>
-                <div className={styles.roundBadge}>Ronda {round}</div>
-            </div>
-
-            {/* Players bar */}
-            <div className={styles.playersBar}>
-                {players.map(player => (
-                    <div
-                        key={player.id}
-                        className={`${styles.playerIcon} ${!player.isAlive ? styles.dead : ''} ${player.id === myId.current ? styles.me : ''}`}
-                        title={player.name}
-                    >
-                        <div className={styles.miniBean} />
-                        <span>{player.name.slice(0, 8)}</span>
-                    </div>
-                ))}
-            </div>
-
-            <div className={styles.gameArea}>
-                {renderPhase()}
-            </div>
+                )}
+            </main>
         </div>
     );
+
+    function getPhaseTitle() {
+        switch (phase) {
+            case 'INTRO': return 'PREPARANDO...';
+            case 'ROLE_REVEAL': return 'TU ROL';
+            case 'CLUES': return `PISTAS - Turno de ${currentPlayer?.name || '...'}`;
+            case 'DISCUSSION': return 'DISCUSIÓN';
+            case 'VOTING': return 'VOTACIÓN';
+            case 'VOTING_RESULT': return 'RESULTADO';
+            case 'EXPULSION': return 'EXPULSIÓN';
+            case 'GAME_END': return winner === 'CREW' ? 'VICTORIA' : 'DERROTA';
+        }
+    }
 }
