@@ -2,279 +2,334 @@
     position: relative;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 20px;
+    background: linear-gradient(180deg, #0f0a1a 0%, #1a0a1f 50%, #0a0a14 100%);
     overflow: hidden;
 }
 
 .background {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(179, 102, 255, 0.1) 0%, transparent 50%),
-        linear-gradient(180deg, #0a0a0f 0%, #15151f 100%);
-    z-index: -1;
+    inset: 0;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255, 100, 150, 0.3);
+    animation: float 6s infinite;
+}
+
+.particle:nth-child(1) {
+    left: 20%;
+    top: 30%;
+    animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+    left: 70%;
+    top: 60%;
+    animation-delay: 2s;
+}
+
+.particle:nth-child(3) {
+    left: 40%;
+    top: 80%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 0.8;
+    }
 }
 
 .backButton {
-    position: absolute;
+    position: fixed;
     top: 20px;
     left: 20px;
     padding: 12px 24px;
-    background: rgba(31, 31, 51, 0.6);
+    background: rgba(30, 30, 50, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     color: white;
     font-size: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    z-index: 10;
+    transition: all 0.3s;
+    z-index: 100;
 }
 
 .backButton:hover {
-    background: rgba(31, 31, 51, 0.8);
-    border-color: rgba(0, 217, 255, 0.5);
+    background: rgba(50, 50, 80, 0.9);
     transform: translateX(-5px);
 }
 
-.content {
-    max-width: 600px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    animation: fadeIn 0.6s ease;
+.connectionStatus {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    background: rgba(30, 30, 50, 0.8);
+    border-radius: 20px;
+    font-size: 14px;
+    z-index: 100;
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 20px;
+.online {
+    color: #00ff88;
+}
+
+.offline {
+    color: #ff5555;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
+}
+
+.logo {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ff3d3d 0%, #c41e3a 100%);
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(255, 61, 61, 0.4);
+}
+
+.logoIcon {
+    font-size: 60px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.sparkle {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 24px;
+    animation: sparkle 2s infinite;
+}
+
+@keyframes sparkle {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2) rotate(15deg);
+        opacity: 0.8;
+    }
 }
 
 .title {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 900;
+    color: white;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.titleWord {
-    background: linear-gradient(135deg, #00d9ff 0%, #b366ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 0 40px rgba(0, 217, 255, 0.3);
-    animation: glow 2s ease-in-out infinite;
-}
-
-.titleSubtext {
-    font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 400;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .subtitle {
-    font-size: 1.2rem;
     color: rgba(255, 255, 255, 0.6);
-    margin-top: 10px;
+    font-size: 1.2rem;
+    margin: 0;
 }
 
-.menuCard {
-    padding: 40px;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.inputGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.label {
+.nameTag {
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    color: rgba(255, 255, 255, 0.7);
     font-size: 14px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
-    text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
-.input {
-    padding: 16px 20px;
-    background: rgba(10, 10, 15, 0.6);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: white;
-    font-size: 18px;
-    outline: none;
-    transition: all 0.3s ease;
+.playerName {
+    color: #ff6b6b;
+    font-weight: 700;
 }
 
-.input:focus {
-    border-color: rgba(0, 217, 255, 0.5);
-    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
-}
-
-.input:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.divider {
+.buttonContainer {
     display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 10px 0;
-}
-
-.divider::before,
-.divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.divider span {
-    padding: 0 15px;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.buttonGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
+    gap: 20px;
+    margin-top: 30px;
 }
 
 .createButton,
 .joinButton {
-    padding: 18px 36px;
-    font-size: 18px;
-    font-weight: 700;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 30px;
+    border-radius: 16px;
     border: none;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 240px;
 }
 
 .createButton {
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.2) 0%, rgba(0, 217, 255, 0.1) 100%);
+    background: linear-gradient(135deg, #ff4444 0%, #cc2222 100%);
+    color: white;
 }
 
 .createButton:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 0 30px rgba(0, 217, 255, 0.4);
-}
-
-.createButton:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 68, 68, 0.4);
 }
 
 .joinButton {
-    background: rgba(31, 31, 51, 0.6);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #4488ff 0%, #2266dd 100%);
+    color: white;
 }
 
 .joinButton:hover:not(:disabled) {
-    border-color: rgba(179, 102, 255, 0.5);
-    box-shadow: 0 0 20px rgba(179, 102, 255, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(68, 136, 255, 0.4);
 }
 
+.createButton:disabled,
 .joinButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.buttonIcon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.buttonText {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.buttonTitle {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.buttonSubtitle {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* Modal */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: linear-gradient(145deg, #1a1a2e 0%, #0f0f1a 100%);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal h2 {
+    margin: 0 0 30px 0;
+    color: white;
+    font-size: 1.8rem;
+}
+
+.codeInput {
+    width: 100%;
+    padding: 20px;
+    font-size: 2rem;
+    text-align: center;
+    letter-spacing: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    outline: none;
+    text-transform: uppercase;
+}
+
+.codeInput:focus {
+    border-color: #4488ff;
+}
+
+.modalButtons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.cancelBtn,
+.confirmBtn {
+    flex: 1;
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.cancelBtn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.confirmBtn {
+    background: linear-gradient(135deg, #4488ff 0%, #2266dd 100%);
+    color: white;
+}
+
+.confirmBtn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-.infoPanel {
-    padding: 30px;
-    border-radius: 16px;
-}
-
-.infoPanel h3 {
-    margin: 0 0 20px 0;
-    font-size: 1.5rem;
-    color: rgba(0, 217, 255, 1);
-}
-
-.infoPanel ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.infoPanel li {
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.6;
-    padding-left: 25px;
-    position: relative;
-}
-
-.infoPanel li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: rgba(0, 217, 255, 0.6);
-    font-weight: bold;
-}
-
-.infoPanel strong {
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 600;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes glow {
-
-    0%,
-    100% {
-        text-shadow: 0 0 40px rgba(0, 217, 255, 0.3);
-    }
-
-    50% {
-        text-shadow: 0 0 60px rgba(0, 217, 255, 0.5), 0 0 80px rgba(179, 102, 255, 0.3);
-    }
-}
-
 @media (max-width: 768px) {
+    .buttonContainer {
+        flex-direction: column;
+    }
+
     .title {
         font-size: 2.5rem;
-    }
-
-    .titleSubtext {
-        font-size: 1.2rem;
-    }
-
-    .menuCard {
-        padding: 30px 20px;
     }
 }

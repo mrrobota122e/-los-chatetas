@@ -5,15 +5,16 @@ import styles from './ImpostorMenuPage.module.css';
 
 export default function ImpostorMenuPage() {
     const navigate = useNavigate();
-    const { socket } = useSocket();
-    const [playerName, setPlayerName] = useState('');
+    const { socket, isConnected } = useSocket();
+    const [playerName, setPlayerName] = useState(() => localStorage.getItem('playerName') || '');
     const [roomCode, setRoomCode] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showJoinModal, setShowJoinModal] = useState(false);
 
-    const handleCreateRoom = async () => {
+    const handleCreateRoom = () => {
         if (!playerName.trim() || !socket) return;
-
         setLoading(true);
+        localStorage.setItem('playerName', playerName.trim());
 
         socket.emit('room:create', {
             hostName: playerName.trim(),
@@ -34,92 +35,97 @@ export default function ImpostorMenuPage() {
 
     const handleJoinRoom = () => {
         if (!playerName.trim() || !roomCode.trim()) return;
+        localStorage.setItem('playerName', playerName.trim());
         navigate(`/impostor-v2/lobby/${roomCode.toUpperCase()}`);
     };
 
     return (
         <div className={styles.container}>
-            <div className={styles.background} />
+            <div className={styles.background}>
+                <div className={styles.particle} />
+                <div className={styles.particle} />
+                <div className={styles.particle} />
+            </div>
 
-            <button
-                className={styles.backButton}
-                onClick={() => navigate('/menu')}
-            >
-                ← Volver
+            <button className={styles.backButton} onClick={() => navigate('/menu')}>
+                ← Menú
             </button>
 
+            <div className={styles.connectionStatus}>
+                <span className={isConnected ? styles.online : styles.offline}>
+                    ● {isConnected ? 'Online' : 'Offline'}
+                </span>
+            </div>
+
             <div className={styles.content}>
-                <div className={styles.header}>
-                    <h1 className={styles.title}>
-                        <span className={styles.titleWord}>IMPOSTOR</span>
-                        <span className={styles.titleSubtext}>Deducción Social 3D</span>
-                    </h1>
-                    <p className={styles.subtitle}>
-                        Descubre al impostor antes de que sea tarde
-                    </p>
+                <div className={styles.logo}>
+                    <div className={styles.logoIcon}>🛡️</div>
+                    <div className={styles.sparkle}>✨</div>
                 </div>
 
-                <div className={styles.menuCard + ' glass-strong'}>
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}>Tu Nombre</label>
+                <h1 className={styles.title}>EL IMPOSTOR</h1>
+                <p className={styles.subtitle}>¿Quién no conoce la palabra secreta?</p>
+
+                <div className={styles.nameTag}>
+                    🎮 Jugando como <span className={styles.playerName}>{playerName || 'ANÓNIMO'}</span>
+                </div>
+
+                <div className={styles.buttonContainer}>
+                    <button
+                        className={styles.createButton}
+                        onClick={handleCreateRoom}
+                        disabled={!playerName.trim() || loading || !isConnected}
+                    >
+                        <span className={styles.buttonIcon}>+</span>
+                        <div className={styles.buttonText}>
+                            <span className={styles.buttonTitle}>CREAR SALA</span>
+                            <span className={styles.buttonSubtitle}>Inicia una nueva partida</span>
+                        </div>
+                    </button>
+
+                    <button
+                        className={styles.joinButton}
+                        onClick={() => setShowJoinModal(true)}
+                        disabled={!isConnected}
+                    >
+                        <span className={styles.buttonIcon}>→</span>
+                        <div className={styles.buttonText}>
+                            <span className={styles.buttonTitle}>UNIRSE</span>
+                            <span className={styles.buttonSubtitle}>Ingresa un código</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            {/* Join Modal */}
+            {showJoinModal && (
+                <div className={styles.modalOverlay} onClick={() => setShowJoinModal(false)}>
+                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+                        <h2>Unirse a Sala</h2>
                         <input
                             type="text"
-                            className={styles.input}
-                            placeholder="Introduce tu nombre..."
-                            value={playerName}
-                            onChange={(e) => setPlayerName(e.target.value)}
-                            maxLength={20}
-                            disabled={loading}
-                        />
-                    </div>
-
-                    <div className={styles.divider}>
-                        <span>O</span>
-                    </div>
-
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}>Código de Sala</label>
-                        <input
-                            type="text"
-                            className={styles.input}
-                            placeholder="XXXX"
+                            className={styles.codeInput}
+                            placeholder="Código de 4 letras"
                             value={roomCode}
                             onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                             maxLength={4}
-                            disabled={loading}
+                            autoFocus
                         />
-                    </div>
-
-                    <div className={styles.buttonGroup}>
-                        <button
-                            className={styles.createButton + ' neon-border-blue'}
-                            onClick={handleCreateRoom}
-                            disabled={!playerName.trim() || loading}
-                        >
-                            {loading ? 'Creando...' : '🎮 Crear Partida'}
-                        </button>
-
-                        <button
-                            className={styles.joinButton}
-                            onClick={handleJoinRoom}
-                            disabled={!playerName.trim() || !roomCode.trim() || loading}
-                        >
-                            🚀 Unirse
-                        </button>
+                        <div className={styles.modalButtons}>
+                            <button className={styles.cancelBtn} onClick={() => setShowJoinModal(false)}>
+                                Cancelar
+                            </button>
+                            <button
+                                className={styles.confirmBtn}
+                                onClick={handleJoinRoom}
+                                disabled={roomCode.length < 4}
+                            >
+                                Unirse
+                            </button>
+                        </div>
                     </div>
                 </div>
-
-                <div className={styles.infoPanel + ' glass'}>
-                    <h3>📋 Cómo Jugar</h3>
-                    <ul>
-                        <li><strong>Asignación:</strong> Todos reciben un futbolista, excepto 1 impostor</li>
-                        <li><strong>Pistas:</strong> Cada jugador da 1 pista por turno sobre su futbolista</li>
-                        <li><strong>Discusión:</strong> Hablan libremente para descubrir al impostor</li>
-                        <li><strong>Votación:</strong> Votan para eliminar a un sospechoso</li>
-                        <li><strong>Victoria:</strong> Grupo gana eliminando al impostor, impostor gana sobreviviendo</li>
-                    </ul>
-                </div>
-            </div>
+            )}
         </div>
     );
 }
