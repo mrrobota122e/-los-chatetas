@@ -101,9 +101,6 @@
     margin: 0 0 20px 0;
     color: #00d9ff;
     font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
 .playersList {
@@ -128,14 +125,16 @@
     background: rgba(0, 255, 136, 0.1);
 }
 
+.playerCard.bot {
+    border-color: rgba(168, 85, 247, 0.5);
+    background: rgba(168, 85, 247, 0.15);
+}
+
 /* Mini Bean Avatar */
 .playerAvatar {
     width: 50px;
     height: 60px;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .playerAvatar::before {
@@ -175,13 +174,37 @@
 .hostBadge {
     font-size: 12px;
     color: #ffd700;
-    display: flex;
-    align-items: center;
-    gap: 4px;
 }
 
 .controls {
     text-align: center;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.botButton {
+    padding: 18px 35px;
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
+}
+
+.botButton:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 28px rgba(124, 58, 237, 0.5);
+}
+
+.botButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .startButton {
@@ -237,8 +260,8 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
 }
 
@@ -264,6 +287,7 @@
     justify-content: center;
     gap: 20px;
     background: linear-gradient(180deg, #0a0a1f 0%, #1a0a2a 50%, #050510 100%);
+    color: white;
 }
 
 .loader {
@@ -292,7 +316,7 @@
         grid-template-columns: 1fr;
     }
 
-    .infoPanel ul {
-        grid-template-columns: 1fr;
+    .controls {
+        flex-direction: column;
     }
 }

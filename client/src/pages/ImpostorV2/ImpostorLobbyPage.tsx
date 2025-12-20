@@ -8,7 +8,10 @@ interface Player {
     name: string;
     isReady: boolean;
     isHost: boolean;
+    isBot?: boolean;
 }
+
+const BOT_NAMES = ['MbappéBot', 'MessiBot', 'HaalandBot', 'ViniBot', 'BellinghamBot', 'PedriBot', 'SakaBot'];
 
 export default function ImpostorLobbyPage() {
     const { roomCode } = useParams<{ roomCode: string }>();
@@ -25,14 +28,9 @@ export default function ImpostorLobbyPage() {
         if (!socket || !roomCode) return;
 
         const playerName = localStorage.getItem('globalPlayerName') || 'Jugador';
-        const storedPlayerId = localStorage.getItem('playerId');
 
-        // Join or create room
-        if (storedPlayerId) {
-            socket.emit('room:get-state', { roomCode });
-        } else {
-            socket.emit('room:join', { roomCode, playerName });
-        }
+        // Try to join room
+        socket.emit('room:join', { roomCode, playerName });
 
         // Listen for room state
         socket.on('room:joined', (data) => {
@@ -42,8 +40,6 @@ export default function ImpostorLobbyPage() {
             setIsHost(data.hostId === socket.id);
             setMyPlayerId(socket.id || '');
             setLoading(false);
-
-            // Save player ID
             localStorage.setItem('playerId', socket.id || '');
         });
 
@@ -92,6 +88,34 @@ export default function ImpostorLobbyPage() {
         };
     }, [socket, roomCode, navigate]);
 
+    const handleAddBots = () => {
+        if (!socket || !roomId) return;
+
+        const botsNeeded = Math.max(0, 4 - players.length); // At least 4 players
+        if (botsNeeded === 0) {
+            // Already enough players, add 2 more bots anyway
+            socket.emit('room:add-bots', { roomId, count: 2 });
+        } else {
+            socket.emit('room:add-bots', { roomId, count: botsNeeded });
+        }
+
+        // Local optimistic update (will be replaced by server response)
+        const availableBots = BOT_NAMES.filter(name => !players.some(p => p.name === name));
+        const newBots: Player[] = [];
+        for (let i = 0; i < botsNeeded && i < availableBots.length; i++) {
+            newBots.push({
+                id: `bot-${Date.now()}-${i}`,
+                name: availableBots[i],
+                isReady: true,
+                isHost: false,
+                isBot: true
+            });
+        }
+        if (newBots.length > 0) {
+            setPlayers(prev => [...prev, ...newBots]);
+        }
+    };
+
     const handleStartGame = () => {
         if (!socket || !roomId) return;
 
@@ -114,7 +138,7 @@ export default function ImpostorLobbyPage() {
         return (
             <div className={styles.loadingContainer}>
                 <div className={styles.loader} />
-                <p className="neon-text-blue">Cargando sala...</p>
+                <p>Cargando sala...</p>
             </div>
         );
     }
@@ -123,10 +147,10 @@ export default function ImpostorLobbyPage() {
         <div className={styles.container}>
             <div className={styles.background} />
 
-            <div className={styles.header + ' glass-strong'}>
+            <div className={styles.header}>
                 <div className={styles.roomInfo}>
                     <h2 className={styles.roomCode}>
-                        Código: <span className="neon-text-blue">{roomCode}</span>
+                        Sala: <span>{roomCode}</span>
                     </h2>
                     <p className={styles.playerCount}>
                         {players.length} / 8 jugadores
@@ -139,20 +163,21 @@ export default function ImpostorLobbyPage() {
 
             <div className={styles.content}>
                 <div className={styles.playersSection}>
-                    <h3 className={styles.sectionTitle}>Jugadores en la sala</h3>
+                    <h3 className={styles.sectionTitle}>
+                        👥 Jugadores en la sala
+                    </h3>
                     <div className={styles.playersList}>
                         {players.map((player) => (
                             <div
                                 key={player.id}
-                                className={`${styles.playerCard} glass ${player.id === myPlayerId ? styles.me : ''}`}
+                                className={`${styles.playerCard} ${player.id === myPlayerId ? styles.me : ''} ${player.isBot ? styles.bot : ''}`}
                             >
-                                <div className={styles.playerAvatar}>
-                                    {player.name.charAt(0).toUpperCase()}
-                                </div>
+                                <div className={styles.playerAvatar} />
                                 <div className={styles.playerInfo}>
                                     <div className={styles.playerName}>
                                         {player.name}
                                         {player.id === myPlayerId && ' (Tú)'}
+                                        {player.isBot && ' 🤖'}
                                     </div>
                                     {player.isHost && (
                                         <div className={styles.hostBadge}>👑 Host</div>
@@ -164,32 +189,40 @@ export default function ImpostorLobbyPage() {
                 </div>
 
                 <div className={styles.controls}>
-                    {isHost ? (
-                        <button
-                            className={styles.startButton + ' neon-border-blue'}
-                            onClick={handleStartGame}
-                            disabled={players.length < 3}
-                        >
-                            {players.length < 3
-                                ? `Esperando jugadores (mín. 3)`
-                                : `🚀 Iniciar Juego`}
-                        </button>
-                    ) : (
-                        <div className={styles.waitingMessage + ' glass'}>
+                    {isHost && (
+                        <>
+                            <button
+                                className={styles.botButton}
+                                onClick={handleAddBots}
+                                disabled={players.length >= 8}
+                            >
+                                🤖 Añadir Bots
+                            </button>
+                            <button
+                                className={styles.startButton}
+                                onClick={handleStartGame}
+                                disabled={players.length < 3}
+                            >
+                                {players.length < 3
+                                    ? `Esperando jugadores (${players.length}/3)`
+                                    : `🚀 Iniciar Juego`}
+                            </button>
+                        </>
+                    )}
+                    {!isHost && (
+                        <div className={styles.waitingMessage}>
                             ⏳ Esperando a que el host inicie el juego...
                         </div>
                     )}
                 </div>
 
-                <div className={styles.infoPanel + ' glass'}>
+                <div className={styles.infoPanel}>
                     <h4>📋 Reglas del Juego</h4>
                     <ul>
-                        <li>Todos los jugadores menos 1 reciben un futbolista</li>
-                        <li>El impostor NO tiene futbolista</li>
-                        <li>Cada jugador da pistas por turnos</li>
-                        <li>Discuten y votan para eliminar al sospechoso</li>
-                        <li>El grupo gana si eliminan al impostor</li>
-                        <li>El impostor gana si sobrevive</li>
+                        <li>Todos reciben un futbolista menos el impostor</li>
+                        <li>Da pistas sobre tu futbolista por turnos</li>
+                        <li>Debate y descubre quién es el impostor</li>
+                        <li>Vota para eliminar al sospechoso</li>
                     </ul>
                 </div>
             </div>
