@@ -117,14 +117,13 @@ export default function ImpostorLobbyPage() {
     };
 
     const handleStartGame = () => {
-        if (!socket || !roomId) return;
-
         if (players.length < 3) {
             alert('Se necesitan al menos 3 jugadores para empezar');
             return;
         }
 
-        socket.emit('impostor:start-game', { roomId });
+        // Navigate directly to game
+        navigate(`/impostor-v2/game/${roomCode}`);
     };
 
     const handleLeave = () => {
