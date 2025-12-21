@@ -247,6 +247,36 @@ export default function ImpostorGamePage() {
                     oscillator.start();
                     oscillator.stop(audioCtx.currentTime + 0.3);
                     break;
+                case 'clue':
+                    // Clue submit - soft pop sound
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.15);
+                    break;
+                case 'chat':
+                    // Chat message - soft blip
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(500, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.05);
+                    break;
+                case 'turn':
+                    // Turn notification - ascending notes
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(500, audioCtx.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime + 0.2);
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.3);
+                    break;
                 case 'eject':
                     // Ejection - whoosh sound
                     oscillator.type = 'sawtooth';
@@ -497,10 +527,13 @@ export default function ImpostorGamePage() {
         if (!myClue.trim()) return;
 
         const alivePlayers = players.filter(p => p.isAlive);
-        if (alivePlayers[currentPlayerIndex]?.id !== myId.current) return;
+        const currentPlayer = alivePlayers[currentPlayerIndex];
+        // Check if current player is human (not bot)
+        if (!currentPlayer || currentPlayer.isBot) return;
 
+        playSound('clue'); // Play clue submit sound
         setPlayers(prev => prev.map(p =>
-            p.id === myId.current ? { ...p, clue: myClue.trim() } : p
+            p.id === currentPlayer.id ? { ...p, clue: myClue.trim() } : p
         ));
         setMyClue('');
 
@@ -641,7 +674,8 @@ export default function ImpostorGamePage() {
     // ============== RENDER ==============
     const alivePlayers = players.filter(p => p.isAlive);
     const currentPlayer = alivePlayers[currentPlayerIndex];
-    const isMyTurn = currentPlayer?.id === myId.current;
+    // isMyTurn: true if current player is the human (not a bot)
+    const isMyTurn = currentPlayer && !currentPlayer.isBot;
     const timerPercent = maxTimer > 0 ? (timer / maxTimer) * 100 : 0;
 
     return (
