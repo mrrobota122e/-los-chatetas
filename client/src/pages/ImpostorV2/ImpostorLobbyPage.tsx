@@ -34,6 +34,7 @@ export default function ImpostorLobbyPage() {
         clueTime: 12,
         discussionTime: 30,
         votingTime: 20,
+        minPlayers: 3,
         wordCategory: 'futbolistas'
     });
 
@@ -141,8 +142,8 @@ export default function ImpostorLobbyPage() {
     };
 
     const handleStartGame = () => {
-        if (players.length < 3) {
-            alert('Se necesitan al menos 3 jugadores');
+        if (players.length < settings.minPlayers) {
+            alert(`Se necesitan al menos ${settings.minPlayers} jugadores`);
             return;
         }
         setCountdown(3);
@@ -256,8 +257,8 @@ export default function ImpostorLobbyPage() {
                                 <button className={styles.botsBtn} onClick={handleAddBots} disabled={players.length >= 8}>
                                     🤖 Añadir Bots
                                 </button>
-                                <button className={styles.startBtn} onClick={handleStartGame} disabled={players.length < 3}>
-                                    {players.length < 3 ? `⏳ Faltan ${3 - players.length}` : '🚀 INICIAR'}
+                                <button className={styles.startBtn} onClick={handleStartGame} disabled={players.length < settings.minPlayers}>
+                                    {players.length < settings.minPlayers ? `⏳ Faltan ${settings.minPlayers - players.length}` : '🚀 INICIAR'}
                                 </button>
                             </>
                         ) : (
@@ -308,6 +309,15 @@ export default function ImpostorLobbyPage() {
                                             <button onClick={() => updateSetting('votingTime', Math.max(10, settings.votingTime - 10))}>-</button>
                                             <span>{settings.votingTime}s</span>
                                             <button onClick={() => updateSetting('votingTime', Math.min(60, settings.votingTime + 10))}>+</button>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.settingRow}>
+                                        <span>👥 Mínimo jugadores:</span>
+                                        <div className={styles.settingControl}>
+                                            <button onClick={() => updateSetting('minPlayers', Math.max(2, settings.minPlayers - 1))}>-</button>
+                                            <span>{settings.minPlayers}</span>
+                                            <button onClick={() => updateSetting('minPlayers', Math.min(8, settings.minPlayers + 1))}>+</button>
                                         </div>
                                     </div>
                                 </div>

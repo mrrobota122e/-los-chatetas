@@ -118,13 +118,82 @@ export default function ImpostorGamePage() {
     }, []);
 
 
-    // Sound player
-    const playSound = (soundName: keyof typeof SOUNDS) => {
+    // Sound synthesizer using Web Audio API (no CORS issues)
+    const playSound = (soundName: string) => {
         try {
-            const audio = new Audio(SOUNDS[soundName]);
-            audio.volume = 0.3;
-            audio.play().catch(() => { });
-        } catch (e) { }
+            const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            // Different sounds based on event
+            switch (soundName) {
+                case 'meeting':
+                    // Emergency meeting alarm - rapid beeps
+                    oscillator.type = 'square';
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime + 0.2);
+                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime + 0.3);
+                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.4);
+                    break;
+                case 'vote':
+                    // Voting time - descending tone
+                    oscillator.type = 'triangle';
+                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.3);
+                    gainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.3);
+                    break;
+                case 'eject':
+                    // Ejection - whoosh sound
+                    oscillator.type = 'sawtooth';
+                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 1);
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 1);
+                    break;
+                case 'win':
+                    // Victory fanfare - ascending tones
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(500, audioCtx.currentTime + 0.15);
+                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime + 0.3);
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime + 0.45);
+                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.6);
+                    break;
+                case 'lose':
+                    // Defeat - descending sad tones
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(300, audioCtx.currentTime + 0.2);
+                    oscillator.frequency.setValueAtTime(200, audioCtx.currentTime + 0.4);
+                    gainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.5);
+                    break;
+                default:
+                    // Default click sound
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.1);
+            }
+        } catch (e) { console.log('Sound error:', e); }
     };
 
     // Create particles
