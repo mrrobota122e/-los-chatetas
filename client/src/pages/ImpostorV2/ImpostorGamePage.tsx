@@ -87,6 +87,18 @@ export default function ImpostorGamePage() {
         return { impostorCount: 1, clueTime: 12, discussionTime: 30, votingTime: 20 };
     });
 
+    // Volume control (saved to localStorage)
+    const [volume, setVolume] = useState(() => {
+        const saved = localStorage.getItem('gameVolume');
+        return saved ? parseFloat(saved) : 0.5;
+    });
+    const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+
+    const updateVolume = (newVol: number) => {
+        setVolume(newVol);
+        localStorage.setItem('gameVolume', String(newVol));
+    };
+
     // ADMIN MODE
     const [isAdmin, setIsAdmin] = useState(false);
     const [showAdminPanel, setShowAdminPanel] = useState(false);
@@ -120,12 +132,16 @@ export default function ImpostorGamePage() {
 
     // Sound synthesizer using Web Audio API (no CORS issues)
     const playSound = (soundName: string) => {
+        if (volume === 0) return; // Skip if muted
         try {
             const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
+            const masterGain = audioCtx.createGain();
+            masterGain.gain.value = volume; // Master volume control
             oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
+            gainNode.connect(masterGain);
+            masterGain.connect(audioCtx.destination);
 
             // Different sounds based on event
             switch (soundName) {
@@ -552,6 +568,30 @@ export default function ImpostorGamePage() {
                     </div>
                 </div>
             )}
+
+            {/* VOLUME CONTROL */}
+            <div className={styles.volumeControl}>
+                <button
+                    className={styles.volumeBtn}
+                    onClick={() => setShowVolumeSlider(!showVolumeSlider)}
+                >
+                    {volume === 0 ? '🔇' : volume < 0.5 ? '🔉' : '🔊'}
+                </button>
+                {showVolumeSlider && (
+                    <div className={styles.volumeSlider}>
+                        <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.1"
+                            value={volume}
+                            onChange={e => updateVolume(parseFloat(e.target.value))}
+                            className={styles.volumeRange}
+                        />
+                        <span className={styles.volumeValue}>{Math.round(volume * 100)}%</span>
+                    </div>
+                )}
+            </div>
 
             {/* ADMIN PANEL */}
             {isAdmin && (
