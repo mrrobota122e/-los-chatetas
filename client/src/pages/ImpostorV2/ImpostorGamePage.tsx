@@ -17,12 +17,15 @@ const BOT_CLUES = [
     'Tiene muchos goles', 'Es joven', 'Es famoso mundial'
 ];
 
-// Sound URLs (free sounds)
+// Among Us Sound Effects (free sources)
 const SOUNDS = {
-    meeting: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2JkJqLdGBmbH6KkI2CdG5xf4mNjoV6c3J+iI2Ni4F5dn+Gi4yLiIN9foSIi4qJhYKAhIeJiomHhYOEhoiJiIeGhYWGh4iIh4eGhoaHh4eHh4eHh4eHh4eHh4eHh4eHhw==',
-    vote: 'data:audio/wav;base64,UklGRl4FAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoFAAB+gH1+gIKBgH9+gIGCgYB/f4CBgYGAgH+AgYGBgIB/gIGBgYCAgICBgYGAgICAgoGBgICAgIGBgYCAgICBgYGBgICAgQ==',
-    eject: 'data:audio/wav;base64,UklGRpYHAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YfIGAACAf4CBgIGCg4OEhYWGh4eIiImJiouLjIyNjo6PkJCRkpKTlJSVlpaXmJiZmpqbnJydnZ6en6ChoKKio6Oko6Win52bmZeVko+MiYaCfnp2cm5raGRgXVlVUU1JRUFAPDs4NTIvLCsoJSIgHRsYFhQSEA4MCggGBAMBAAABAgQFBwkLDQ==',
-    win: 'data:audio/wav;base64,UklGRn4FAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoFAACAgICAgIKEhoiKjI6QkpSWmJqcnqCio6WnqKqsra+wsrO1tri5u7y+v8DCw8XGx8nKy8zOz9DR0tPU1dbX2Nna29zd3t/g4eLj5OXm5+jp6uvs7e7v8PHy8/T19vf4+fr7/P3+/w=='
+    meeting: 'https://www.myinstants.com/media/sounds/among-us-emergency-meeting.mp3',
+    vote: 'https://www.myinstants.com/media/sounds/among-us-voting-time.mp3',
+    eject: 'https://www.myinstants.com/media/sounds/among-us-eject.mp3',
+    win: 'https://www.myinstants.com/media/sounds/among-us-victory.mp3',
+    lose: 'https://www.myinstants.com/media/sounds/among-us-defeat.mp3',
+    start: 'https://www.myinstants.com/media/sounds/among-us-role-reveal.mp3',
+    kill: 'https://www.myinstants.com/media/sounds/among-us-kill.mp3'
 };
 
 type Phase = 'INTRO' | 'ROLE_REVEAL' | 'CLUES' | 'DISCUSSION' | 'VOTING' | 'VOTING_RESULT' | 'EXPULSION' | 'GAME_END';
@@ -72,6 +75,17 @@ export default function ImpostorGamePage() {
     const myId = useRef(`player-${Date.now()}`);
     const chatRef = useRef<HTMLDivElement>(null);
     const msgIdRef = useRef(0);
+
+    // Load game settings from lobby
+    const [gameSettings] = useState(() => {
+        const saved = localStorage.getItem('gameSettings');
+        if (saved) {
+            try {
+                return JSON.parse(saved);
+            } catch (e) { }
+        }
+        return { impostorCount: 1, clueTime: 12, discussionTime: 30, votingTime: 20 };
+    });
 
     // ADMIN MODE
     const [isAdmin, setIsAdmin] = useState(false);
@@ -197,8 +211,8 @@ export default function ImpostorGamePage() {
                     setShowEmergency(false);
                     setPhase('CLUES');
                     setCurrentPlayerIndex(0);
-                    setTimer(12);
-                    setMaxTimer(12);
+                    setTimer(gameSettings.clueTime);
+                    setMaxTimer(gameSettings.clueTime);
                     simulateBotClueIfNeeded(0);
                 }, 2500);
                 break;
@@ -218,7 +232,7 @@ export default function ImpostorGamePage() {
                 if (currentPlayerIndex < alivePlayers.length - 1) {
                     const nextIdx = currentPlayerIndex + 1;
                     setCurrentPlayerIndex(nextIdx);
-                    setTimer(12);
+                    setTimer(gameSettings.clueTime);
                     simulateBotClueIfNeeded(nextIdx);
                 } else {
                     playSound('meeting');
@@ -226,8 +240,8 @@ export default function ImpostorGamePage() {
                     setTimeout(() => {
                         setShowEmergency(false);
                         setPhase('DISCUSSION');
-                        setTimer(40);
-                        setMaxTimer(40);
+                        setTimer(gameSettings.discussionTime);
+                        setMaxTimer(gameSettings.discussionTime);
                         addSystemMessage('💬 ¡DISCUSIÓN ABIERTA!');
                     }, 2000);
                 }
@@ -236,8 +250,8 @@ export default function ImpostorGamePage() {
             case 'DISCUSSION':
                 playSound('vote');
                 setPhase('VOTING');
-                setTimer(20);
-                setMaxTimer(20);
+                setTimer(gameSettings.votingTime);
+                setMaxTimer(gameSettings.votingTime);
                 addSystemMessage('🗳️ ¡HORA DE VOTAR!');
                 break;
 
