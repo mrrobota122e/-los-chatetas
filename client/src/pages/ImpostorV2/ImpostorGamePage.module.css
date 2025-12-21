@@ -2279,7 +2279,6 @@
     transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.playerSeat:hover {
-    transform: translateY(-8px) scale(1.08);
-}
+.playerSeat:hover { filter: brightness(1.2); }
+
 
