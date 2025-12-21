@@ -600,22 +600,43 @@ export default function ImpostorGamePage() {
 
                 {phase === 'ROLE_REVEAL' && (
                     <div className={styles.roleReveal}>
-                        <div className={`${styles.roleCard} ${isImpostor ? styles.impostorCard : styles.crewCard}`}>
-                            <div className={styles.roleBean} style={{ '--bean-color': players[0]?.color } as any}>
-                                <div className={styles.beanVisor} />
-                                <div className={styles.beanBackpack} />
+                        {/* Among Us style reveal */}
+                        <div className={styles.amogusReveal}>
+                            <h1 className={isImpostor ? styles.impostorBigTitle : styles.crewBigTitle}>
+                                {isImpostor ? 'IMPOSTOR' : 'FUTBOLISTA'}
+                            </h1>
+                            <p className={styles.revealSubtitle}>
+                                {isImpostor
+                                    ? 'No conoces la palabra secreta'
+                                    : `Hay ${players.filter(p => p.isImpostor).length} impostor entre nosotros`}
+                            </p>
+
+                            {/* Row of beans */}
+                            <div className={styles.beansRow}>
+                                {players.slice(0, 6).map((p, i) => (
+                                    <div
+                                        key={i}
+                                        className={styles.miniBean}
+                                        style={{ '--bean-color': p.color, '--delay': `${i * 0.1}s` } as any}
+                                    >
+                                        <div className={styles.miniBeanBody} />
+                                        <div className={styles.miniBeanVisor} />
+                                    </div>
+                                ))}
                             </div>
-                            {isImpostor ? (
-                                <>
-                                    <h1 className={styles.impostorTitle}>🔪 IMPOSTOR</h1>
-                                    <p className={styles.impostorHint}>No sabes la palabra secreta.<br />¡Finge que sí!</p>
-                                </>
-                            ) : (
-                                <>
-                                    <h2>Tu futbolista secreto es:</h2>
-                                    <div className={styles.secretWord}>{secretWord}</div>
-                                    <p>Da pistas sin revelar el nombre</p>
-                                </>
+
+                            {/* Word reveal for crew */}
+                            {!isImpostor && (
+                                <div className={styles.wordRevealBox}>
+                                    <span className={styles.wordLabel}>La palabra es:</span>
+                                    <span className={styles.wordValue}>{secretWord}</span>
+                                </div>
+                            )}
+
+                            {isImpostor && (
+                                <div className={styles.impostorTip}>
+                                    🔪 ¡Finge que sabes y no te descubran!
+                                </div>
                             )}
                         </div>
                     </div>
@@ -796,15 +817,25 @@ export default function ImpostorGamePage() {
                     <div className={`${styles.gameEndScreen} ${winner === 'CREW' ? styles.crewWins : styles.impostorWins}`}>
                         <div className={styles.endContent}>
                             <div className={styles.endIcon}>{winner === 'CREW' ? '🏆' : '💀'}</div>
-                            <h1>{winner === 'CREW' ? '¡VICTORIA!' : 'DERROTA'}</h1>
-                            <h2>{winner === 'CREW' ? '¡Descubrieron al impostor!' : 'El impostor ganó'}</h2>
+                            <h1 className={styles.endTitle}>{winner === 'CREW' ? '¡VICTORIA!' : 'DERROTA'}</h1>
+                            <h2 className={styles.endSubtitle}>{winner === 'CREW' ? '¡Descubrieron al impostor!' : 'El impostor ganó'}</h2>
                             <div className={styles.endDetails}>
                                 <p>Palabra secreta: <strong>{secretWord}</strong></p>
-                                <p>Impostor: <strong>{players.find(p => p.isImpostor)?.name}</strong></p>
+                                <p>Impostor: <strong style={{ color: '#ff5555' }}>{players.find(p => p.isImpostor)?.name}</strong></p>
                             </div>
-                            <button onClick={() => navigate('/impostor-v2/menu')} className={styles.endButton}>
-                                VOLVER AL MENÚ
-                            </button>
+
+                            {/* Buttons like Among Us */}
+                            <div className={styles.endButtons}>
+                                <button onClick={() => {
+                                    // Reset game and play again
+                                    initializeGame();
+                                }} className={styles.playAgainBtn}>
+                                    🔄 JUGAR DE NUEVO
+                                </button>
+                                <button onClick={() => navigate('/impostor-v2/menu')} className={styles.exitBtn}>
+                                    🚪 SALIR
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
