@@ -124,21 +124,22 @@ export default function ImpostorLobbyPage() {
 
     const handleAddBots = () => {
         if (!socket || !roomId) return;
-        const botsNeeded = Math.max(2, 4 - players.length);
-        socket.emit('room:add-bots', { roomId, count: botsNeeded });
+        // Only add 1 bot at a time, respect minPlayers limit
+        if (players.length >= settings.minPlayers) return; // Already have enough
 
         const availableBots = BOT_NAMES.filter(name => !players.some(p => p.name === name));
-        const newBots: Player[] = [];
-        for (let i = 0; i < botsNeeded && i < availableBots.length; i++) {
-            newBots.push({
-                id: `bot-${Date.now()}-${i}`,
-                name: availableBots[i],
-                isReady: true,
-                isHost: false,
-                isBot: true
-            });
-        }
-        if (newBots.length > 0) setPlayers(prev => [...prev, ...newBots]);
+        if (availableBots.length === 0) return; // No more bots available
+
+        socket.emit('room:add-bots', { roomId, count: 1 });
+
+        const newBot: Player = {
+            id: `bot-${Date.now()}`,
+            name: availableBots[0],
+            isReady: true,
+            isHost: false,
+            isBot: true
+        };
+        setPlayers(prev => [...prev, newBot]);
     };
 
     const handleStartGame = () => {
@@ -227,7 +228,8 @@ export default function ImpostorLobbyPage() {
                             </div>
                         ))}
 
-                        {Array.from({ length: Math.max(0, 3 - players.length) }).map((_, i) => (
+                        {/* Empty slots based on minPlayers setting */}
+                        {Array.from({ length: Math.max(0, settings.minPlayers - players.length) }).map((_, i) => (
                             <div key={`empty-${i}`} className={styles.emptySlot}>
                                 <span className={styles.emptyIcon}>?</span>
                                 <span>Esperando...</span>
