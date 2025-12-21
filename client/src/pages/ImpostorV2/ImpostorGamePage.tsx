@@ -141,6 +141,17 @@ export default function ImpostorGamePage() {
                     oscillator.start();
                     oscillator.stop(audioCtx.currentTime + 0.4);
                     break;
+                case 'start':
+                    // Role reveal - dramatic ascending sound
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.2);
+                    oscillator.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.4);
+                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.5);
+                    break;
                 case 'vote':
                     // Voting time - descending tone
                     oscillator.type = 'triangle';
@@ -268,6 +279,7 @@ export default function ImpostorGamePage() {
     const handlePhaseEnd = useCallback(() => {
         switch (phase) {
             case 'INTRO':
+                playSound('start'); // Role reveal sound
                 setPhase('ROLE_REVEAL');
                 setTimer(5);
                 setMaxTimer(5);
@@ -682,45 +694,31 @@ export default function ImpostorGamePage() {
                 )}
 
                 {phase === 'ROLE_REVEAL' && (
-                    <div className={styles.roleReveal}>
-                        {/* Among Us style reveal */}
-                        <div className={styles.amogusReveal}>
-                            <h1 className={isImpostor ? styles.impostorBigTitle : styles.crewBigTitle}>
-                                {isImpostor ? 'IMPOSTOR' : 'FUTBOLISTA'}
-                            </h1>
-                            <p className={styles.revealSubtitle}>
-                                {isImpostor
-                                    ? 'No conoces la palabra secreta'
-                                    : `Hay ${players.filter(p => p.isImpostor).length} impostor entre nosotros`}
-                            </p>
+                    <div className={isImpostor ? styles.impostorRevealScreen : styles.crewRevealScreen}>
+                        {/* Title - Word for crew, IMPOSTOR for impostor */}
+                        <h1 className={isImpostor ? styles.impostorBigTitle : styles.crewBigTitle}>
+                            {isImpostor ? 'Impostor' : secretWord}
+                        </h1>
 
-                            {/* Row of beans */}
-                            <div className={styles.beansRow}>
-                                {players.slice(0, 6).map((p, i) => (
-                                    <div
-                                        key={i}
-                                        className={styles.miniBean}
-                                        style={{ '--bean-color': p.color, '--delay': `${i * 0.1}s` } as any}
-                                    >
-                                        <div className={styles.miniBeanBody} />
-                                        <div className={styles.miniBeanVisor} />
-                                    </div>
-                                ))}
-                            </div>
+                        {/* Subtitle */}
+                        <p className={styles.revealSubtitle}>
+                            {isImpostor
+                                ? 'Sabotea y elimina a la tripulación'
+                                : `Hay ${gameSettings.impostorCount} impostor${gameSettings.impostorCount > 1 ? 'es' : ''} entre nosotros`}
+                        </p>
 
-                            {/* Word reveal for crew */}
-                            {!isImpostor && (
-                                <div className={styles.wordRevealBox}>
-                                    <span className={styles.wordLabel}>La palabra es:</span>
-                                    <span className={styles.wordValue}>{secretWord}</span>
+                        {/* Row of beans - like Among Us */}
+                        <div className={styles.beansRow}>
+                            {players.map((p, i) => (
+                                <div
+                                    key={i}
+                                    className={styles.miniBean}
+                                    style={{ '--bean-color': p.color, '--delay': `${i * 0.08}s` } as any}
+                                >
+                                    <div className={styles.miniBeanBody} />
+                                    <div className={styles.miniBeanVisor} />
                                 </div>
-                            )}
-
-                            {isImpostor && (
-                                <div className={styles.impostorTip}>
-                                    🔪 ¡Finge que sabes y no te descubran!
-                                </div>
-                            )}
+                            ))}
                         </div>
                     </div>
                 )}
@@ -898,27 +896,35 @@ export default function ImpostorGamePage() {
 
                 {phase === 'GAME_END' && (
                     <div className={`${styles.gameEndScreen} ${winner === 'CREW' ? styles.crewWins : styles.impostorWins}`}>
-                        <div className={styles.endContent}>
-                            <div className={styles.endIcon}>{winner === 'CREW' ? '🏆' : '💀'}</div>
-                            <h1 className={styles.endTitle}>{winner === 'CREW' ? '¡VICTORIA!' : 'DERROTA'}</h1>
-                            <h2 className={styles.endSubtitle}>{winner === 'CREW' ? '¡Descubrieron al impostor!' : 'El impostor ganó'}</h2>
-                            <div className={styles.endDetails}>
-                                <p>Palabra secreta: <strong>{secretWord}</strong></p>
-                                <p>Impostor: <strong style={{ color: '#ff5555' }}>{players.find(p => p.isImpostor)?.name}</strong></p>
-                            </div>
+                        {/* Big title like Among Us */}
+                        <h1 className={winner === 'CREW' ? styles.victoryTitle : styles.defeatTitle}>
+                            {winner === 'CREW' ? 'Victoria' : 'Derrota'}
+                        </h1>
 
-                            {/* Buttons like Among Us */}
-                            <div className={styles.endButtons}>
-                                <button onClick={() => {
-                                    // Reset game and play again
-                                    initializeGame();
-                                }} className={styles.playAgainBtn}>
-                                    🔄 JUGAR DE NUEVO
-                                </button>
-                                <button onClick={() => navigate('/impostor-v2/menu')} className={styles.exitBtn}>
-                                    🚪 SALIR
-                                </button>
-                            </div>
+                        {/* Row of beans at center */}
+                        <div className={styles.endBeansRow}>
+                            {players.map((p, i) => (
+                                <div
+                                    key={i}
+                                    className={`${styles.endBean} ${!p.isAlive ? styles.deadBean : ''} ${p.isImpostor ? styles.impostorBean : ''}`}
+                                    style={{ '--bean-color': p.color, '--delay': `${i * 0.1}s` } as any}
+                                >
+                                    <div className={styles.endBeanBody} />
+                                    <div className={styles.endBeanVisor} />
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Bottom buttons - QUIT left, PLAY AGAIN right */}
+                        <div className={styles.endButtonsBar}>
+                            <button onClick={() => navigate('/impostor-v2/menu')} className={styles.quitBtn}>
+                                <span className={styles.btnIcon}>✕</span>
+                                <span>SALIR</span>
+                            </button>
+                            <button onClick={() => initializeGame()} className={styles.playAgainBtn}>
+                                <span className={styles.btnIcon}>↻</span>
+                                <span>DE NUEVO</span>
+                            </button>
                         </div>
                     </div>
                 )}

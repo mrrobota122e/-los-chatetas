@@ -1728,3 +1728,185 @@
         font-size: 2.2rem;
     }
 }
+
+/* ===== AMONG US ROLE REVEAL SCREENS ===== */
+.crewRevealScreen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at bottom, rgba(0, 100, 150, 0.4), transparent 70%), #0d0d1a;
+    animation: fadeIn 0.5s;
+}
+
+.impostorRevealScreen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, rgba(180, 0, 0, 0.6), rgba(80, 0, 0, 0.3), #1a0000);
+    animation: fadeIn 0.5s;
+}
+
+/* Victory/Defeat Titles */
+.victoryTitle {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #4ade80;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    margin: 0 0 10px;
+    text-shadow: 0 0 40px rgba(74, 222, 128, 0.6), 0 4px 0 #166534;
+    animation: titlePop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.defeatTitle {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #f87171;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    margin: 0 0 10px;
+    text-shadow: 0 0 40px rgba(248, 113, 113, 0.6), 0 4px 0 #991b1b;
+    animation: titlePop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Game End Beans Row */
+.endBeansRow {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 40px 0;
+    flex-wrap: wrap;
+}
+
+.endBean {
+    width: 50px;
+    height: 60px;
+    position: relative;
+    animation: beanPop 0.4s backwards;
+    animation-delay: var(--delay, 0s);
+}
+
+.endBeanBody {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--bean-color) 0%, color-mix(in srgb, var(--bean-color), black 35%) 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: inset -6px -4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.endBeanVisor {
+    position: absolute;
+    top: 14px;
+    left: 6px;
+    width: 20px;
+    height: 15px;
+    background: linear-gradient(135deg, #a5e8ff, #5bc9f8);
+    border-radius: 40% 60% 60% 40%;
+}
+
+.deadBean {
+    opacity: 0.4;
+    filter: grayscale(0.5);
+}
+
+.impostorBean::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 8px;
+    background: rgba(255, 50, 50, 0.5);
+    border-radius: 50%;
+}
+
+/* Game End Buttons Bar */
+.endButtonsBar {
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.quitBtn,
+.playAgainBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 900;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.quitBtn {
+    background: rgba(255, 80, 80, 0.2);
+    color: #ff8888;
+    border: 2px solid rgba(255, 80, 80, 0.3);
+}
+
+.quitBtn:hover {
+    background: rgba(255, 80, 80, 0.3);
+    transform: scale(1.05);
+}
+
+.playAgainBtn {
+    background: rgba(80, 255, 80, 0.2);
+    color: #88ff88;
+    border: 2px solid rgba(80, 255, 80, 0.3);
+}
+
+.playAgainBtn:hover {
+    background: rgba(80, 255, 80, 0.3);
+    transform: scale(1.05);
+}
+
+.btnIcon {
+    font-size: 24px;
+}
+
+.revealSubtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 30px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+
+    .victoryTitle,
+    .defeatTitle {
+        font-size: 2.5rem;
+    }
+
+    .endBean {
+        width: 35px;
+        height: 42px;
+    }
+
+    .endBeanVisor {
+        width: 14px;
+        height: 10px;
+        top: 10px;
+        left: 4px;
+    }
+
+    .endButtonsBar {
+        padding: 0 20px;
+        bottom: 20px;
+    }
+}
