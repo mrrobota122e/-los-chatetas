@@ -310,6 +310,46 @@ export default function ImpostorGamePage() {
                     oscillator.start();
                     oscillator.stop(audioCtx.currentTime + 0.5);
                     break;
+                case 'hover':
+                    // Subtle hover sound
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(500, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.03);
+                    break;
+                case 'skip':
+                    // Skip turn - descending whoosh
+                    oscillator.type = 'triangle';
+                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.15);
+                    gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.15);
+                    break;
+                case 'round':
+                    // New round - fanfare
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(500, audioCtx.currentTime + 0.2);
+                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime + 0.3);
+                    gainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.4);
+                    break;
+                case 'button':
+                    // Generic button press
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.05);
+                    break;
                 default:
                     // Default click sound
                     oscillator.type = 'sine';
