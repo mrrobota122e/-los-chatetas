@@ -153,12 +153,15 @@ export default function ImpostorLobbyPage() {
     useEffect(() => {
         if (countdown === null) return;
         if (countdown === 0) {
+            // Save players to localStorage so game page can use them
+            localStorage.setItem('lobbyPlayers', JSON.stringify(players));
+            localStorage.setItem('gameSettings', JSON.stringify(settings));
             navigate(`/impostor-v2/game/${roomCode}`);
             return;
         }
         const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
         return () => clearTimeout(timer);
-    }, [countdown, navigate, roomCode]);
+    }, [countdown, navigate, roomCode, players, settings]);
 
     const handleLeave = () => {
         if (socket && roomId) socket.emit('room:leave', { roomId });

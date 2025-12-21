@@ -311,30 +311,58 @@ export default function ImpostorGamePage() {
     const initializeGame = () => {
         const playerName = localStorage.getItem('globalPlayerName') || 'Tú';
 
-        const gamePlayers: Player[] = [
-            { id: myId.current, name: playerName, color: BEAN_COLORS[0], isBot: false, isImpostor: false, isAlive: true, votes: 0 }
-        ];
+        // Try to load players from lobby (saved in localStorage)
+        const savedPlayers = localStorage.getItem('lobbyPlayers');
+        let gamePlayers: Player[] = [];
 
-        BOT_NAMES.slice(0, 4).forEach((name, i) => {
-            gamePlayers.push({
-                id: `bot-${i}`,
-                name,
-                color: BEAN_COLORS[i + 1],
-                isBot: true,
-                isImpostor: false,
-                isAlive: true,
-                votes: 0
+        if (savedPlayers) {
+            try {
+                const lobbyPlayers = JSON.parse(savedPlayers);
+                gamePlayers = lobbyPlayers.map((p: any, i: number) => ({
+                    id: p.id || `player-${i}`,
+                    name: p.name,
+                    color: BEAN_COLORS[i % BEAN_COLORS.length],
+                    isBot: p.isBot || false,
+                    isImpostor: false,
+                    isAlive: true,
+                    votes: 0
+                }));
+            } catch (e) {
+                console.log('Error loading lobby players, using default');
+            }
+        }
+
+        // Fallback: create default players if none from lobby
+        if (gamePlayers.length === 0) {
+            gamePlayers = [
+                { id: myId.current, name: playerName, color: BEAN_COLORS[0], isBot: false, isImpostor: false, isAlive: true, votes: 0 }
+            ];
+            BOT_NAMES.slice(0, 4).forEach((name, i) => {
+                gamePlayers.push({
+                    id: `bot-${i}`,
+                    name,
+                    color: BEAN_COLORS[i + 1],
+                    isBot: true,
+                    isImpostor: false,
+                    isAlive: true,
+                    votes: 0
+                });
             });
-        });
+        }
 
-        const impostorIndex = Math.random() < 0.3 ? 0 : Math.floor(Math.random() * 4) + 1;
-        gamePlayers[impostorIndex].isImpostor = true;
+        // Assign impostor(s) based on gameSettings
+        const impostorCount = gameSettings.impostorCount || 1;
+        const shuffled = [...Array(gamePlayers.length).keys()].sort(() => Math.random() - 0.5);
+        for (let i = 0; i < Math.min(impostorCount, gamePlayers.length - 1); i++) {
+            gamePlayers[shuffled[i]].isImpostor = true;
+        }
 
         const word = FOOTBALLERS[Math.floor(Math.random() * FOOTBALLERS.length)];
+        const myPlayer = gamePlayers.find(p => !p.isBot) || gamePlayers[0];
 
         setPlayers(gamePlayers);
         setSecretWord(word);
-        setIsImpostor(gamePlayers[0].isImpostor);
+        setIsImpostor(myPlayer.isImpostor);
         setPhase('INTRO');
         setTimer(3);
         setMaxTimer(3);
