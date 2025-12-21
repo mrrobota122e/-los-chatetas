@@ -87,16 +87,54 @@ export default function ImpostorGamePage() {
         return { impostorCount: 1, clueTime: 12, discussionTime: 30, votingTime: 20 };
     });
 
-    // Volume control (saved to localStorage)
+    // RADIO / MUSIC SYSTEM
+    const RADIO_STATIONS = [
+        { name: 'Lo-Fi Beats', icon: '🎵', url: 'https://streams.ilovemusic.de/iloveradio17.mp3' },
+        { name: 'Rock', icon: '🎸', url: 'https://streams.ilovemusic.de/iloveradio16.mp3' },
+        { name: 'Pop Hits', icon: '🎤', url: 'https://streams.ilovemusic.de/iloveradio1.mp3' },
+        { name: 'Chill', icon: '🌙', url: 'https://streams.ilovemusic.de/iloveradio15.mp3' },
+    ];
+    const [showRadio, setShowRadio] = useState(false);
+    const [currentStation, setCurrentStation] = useState<number | null>(null);
+    const [musicVolume, setMusicVolume] = useState(() => {
+        const saved = localStorage.getItem('musicVolume');
+        return saved ? parseFloat(saved) : 0.15;
+    });
+    const [isPlaying, setIsPlaying] = useState(false);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    // Sound effects volume (separate from music)
     const [volume, setVolume] = useState(() => {
         const saved = localStorage.getItem('gameVolume');
         return saved ? parseFloat(saved) : 0.5;
     });
-    const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 
-    const updateVolume = (newVol: number) => {
-        setVolume(newVol);
-        localStorage.setItem('gameVolume', String(newVol));
+    const updateMusicVolume = (newVol: number) => {
+        setMusicVolume(newVol);
+        localStorage.setItem('musicVolume', String(newVol));
+        if (audioRef.current) audioRef.current.volume = newVol;
+    };
+
+    const playStation = (index: number) => {
+        if (audioRef.current) audioRef.current.pause();
+        audioRef.current = new Audio(RADIO_STATIONS[index].url);
+        audioRef.current.volume = musicVolume;
+        audioRef.current.loop = true;
+        audioRef.current.play().catch(() => { });
+        setCurrentStation(index);
+        setIsPlaying(true);
+    };
+
+    const toggleMusic = () => {
+        if (!audioRef.current) {
+            playStation(0); // Default to Lo-Fi
+        } else if (isPlaying) {
+            audioRef.current.pause();
+            setIsPlaying(false);
+        } else {
+            audioRef.current.play().catch(() => { });
+            setIsPlaying(true);
+        }
     };
 
     // ADMIN MODE
@@ -569,26 +607,51 @@ export default function ImpostorGamePage() {
                 </div>
             )}
 
-            {/* VOLUME CONTROL */}
-            <div className={styles.volumeControl}>
-                <button
-                    className={styles.volumeBtn}
-                    onClick={() => setShowVolumeSlider(!showVolumeSlider)}
-                >
-                    {volume === 0 ? '🔇' : volume < 0.5 ? '🔉' : '🔊'}
+            {/* ROLE REMINDER BADGE */}
+            {phase !== 'INTRO' && phase !== 'GAME_END' && (
+                <div className={styles.roleBadge}>
+                    {isImpostor ? (
+                        <span className={styles.impostorBadge}>🔪 IMPOSTOR</span>
+                    ) : (
+                        <span className={styles.crewBadge}>🎯 {secretWord}</span>
+                    )}
+                </div>
+            )}
+
+            {/* RADIO PANEL */}
+            <div className={styles.radioPanel}>
+                <button className={styles.radioBtn} onClick={() => setShowRadio(!showRadio)}>
+                    {isPlaying ? '🎵' : '📻'}
                 </button>
-                {showVolumeSlider && (
-                    <div className={styles.volumeSlider}>
-                        <input
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.1"
-                            value={volume}
-                            onChange={e => updateVolume(parseFloat(e.target.value))}
-                            className={styles.volumeRange}
-                        />
-                        <span className={styles.volumeValue}>{Math.round(volume * 100)}%</span>
+                {showRadio && (
+                    <div className={styles.radioPopup}>
+                        <div className={styles.radioHeader}>📻 Selecciona estación</div>
+                        <div className={styles.stationList}>
+                            {RADIO_STATIONS.map((station, i) => (
+                                <button
+                                    key={i}
+                                    className={`${styles.stationBtn} ${currentStation === i ? styles.activeStation : ''}`}
+                                    onClick={() => playStation(i)}
+                                >
+                                    {station.icon} {station.name}
+                                </button>
+                            ))}
+                        </div>
+                        <div className={styles.radioVolume}>
+                            <span>🔊 Volumen: {Math.round(musicVolume * 100)}%</span>
+                            <input
+                                type="range"
+                                min="0"
+                                max="0.5"
+                                step="0.05"
+                                value={musicVolume}
+                                onChange={e => updateMusicVolume(parseFloat(e.target.value))}
+                                className={styles.radioRange}
+                            />
+                        </div>
+                        <button className={styles.pauseBtn} onClick={toggleMusic}>
+                            {isPlaying ? '⏸ Pausar' : '▶ Reproducir'}
+                        </button>
                     </div>
                 )}
             </div>
