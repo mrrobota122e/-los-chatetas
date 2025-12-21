@@ -206,6 +206,37 @@ export default function ImpostorGamePage() {
                     oscillator.start();
                     oscillator.stop(audioCtx.currentTime + 0.5);
                     break;
+                case 'tick':
+                    // Countdown tick - short click
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.05);
+                    break;
+                case 'reveal_crew':
+                    // Crew reveal - pleasant ascending chime
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(500, audioCtx.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime + 0.2);
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime + 0.3);
+                    gainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.5);
+                    break;
+                case 'reveal_impostor':
+                    // Impostor reveal - dramatic low ominous tone
+                    oscillator.type = 'sawtooth';
+                    oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.5);
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.6);
+                    break;
                 case 'vote':
                     // Voting time - descending tone
                     oscillator.type = 'triangle';
@@ -317,7 +348,11 @@ export default function ImpostorGamePage() {
         }
 
         const interval = setInterval(() => {
-            setTimer(prev => Math.max(0, prev - 1));
+            setTimer(prev => {
+                // Play tick when 5 seconds or less remaining
+                if (prev <= 5 && prev > 0) playSound('tick');
+                return Math.max(0, prev - 1);
+            });
         }, 1000);
 
         return () => clearInterval(interval);
@@ -333,7 +368,8 @@ export default function ImpostorGamePage() {
     const handlePhaseEnd = useCallback(() => {
         switch (phase) {
             case 'INTRO':
-                playSound('start'); // Role reveal sound
+                // Play crew or impostor reveal sound
+                playSound(isImpostor ? 'reveal_impostor' : 'reveal_crew');
                 setPhase('ROLE_REVEAL');
                 setTimer(5);
                 setMaxTimer(5);
