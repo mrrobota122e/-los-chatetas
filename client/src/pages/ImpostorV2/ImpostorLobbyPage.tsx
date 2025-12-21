@@ -26,6 +26,33 @@ export default function ImpostorLobbyPage() {
     const [loading, setLoading] = useState(true);
     const [copied, setCopied] = useState(false);
     const [countdown, setCountdown] = useState<number | null>(null);
+    const [showSettings, setShowSettings] = useState(false);
+
+    // Game settings (saved to localStorage)
+    const [settings, setSettings] = useState({
+        impostorCount: 1,
+        clueTime: 12,
+        discussionTime: 30,
+        votingTime: 20,
+        wordCategory: 'futbolistas'
+    });
+
+    // Load settings from localStorage
+    useEffect(() => {
+        const saved = localStorage.getItem('gameSettings');
+        if (saved) {
+            try {
+                setSettings(JSON.parse(saved));
+            } catch (e) { }
+        }
+    }, []);
+
+    // Save settings to localStorage
+    const updateSetting = (key: string, value: number | string) => {
+        const newSettings = { ...settings, [key]: value };
+        setSettings(newSettings);
+        localStorage.setItem('gameSettings', JSON.stringify(newSettings));
+    };
 
     const inviteLink = typeof window !== 'undefined'
         ? `${window.location.origin}/impostor-v2/join/${roomCode}`
@@ -237,6 +264,56 @@ export default function ImpostorLobbyPage() {
                             <div className={styles.waitingHost}>⏳ Esperando al host...</div>
                         )}
                     </div>
+
+                    {/* Settings Panel - Only for Host */}
+                    {isHost && (
+                        <div className={styles.settingsCard}>
+                            <div className={styles.settingsHeader} onClick={() => setShowSettings(!showSettings)}>
+                                <h3>⚙️ Configuración</h3>
+                                <span className={styles.settingsToggle}>{showSettings ? '▲' : '▼'}</span>
+                            </div>
+
+                            {showSettings && (
+                                <div className={styles.settingsBody}>
+                                    <div className={styles.settingRow}>
+                                        <span>🔪 Impostores:</span>
+                                        <div className={styles.settingControl}>
+                                            <button onClick={() => updateSetting('impostorCount', Math.max(1, settings.impostorCount - 1))}>-</button>
+                                            <span>{settings.impostorCount}</span>
+                                            <button onClick={() => updateSetting('impostorCount', Math.min(3, settings.impostorCount + 1))}>+</button>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.settingRow}>
+                                        <span>⏱️ Tiempo pistas:</span>
+                                        <div className={styles.settingControl}>
+                                            <button onClick={() => updateSetting('clueTime', Math.max(5, settings.clueTime - 5))}>-</button>
+                                            <span>{settings.clueTime}s</span>
+                                            <button onClick={() => updateSetting('clueTime', Math.min(30, settings.clueTime + 5))}>+</button>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.settingRow}>
+                                        <span>💬 Discusión:</span>
+                                        <div className={styles.settingControl}>
+                                            <button onClick={() => updateSetting('discussionTime', Math.max(15, settings.discussionTime - 15))}>-</button>
+                                            <span>{settings.discussionTime}s</span>
+                                            <button onClick={() => updateSetting('discussionTime', Math.min(120, settings.discussionTime + 15))}>+</button>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.settingRow}>
+                                        <span>🗳️ Votación:</span>
+                                        <div className={styles.settingControl}>
+                                            <button onClick={() => updateSetting('votingTime', Math.max(10, settings.votingTime - 10))}>-</button>
+                                            <span>{settings.votingTime}s</span>
+                                            <button onClick={() => updateSetting('votingTime', Math.min(60, settings.votingTime + 10))}>+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     <div className={styles.rulesCard}>
                         <h3>📖 Reglas</h3>
