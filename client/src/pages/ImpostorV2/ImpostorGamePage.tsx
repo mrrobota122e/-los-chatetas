@@ -488,11 +488,24 @@ export default function ImpostorGamePage() {
         const aliveCrew = alivePlayers.filter(p => !p.isImpostor);
 
         if (!aliveImpostor) {
-            playSound('win');
+            // Crew wins - impostor was eliminated
             setWinner('CREW');
+            // Play sound based on player's role
+            if (isImpostor) {
+                playSound('lose'); // I'm impostor and I lost
+            } else {
+                playSound('win'); // I'm crew and we won
+            }
             setPhase('GAME_END');
         } else if (aliveCrew.length <= 1) {
+            // Impostor wins
             setWinner('IMPOSTOR');
+            // Play sound based on player's role  
+            if (isImpostor) {
+                playSound('win'); // I'm impostor and I won
+            } else {
+                playSound('lose'); // I'm crew and we lost
+            }
             setPhase('GAME_END');
         } else {
             setRound(prev => prev + 1);
@@ -501,8 +514,8 @@ export default function ImpostorGamePage() {
             setEliminatedPlayer(null);
             setCurrentPlayerIndex(0);
             setPhase('CLUES');
-            setTimer(12);
-            setMaxTimer(12);
+            setTimer(gameSettings.clueTime);
+            setMaxTimer(gameSettings.clueTime);
             simulateBotClueIfNeeded(0);
         }
     };
@@ -894,40 +907,44 @@ export default function ImpostorGamePage() {
                     </div>
                 )}
 
-                {phase === 'GAME_END' && (
-                    <div className={`${styles.gameEndScreen} ${winner === 'CREW' ? styles.crewWins : styles.impostorWins}`}>
-                        {/* Big title like Among Us */}
-                        <h1 className={winner === 'CREW' ? styles.victoryTitle : styles.defeatTitle}>
-                            {winner === 'CREW' ? 'Victoria' : 'Derrota'}
-                        </h1>
+                {phase === 'GAME_END' && (() => {
+                    // Calculate if current player won
+                    const iWon = (isImpostor && winner === 'IMPOSTOR') || (!isImpostor && winner === 'CREW');
+                    return (
+                        <div className={`${styles.gameEndScreen} ${iWon ? styles.crewWins : styles.impostorWins}`}>
+                            {/* Big title based on player perspective */}
+                            <h1 className={iWon ? styles.victoryTitle : styles.defeatTitle}>
+                                {iWon ? 'Victoria' : 'Derrota'}
+                            </h1>
 
-                        {/* Row of beans at center */}
-                        <div className={styles.endBeansRow}>
-                            {players.map((p, i) => (
-                                <div
-                                    key={i}
-                                    className={`${styles.endBean} ${!p.isAlive ? styles.deadBean : ''} ${p.isImpostor ? styles.impostorBean : ''}`}
-                                    style={{ '--bean-color': p.color, '--delay': `${i * 0.1}s` } as any}
-                                >
-                                    <div className={styles.endBeanBody} />
-                                    <div className={styles.endBeanVisor} />
-                                </div>
-                            ))}
-                        </div>
+                            {/* Row of beans at center */}
+                            <div className={styles.endBeansRow}>
+                                {players.map((p, i) => (
+                                    <div
+                                        key={i}
+                                        className={`${styles.endBean} ${!p.isAlive ? styles.deadBean : ''} ${p.isImpostor ? styles.impostorBean : ''}`}
+                                        style={{ '--bean-color': p.color, '--delay': `${i * 0.1}s` } as any}
+                                    >
+                                        <div className={styles.endBeanBody} />
+                                        <div className={styles.endBeanVisor} />
+                                    </div>
+                                ))}
+                            </div>
 
-                        {/* Bottom buttons - QUIT left, PLAY AGAIN right */}
-                        <div className={styles.endButtonsBar}>
-                            <button onClick={() => navigate('/impostor-v2/menu')} className={styles.quitBtn}>
-                                <span className={styles.btnIcon}>✕</span>
-                                <span>SALIR</span>
-                            </button>
-                            <button onClick={() => initializeGame()} className={styles.playAgainBtn}>
-                                <span className={styles.btnIcon}>↻</span>
-                                <span>DE NUEVO</span>
-                            </button>
+                            {/* Bottom buttons - QUIT left, PLAY AGAIN right */}
+                            <div className={styles.endButtonsBar}>
+                                <button onClick={() => navigate('/impostor-v2/menu')} className={styles.quitBtn}>
+                                    <span className={styles.btnIcon}>✕</span>
+                                    <span>SALIR</span>
+                                </button>
+                                <button onClick={() => initializeGame()} className={styles.playAgainBtn}>
+                                    <span className={styles.btnIcon}>↻</span>
+                                    <span>DE NUEVO</span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    );
+                })()}
             </main>
         </div>
     );

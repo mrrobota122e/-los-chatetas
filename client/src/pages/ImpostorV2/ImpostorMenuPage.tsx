@@ -191,11 +191,11 @@ export default function ImpostorMenuPage() {
                         <input
                             type="text"
                             className={styles.codeInput}
-                            placeholder="XXXX"
+                            placeholder="CÓDIGO"
                             value={roomCode}
                             onChange={e => setRoomCode(e.target.value.toUpperCase())}
                             onKeyPress={e => e.key === 'Enter' && handleJoinRoom()}
-                            maxLength={4}
+                            maxLength={8}
                             autoFocus
                         />
                         <div className={styles.modalBtns}>
@@ -205,7 +205,7 @@ export default function ImpostorMenuPage() {
                             <button
                                 className={styles.confirmBtn}
                                 onClick={handleJoinRoom}
-                                disabled={roomCode.length < 4}
+                                disabled={roomCode.length < 3}
                             >
                                 Unirse
                             </button>
