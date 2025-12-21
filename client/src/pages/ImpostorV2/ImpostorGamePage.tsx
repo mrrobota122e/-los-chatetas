@@ -73,6 +73,37 @@ export default function ImpostorGamePage() {
     const chatRef = useRef<HTMLDivElement>(null);
     const msgIdRef = useRef(0);
 
+    // ADMIN MODE
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [showAdminPanel, setShowAdminPanel] = useState(false);
+    const [adminIP] = useState(''); // Will be detected
+
+    // Check for admin mode on mount
+    useEffect(() => {
+        const checkAdmin = async () => {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                const userIP = data.ip;
+                // Admin IPs - add your IP here
+                const ADMIN_IPS = ['YOUR_IP_HERE', '127.0.0.1', 'localhost'];
+                // Also check localStorage for admin key
+                const adminKey = localStorage.getItem('adminKey');
+                if (ADMIN_IPS.includes(userIP) || adminKey === 'AARON_ADMIN_2024') {
+                    setIsAdmin(true);
+                }
+            } catch (e) {
+                // Check localStorage fallback
+                const adminKey = localStorage.getItem('adminKey');
+                if (adminKey === 'AARON_ADMIN_2024') {
+                    setIsAdmin(true);
+                }
+            }
+        };
+        checkAdmin();
+    }, []);
+
+
     // Sound player
     const playSound = (soundName: keyof typeof SOUNDS) => {
         try {
@@ -411,6 +442,124 @@ export default function ImpostorGamePage() {
                         <h1>REUNIÓN DE EMERGENCIA</h1>
                         <div className={styles.emergencyPulse} />
                     </div>
+                </div>
+            )}
+
+            {/* ADMIN PANEL */}
+            {isAdmin && (
+                <div style={{
+                    position: 'fixed',
+                    top: '10px',
+                    right: '10px',
+                    zIndex: 9999,
+                    fontFamily: 'monospace'
+                }}>
+                    <button
+                        onClick={() => setShowAdminPanel(!showAdminPanel)}
+                        style={{
+                            padding: '8px 16px',
+                            background: showAdminPanel ? '#ff4444' : '#4444ff',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontWeight: 'bold',
+                            fontSize: '12px',
+                            boxShadow: '0 4px 15px rgba(0,0,0,0.4)'
+                        }}
+                    >
+                        👑 ADMIN {showAdminPanel ? '▲' : '▼'}
+                    </button>
+
+                    {showAdminPanel && (
+                        <div style={{
+                            marginTop: '8px',
+                            padding: '15px',
+                            background: 'rgba(0,0,0,0.95)',
+                            borderRadius: '12px',
+                            border: '2px solid #4444ff',
+                            minWidth: '280px',
+                            maxHeight: '400px',
+                            overflowY: 'auto'
+                        }}>
+                            <h3 style={{ color: '#4444ff', margin: '0 0 12px', fontSize: '14px' }}>🛠️ PANEL ADMIN</h3>
+
+                            {/* Game Info */}
+                            <div style={{ marginBottom: '12px', padding: '10px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                                <div style={{ color: '#00ff88', fontSize: '11px', marginBottom: '4px' }}>🔐 PALABRA SECRETA:</div>
+                                <div style={{ color: 'white', fontSize: '18px', fontWeight: 'bold' }}>{secretWord}</div>
+                            </div>
+
+                            {/* Impostor */}
+                            <div style={{ marginBottom: '12px', padding: '10px', background: 'rgba(255,50,50,0.15)', borderRadius: '8px', border: '1px solid rgba(255,50,50,0.3)' }}>
+                                <div style={{ color: '#ff5555', fontSize: '11px', marginBottom: '4px' }}>🔪 IMPOSTOR:</div>
+                                <div style={{ color: '#ff5555', fontSize: '16px', fontWeight: 'bold' }}>
+                                    {players.find(p => p.isImpostor)?.name || '-'}
+                                </div>
+                            </div>
+
+                            {/* Phase & Round */}
+                            <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+                                <div style={{ flex: 1, padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', textAlign: 'center' }}>
+                                    <div style={{ color: '#888', fontSize: '9px' }}>FASE</div>
+                                    <div style={{ color: 'white', fontSize: '12px', fontWeight: 'bold' }}>{phase}</div>
+                                </div>
+                                <div style={{ flex: 1, padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', textAlign: 'center' }}>
+                                    <div style={{ color: '#888', fontSize: '9px' }}>RONDA</div>
+                                    <div style={{ color: 'white', fontSize: '12px', fontWeight: 'bold' }}>{round}</div>
+                                </div>
+                                <div style={{ flex: 1, padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', textAlign: 'center' }}>
+                                    <div style={{ color: '#888', fontSize: '9px' }}>TIEMPO</div>
+                                    <div style={{ color: 'white', fontSize: '12px', fontWeight: 'bold' }}>{timer}s</div>
+                                </div>
+                            </div>
+
+                            {/* Players List */}
+                            <div style={{ marginBottom: '12px' }}>
+                                <div style={{ color: '#888', fontSize: '10px', marginBottom: '6px' }}>👥 JUGADORES ({players.filter(p => p.isAlive).length}/{players.length} vivos):</div>
+                                {players.map(p => (
+                                    <div key={p.id} style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        padding: '6px 8px',
+                                        marginBottom: '4px',
+                                        background: p.isImpostor ? 'rgba(255,50,50,0.2)' : 'rgba(255,255,255,0.03)',
+                                        borderRadius: '6px',
+                                        opacity: p.isAlive ? 1 : 0.4
+                                    }}>
+                                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: p.color }} />
+                                        <span style={{ color: 'white', fontSize: '11px', flex: 1 }}>
+                                            {p.name} {p.isImpostor ? '🔪' : ''} {p.isBot ? '🤖' : ''} {!p.isAlive ? '💀' : ''}
+                                        </span>
+                                        <span style={{ color: '#888', fontSize: '10px' }}>{p.votes} votos</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Admin Actions */}
+                            <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '10px' }}>
+                                <div style={{ color: '#888', fontSize: '10px', marginBottom: '6px' }}>⚡ ACCIONES:</div>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                    <button onClick={() => setTimer(5)} style={{ padding: '6px 10px', background: '#333', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
+                                        ⏱️ +5s
+                                    </button>
+                                    <button onClick={() => setPhase('VOTING')} style={{ padding: '6px 10px', background: '#333', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
+                                        🗳️ Votar
+                                    </button>
+                                    <button onClick={() => setPhase('GAME_END')} style={{ padding: '6px 10px', background: '#333', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
+                                        🏁 Fin
+                                    </button>
+                                    <button onClick={() => { setWinner('CREW'); setPhase('GAME_END'); }} style={{ padding: '6px 10px', background: '#2222aa', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
+                                        👥 Crew Gana
+                                    </button>
+                                    <button onClick={() => { setWinner('IMPOSTOR'); setPhase('GAME_END'); }} style={{ padding: '6px 10px', background: '#aa2222', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
+                                        🔪 Imp. Gana
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
 
