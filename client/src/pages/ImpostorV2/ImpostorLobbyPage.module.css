@@ -1,13 +1,13 @@
-/* IMPOSTOR LOBBY - SPACE THEME (RESPONSIVE) */
+/* IMPOSTOR LOBBY - ULTRA ADVANCED */
 
 .container {
     position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 12px;
-    background: linear-gradient(180deg, #0a0a1f 0%, #1a0a2e 50%, #050510 100%);
+    background: linear-gradient(135deg, #0a0a1f 0%, #1a0a2e 50%, #050510 100%);
     overflow: hidden;
+    font-family: 'Segoe UI', -apple-system, sans-serif;
 }
 
 /* Stars background */
@@ -19,10 +19,9 @@
         radial-gradient(1px 1px at 200px 100px, rgba(255, 255, 255, 0.8), transparent),
         radial-gradient(2px 2px at 350px 150px, white, transparent),
         radial-gradient(1px 1px at 500px 80px, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(2px 2px at 650px 120px, white, transparent),
-        radial-gradient(1px 1px at 800px 60px, rgba(255, 255, 255, 0.8), transparent);
-    background-size: 850px 180px;
-    opacity: 0.6;
+        radial-gradient(2px 2px at 650px 120px, white, transparent);
+    background-size: 700px 180px;
+    opacity: 0.5;
     z-index: 0;
     animation: twinkle 4s ease-in-out infinite;
 }
@@ -31,334 +30,61 @@
 
     0%,
     100% {
-        opacity: 0.5;
+        opacity: .4
     }
 
     50% {
-        opacity: 0.7;
+        opacity: .7
     }
 }
 
-/* Nebula effect */
-.background::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(ellipse at 20% 30%, rgba(120, 50, 200, 0.12) 0%, transparent 45%),
-        radial-gradient(ellipse at 80% 70%, rgba(200, 50, 120, 0.08) 0%, transparent 40%);
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 20px;
-    background: rgba(25, 20, 50, 0.9);
-    border-radius: 14px;
-    border: 2px solid rgba(197, 17, 17, 0.4);
-    margin-bottom: 15px;
-    z-index: 10;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.roomInfo {
+/* Loading */
+.loadingScreen {
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-}
-
-.roomCode {
-    margin: 0;
-    font-size: 1.1rem;
-    color: white;
-    display: flex;
     align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.roomCode span {
-    color: #00ff88;
-    font-weight: 900;
-    font-size: 1.4rem;
-    letter-spacing: 3px;
-    text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
-}
-
-.playerCount {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 12px;
-}
-
-.leaveButton {
-    padding: 10px 20px;
-    background: linear-gradient(135deg, rgba(180, 40, 40, 0.4) 0%, rgba(120, 20, 20, 0.4) 100%);
-    border: 2px solid rgba(255, 80, 80, 0.4);
-    border-radius: 10px;
-    color: #ff7575;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-    white-space: nowrap;
-}
-
-.leaveButton:hover {
-    background: linear-gradient(135deg, rgba(200, 50, 50, 0.5) 0%, rgba(150, 30, 30, 0.5) 100%);
-    transform: scale(1.02);
-}
-
-.content {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-width: 800px;
-    width: 100%;
-    margin: 0 auto;
-    z-index: 10;
-    flex: 1;
-}
-
-.playersSection {
-    background: rgba(25, 20, 50, 0.85);
-    border: 2px solid rgba(150, 100, 200, 0.25);
-    border-radius: 18px;
-    padding: 20px;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-}
-
-.sectionTitle {
-    margin: 0 0 15px 0;
-    color: #00d9ff;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.sectionTitle::before {
-    content: '👥';
-}
-
-.playersList {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px;
-}
-
-.playerCard {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 14px;
-    background: rgba(20, 15, 40, 0.8);
-    border: 2px solid rgba(150, 100, 200, 0.15);
-    border-radius: 12px;
-    transition: all 0.3s;
-    min-width: 0;
-    overflow: hidden;
-}
-
-.playerCard:hover {
-    transform: translateY(-2px);
-    border-color: rgba(150, 100, 200, 0.3);
-}
-
-.playerCard.me {
-    border-color: rgba(0, 255, 136, 0.5);
-    background: linear-gradient(135deg, rgba(0, 120, 80, 0.25) 0%, rgba(0, 80, 50, 0.25) 100%);
-    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.15);
-}
-
-.playerCard.bot {
-    border-color: rgba(168, 100, 255, 0.45);
-    background: linear-gradient(135deg, rgba(120, 60, 180, 0.25) 0%, rgba(80, 40, 140, 0.25) 100%);
-}
-
-/* Bean Avatar */
-.playerAvatar {
-    width: 36px;
-    height: 43px;
-    position: relative;
-    flex-shrink: 0;
-}
-
-.playerAvatar::before {
-    content: '';
-    position: absolute;
-    width: 32px;
-    height: 38px;
-    background: linear-gradient(180deg, #c51111 0%, #8b0000 100%);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    box-shadow: inset -5px -3px 12px rgba(0, 0, 0, 0.3), 0 6px 18px rgba(0, 0, 0, 0.3);
-}
-
-.playerAvatar::after {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 3px;
-    width: 12px;
-    height: 9px;
-    background: linear-gradient(135deg, #a5e8ff 0%, #5bc9f8 100%);
-    border-radius: 40% 60% 60% 40%;
-    box-shadow: 0 0 6px rgba(91, 201, 248, 0.4);
-}
-
-.playerName {
-    font-weight: 700;
-    color: white;
-    font-size: 12px;
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 0;
-}
-
-.hostBadge {
-    padding: 3px 8px;
-    background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
-    border-radius: 8px;
-    font-size: 9px;
-    font-weight: 800;
-    color: #4a3500;
-    flex-shrink: 0;
-}
-
-.botBadge {
-    padding: 3px 8px;
-    background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
-    border-radius: 8px;
-    font-size: 9px;
-    font-weight: 800;
-    color: white;
-    flex-shrink: 0;
-}
-
-/* Controls */
-.controls {
-    display: flex;
-    gap: 10px;
     justify-content: center;
-    flex-wrap: wrap;
-}
-
-.startButton {
-    padding: 14px 40px;
-    background: linear-gradient(135deg, #c51111 0%, #8b0000 100%);
-    border: none;
-    border-radius: 12px;
+    flex: 1;
+    z-index: 10;
     color: white;
-    font-size: 15px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 6px 25px rgba(197, 17, 17, 0.4);
+    gap: 15px;
 }
 
-.startButton:hover:not(:disabled) {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 35px rgba(197, 17, 17, 0.5);
-}
-
-.startButton:disabled {
-    background: rgba(100, 100, 100, 0.4);
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-.botButton {
-    padding: 12px 24px;
-    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 5px 20px rgba(124, 58, 237, 0.3);
-}
-
-.botButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(124, 58, 237, 0.4);
-}
-
-/* Waiting area */
-.waitingArea {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    padding: 30px;
-    background: rgba(25, 20, 50, 0.8);
-    border: 2px solid rgba(150, 100, 200, 0.2);
-    border-radius: 18px;
-    text-align: center;
-}
-
-.waitingBean {
-    width: 65px;
-    height: 78px;
-    position: relative;
-    animation: waitingBounce 1.5s ease-in-out infinite;
-}
-
-.waitingBean::before {
-    content: '';
-    position: absolute;
-    inset: 0;
+.loadingBean {
+    width: 60px;
+    height: 72px;
     background: linear-gradient(180deg, #c51111 0%, #8b0000 100%);
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    box-shadow: inset -8px -5px 16px rgba(0, 0, 0, 0.3), 0 12px 30px rgba(197, 17, 17, 0.4);
+    animation: bounce 1s ease-in-out infinite;
+    position: relative;
 }
 
-.waitingBean::after {
+.loadingBean::after {
     content: '';
     position: absolute;
-    top: 22%;
-    left: 10%;
-    width: 38%;
-    height: 24%;
-    background: linear-gradient(135deg, #a5e8ff 0%, #5bc9f8 100%);
+    top: 18px;
+    left: 6px;
+    width: 22px;
+    height: 16px;
+    background: linear-gradient(135deg, #a5e8ff, #5bc9f8);
     border-radius: 40% 60% 60% 40%;
 }
 
-@keyframes waitingBounce {
+@keyframes bounce {
 
     0%,
     100% {
-        transform: translateY(0) scale(1);
+        transform: translateY(0)
     }
 
     50% {
-        transform: translateY(-12px) scale(1.02);
+        transform: translateY(-20px)
     }
 }
 
-.waitingText {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 1rem;
-}
-
-.waitingText strong {
-    color: #00d9ff;
-}
-
-/* Loading dots */
 .loadingDots {
     display: flex;
     gap: 6px;
-    justify-content: center;
 }
 
 .loadingDots span {
@@ -366,7 +92,7 @@
     height: 8px;
     background: #c51111;
     border-radius: 50%;
-    animation: loadingDot 1.2s infinite;
+    animation: dotPulse 1.2s infinite;
 }
 
 .loadingDots span:nth-child(2) {
@@ -377,133 +103,593 @@
     animation-delay: 0.4s;
 }
 
-@keyframes loadingDot {
+@keyframes dotPulse {
 
     0%,
     80%,
     100% {
-        transform: scale(0.6);
-        opacity: 0.4;
+        transform: scale(.6);
+        opacity: .4
     }
 
     40% {
         transform: scale(1);
-        opacity: 1;
+        opacity: 1
     }
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 600px) {
-    .container {
-        padding: 8px;
+/* Countdown */
+.countdownOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.countdownNumber {
+    font-size: 8rem;
+    font-weight: 900;
+    color: #c51111;
+    text-shadow: 0 0 60px rgba(197, 17, 17, 0.8);
+    animation: countPulse 1s ease-in-out infinite;
+}
+
+@keyframes countPulse {
+
+    0%,
+    100% {
+        transform: scale(1)
     }
 
+    50% {
+        transform: scale(1.1)
+    }
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: rgba(20, 15, 40, 0.9);
+    backdrop-filter: blur(15px);
+    border-bottom: 2px solid rgba(197, 17, 17, 0.4);
+    z-index: 100;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.roomCodeBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, rgba(197, 17, 17, 0.25), rgba(139, 0, 0, 0.25));
+    border: 2px solid rgba(197, 17, 17, 0.5);
+    border-radius: 12px;
+}
+
+.codeLabel {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 2px;
+}
+
+.codeValue {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #ff6666;
+    letter-spacing: 3px;
+}
+
+.playerCounter {
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.leaveBtn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, rgba(180, 40, 40, 0.4), rgba(120, 20, 20, 0.4));
+    border: 2px solid rgba(255, 80, 80, 0.4);
+    border-radius: 10px;
+    color: #ff7575;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.leaveBtn:hover {
+    transform: scale(1.05);
+    background: rgba(200, 50, 50, 0.5);
+}
+
+/* Main Content */
+.mainContent {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 20px;
+    padding: 20px;
+    z-index: 10;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Players Section */
+.playersSection {
+    background: rgba(25, 20, 50, 0.85);
+    border: 2px solid rgba(150, 100, 200, 0.25);
+    border-radius: 20px;
+    padding: 20px;
+    backdrop-filter: blur(15px);
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.sectionHeader h2 {
+    margin: 0;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.liveIndicator {
+    padding: 4px 10px;
+    background: rgba(255, 50, 50, 0.2);
+    border: 1px solid rgba(255, 50, 50, 0.4);
+    border-radius: 20px;
+    font-size: 11px;
+    color: #ff6666;
+    animation: livePulse 2s infinite;
+}
+
+@keyframes livePulse {
+
+    0%,
+    100% {
+        opacity: 1
+    }
+
+    50% {
+        opacity: .6
+    }
+}
+
+.playersGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+/* Player Card */
+.playerCard {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: rgba(30, 25, 55, 0.8);
+    border: 2px solid rgba(150, 100, 200, 0.2);
+    border-radius: 14px;
+    animation: cardSlide 0.4s ease-out backwards;
+    animation-delay: var(--delay, 0s);
+    transition: all 0.3s;
+}
+
+@keyframes cardSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+
+.playerCard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(150, 100, 200, 0.4);
+}
+
+.playerCard.isMe {
+    border-color: rgba(0, 255, 136, 0.5);
+    background: rgba(0, 120, 80, 0.25);
+}
+
+.playerCard.isBot {
+    border-color: rgba(168, 100, 255, 0.4);
+    background: rgba(120, 60, 180, 0.2);
+}
+
+.cardBean {
+    width: 40px;
+    height: 48px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.beanBody {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--bean-color, #c51111) 0%, color-mix(in srgb, var(--bean-color, #c51111), black 30%) 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: inset -5px -4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.beanVisor {
+    position: absolute;
+    top: 10px;
+    left: 4px;
+    width: 16px;
+    height: 12px;
+    background: linear-gradient(135deg, #a5e8ff, #5bc9f8);
+    border-radius: 40% 60% 60% 40%;
+}
+
+.cardInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.cardName {
+    display: block;
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cardBadges {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.badgeHost,
+.badgeBot,
+.badgeMe {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.badgeHost {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+}
+
+.badgeBot {
+    background: rgba(168, 85, 247, 0.2);
+    color: #a855f7;
+}
+
+.badgeMe {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+    font-weight: 700;
+}
+
+/* Empty Slot */
+.emptySlot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+}
+
+.emptyIcon {
+    font-size: 24px;
+    opacity: 0.5;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: .3
+    }
+
+    50% {
+        opacity: .6
+    }
+}
+
+/* Sidebar */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Invite Card */
+.inviteCard {
+    background: linear-gradient(135deg, rgba(50, 150, 100, 0.15), rgba(30, 100, 70, 0.15));
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.inviteCard h3 {
+    margin: 0 0 12px;
+    color: #00ff88;
+    font-size: 14px;
+}
+
+.linkBox {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.linkInput {
+    flex: 1;
+    padding: 10px 12px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-size: 11px;
+    min-width: 0;
+}
+
+.copyBtn {
+    padding: 10px 14px;
+    background: linear-gradient(135deg, #1a9a50, #107a35);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.copyBtn.copied {
+    background: #00cc66;
+}
+
+.copyBtn:hover {
+    transform: scale(1.05);
+}
+
+.shareRow {
+    display: flex;
+    gap: 8px;
+}
+
+.waBtn,
+.linkBtn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.waBtn {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+}
+
+.linkBtn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.waBtn:hover,
+.linkBtn:hover {
+    transform: scale(1.02);
+}
+
+/* Actions Card */
+.actionsCard {
+    background: rgba(25, 20, 50, 0.9);
+    border: 2px solid rgba(150, 100, 200, 0.25);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.botsBtn {
+    padding: 12px;
+    background: linear-gradient(135deg, #7c3aed, #5b21b6);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.botsBtn:hover:not(:disabled) {
+    transform: scale(1.02);
+    box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
+}
+
+.botsBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.startBtn {
+    padding: 16px;
+    background: linear-gradient(135deg, #c51111, #8b0000);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 900;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 25px rgba(197, 17, 17, 0.4);
+}
+
+.startBtn:hover:not(:disabled) {
+    transform: scale(1.03);
+    box-shadow: 0 10px 35px rgba(197, 17, 17, 0.5);
+}
+
+.startBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.waitingHost {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 20px;
+    font-size: 14px;
+}
+
+/* Rules Card */
+.rulesCard {
+    background: rgba(25, 20, 50, 0.7);
+    border: 2px solid rgba(150, 100, 200, 0.15);
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.rulesCard h3 {
+    margin: 0 0 12px;
+    color: #00d9ff;
+    font-size: 14px;
+}
+
+.rulesCard ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rulesCard li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rulesCard li:last-child {
+    border-bottom: none;
+}
+
+/* Footer */
+.footer {
+    padding: 12px 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 11px;
+    z-index: 10;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .mainContent {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        order: -1;
+    }
+
+    .playersGrid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    }
+}
+
+@media (max-width: 500px) {
     .header {
-        padding: 12px 14px;
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-        align-items: stretch;
+        padding: 10px 12px;
     }
 
-    .roomInfo {
-        align-items: center;
+    .roomCodeBox {
+        padding: 6px 12px;
     }
 
-    .roomCode {
-        justify-content: center;
-        font-size: 1rem;
+    .codeValue {
+        font-size: 1.1rem;
     }
 
-    .roomCode span {
-        font-size: 1.2rem;
+    .mainContent {
+        padding: 12px;
+        gap: 12px;
     }
 
-    .leaveButton {
-        width: 100%;
-        text-align: center;
+    .playersSection,
+    .inviteCard,
+    .actionsCard,
+    .rulesCard {
+        padding: 14px;
     }
 
-    .playersSection {
-        padding: 15px;
-    }
-
-    .sectionTitle {
-        font-size: 0.9rem;
-    }
-
-    .playersList {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    .playersGrid {
+        grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
 
     .playerCard {
-        padding: 10px 12px;
+        padding: 10px;
         gap: 8px;
     }
 
-    .playerAvatar {
-        width: 30px;
-        height: 36px;
+    .cardBean {
+        width: 32px;
+        height: 38px;
     }
 
-    .playerAvatar::before {
-        width: 26px;
-        height: 31px;
-    }
-
-    .playerAvatar::after {
-        width: 10px;
-        height: 7px;
+    .beanVisor {
+        width: 12px;
+        height: 9px;
         top: 8px;
-        left: 2px;
+        left: 3px;
     }
 
-    .playerName {
+    .cardName {
         font-size: 11px;
     }
 
-    .hostBadge,
-    .botBadge {
-        font-size: 8px;
-        padding: 2px 6px;
-    }
-
-    .controls {
+    .shareRow {
         flex-direction: column;
-    }
-
-    .startButton,
-    .botButton {
-        width: 100%;
-    }
-
-    .waitingArea {
-        padding: 22px 15px;
-    }
-}
-
-@media (max-width: 400px) {
-    .playersList {
-        grid-template-columns: 1fr 1fr;
-        gap: 6px;
-    }
-
-    .playerCard {
-        padding: 8px 10px;
-    }
-
-    .playerAvatar {
-        width: 26px;
-        height: 31px;
-    }
-
-    .playerAvatar::before {
-        width: 22px;
-        height: 26px;
-    }
-
-    .playerName {
-        font-size: 10px;
     }
 }
