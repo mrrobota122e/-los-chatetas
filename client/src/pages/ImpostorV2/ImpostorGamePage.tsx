@@ -765,17 +765,6 @@ export default function ImpostorGamePage() {
                 </div>
             )}
 
-            {/* ROLE REMINDER BADGE */}
-            {phase !== 'INTRO' && phase !== 'GAME_END' && (
-                <div className={styles.roleBadge}>
-                    {isImpostor ? (
-                        <span className={styles.impostorBadge}>🔪 IMPOSTOR</span>
-                    ) : (
-                        <span className={styles.crewBadge}>🎯 {secretWord}</span>
-                    )}
-                </div>
-            )}
-
             {/* RADIO PANEL */}
             <div className={styles.radioPanel}>
                 <button className={styles.radioBtn} onClick={() => { playSound('button'); setShowRadio(!showRadio); }} onMouseEnter={() => playSound('hover')}>
@@ -933,15 +922,38 @@ export default function ImpostorGamePage() {
                 </div>
             )}
 
+
             {/* Header */}
             <header className={styles.header}>
+                {/* LEFT: Role Badge */}
+                {phase !== 'INTRO' && phase !== 'GAME_END' && (
+                    <div className={styles.headerRole}>
+                        {isImpostor ? (
+                            <div className={styles.impostorBadge}>
+                                <span className={styles.roleIcon}>🔪</span>
+                                <span className={styles.roleText}>IMPOSTOR</span>
+                            </div>
+                        ) : (
+                            <div className={styles.crewBadge}>
+                                <span className={styles.roleIcon}>🎯</span>
+                                <span className={styles.roleText}>{secretWord}</span>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* CENTER-LEFT: Round Badge */}
                 <div className={styles.roundBadge}>
                     <span className={styles.roundIcon}>🔄</span>
                     RONDA {round}
                 </div>
+
+                {/* CENTER: Phase Title */}
                 <div className={styles.phaseTitle}>
                     <span className={styles.phaseGlow}>{getPhaseTitle()}</span>
                 </div>
+
+                {/* RIGHT: Timer */}
                 <div className={styles.timerContainer}>
                     <svg className={styles.timerSvg} viewBox="0 0 100 100">
                         <circle className={styles.timerBg} cx="50" cy="50" r="45" />
