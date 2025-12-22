@@ -2150,3 +2150,88 @@
 .pauseBtn:hover {
     background: rgba(255, 80, 80, 0.9);
 }
+/* ===== ADVANCED UPGRADES ===== */
+
+/* Fix Table Centering */
+.meetingRoom {
+    margin: 0 auto;
+    align-items: center;
+}
+
+/* Advanced Header */
+.header {
+    margin: 15px 20px;
+    padding: 12px 25px;
+    background: linear-gradient(135deg, rgba(20, 10, 35, 0.9), rgba(40, 20, 60, 0.8));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.roundBadge {
+    background: linear-gradient(135deg, rgba(255, 50, 50, 0.2), rgba(200, 0, 0, 0.3));
+    border: 1px solid rgba(255, 50, 50, 0.5);
+    padding: 8px 16px;
+    border-radius: 50px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+}
+
+.phaseTitle {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    background: linear-gradient(to bottom, #fff, #ccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Advanced Input */
+.bottomPanel {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    padding-bottom: 30px;
+}
+
+.cluesPanel, .chatPanel {
+    background: rgba(20, 15, 30, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    padding: 20px;
+}
+
+.inputGroup input {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px 20px;
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+}
+
+.inputGroup input:focus {
+    border-color: #00f0ff;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+    transform: scale(1.01);
+}
+
+.sendBtn {
+    background: linear-gradient(135deg, #00f0ff, #0099cc);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 800;
+    padding: 0 30px;
+    font-size: 1.1rem;
+    box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
+    transition: all 0.3s;
+}
+
+.sendBtn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 240, 255, 0.5);
+}

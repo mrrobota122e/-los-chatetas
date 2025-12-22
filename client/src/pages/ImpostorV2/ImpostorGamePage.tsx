@@ -228,96 +228,116 @@ export default function ImpostorGamePage() {
                     oscillator.stop(audioCtx.currentTime + 0.5);
                     break;
                 case 'reveal_impostor':
-                    // Impostor reveal - dramatic low ominous tone
+                    // SUS sound - Low ominous drone
                     oscillator.type = 'sawtooth';
-                    oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.5);
-                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                    oscillator.frequency.setValueAtTime(100, audioCtx.currentTime);
+                    oscillator.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 1.5);
+                    gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
                     oscillator.start();
-                    oscillator.stop(audioCtx.currentTime + 0.6);
+                    oscillator.stop(audioCtx.currentTime + 1.5);
                     break;
                 case 'vote':
-                    // Voting time - descending tone
-                    oscillator.type = 'triangle';
-                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.3);
-                    gainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    // Emergency Meeting - Alarm
+                    oscillator.type = 'square';
+                    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime + 0.2);
+                    oscillator.frequency.setValueAtTime(0, audioCtx.currentTime + 0.21);
+                    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime + 0.4);
+                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.6);
+                    gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.61);
                     oscillator.start();
-                    oscillator.stop(audioCtx.currentTime + 0.3);
+                    oscillator.stop(audioCtx.currentTime + 0.7);
                     break;
                 case 'clue':
-                    // Clue submit - soft pop sound
+                    // Task complete - bubble pop
                     oscillator.type = 'sine';
-                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
                     gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
                     oscillator.start();
-                    oscillator.stop(audioCtx.currentTime + 0.15);
+                    oscillator.stop(audioCtx.currentTime + 0.1);
                     break;
                 case 'chat':
-                    // Chat message - soft blip
+                    // Chat blip
                     oscillator.type = 'sine';
-                    oscillator.frequency.setValueAtTime(500, audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
                     gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
                     gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
                     oscillator.start();
                     oscillator.stop(audioCtx.currentTime + 0.05);
                     break;
                 case 'turn':
-                    // Turn notification - ascending notes
-                    oscillator.type = 'sine';
-                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
-                    oscillator.frequency.setValueAtTime(500, audioCtx.currentTime + 0.1);
-                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime + 0.2);
+                    // Amogus Drip - First note
+                    oscillator.type = 'square';
+                    oscillator.frequency.setValueAtTime(622.25, audioCtx.currentTime); // D#5
                     gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.2);
+                    break;
+                case 'eject':
+                    // Eject whoosh
+                    oscillator.type = 'triangle';
+                    oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 2);
+                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 2);
+                    break;
+                case 'win':
+                    // Victory - Amogus Drip Theme (simplified)
+                    oscillator.type = 'square';
+                    // Note 1
+                    oscillator.frequency.setValueAtTime(622.25, audioCtx.currentTime); // D#5
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0, audioCtx.currentTime + 0.15);
+                    // Note 2
+                    oscillator.frequency.setValueAtTime(523.25, audioCtx.currentTime + 0.2); // C5
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime + 0.2);
+                    gainNode.gain.setValueAtTime(0, audioCtx.currentTime + 0.35);
+                    // Note 3
+                    oscillator.frequency.setValueAtTime(493.88, audioCtx.currentTime + 0.4); // B4
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime + 0.4);
+                    gainNode.gain.setValueAtTime(0, audioCtx.currentTime + 0.55);
+                    // Note 4
+                    oscillator.frequency.setValueAtTime(466.16, audioCtx.currentTime + 0.6); // A#4
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime + 0.6);
+                    gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.8);
+                    break;
+                case 'lose':
+                    // Defeat - Impostor Kill Sound
+                    oscillator.type = 'sawtooth';
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    oscillator.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
                     gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
                     oscillator.start();
                     oscillator.stop(audioCtx.currentTime + 0.3);
                     break;
-                case 'eject':
-                    // Ejection - whoosh sound
-                    oscillator.type = 'sawtooth';
-                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 1);
-                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1);
-                    oscillator.start();
-                    oscillator.stop(audioCtx.currentTime + 1);
-                    break;
-                case 'win':
-                    // Victory fanfare - ascending tones
-                    oscillator.type = 'sine';
-                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
-                    oscillator.frequency.setValueAtTime(500, audioCtx.currentTime + 0.15);
-                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime + 0.3);
-                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime + 0.45);
-                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
-                    oscillator.start();
-                    oscillator.stop(audioCtx.currentTime + 0.6);
-                    break;
-                case 'lose':
-                    // Defeat - descending sad tones
-                    oscillator.type = 'sine';
-                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
-                    oscillator.frequency.setValueAtTime(300, audioCtx.currentTime + 0.2);
-                    oscillator.frequency.setValueAtTime(200, audioCtx.currentTime + 0.4);
-                    gainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-                    oscillator.start();
-                    oscillator.stop(audioCtx.currentTime + 0.5);
-                    break;
                 case 'hover':
-                    // Subtle hover sound
-                    oscillator.type = 'sine';
-                    oscillator.frequency.setValueAtTime(500, audioCtx.currentTime);
+                    // UI Hover - Mechanical click
+                    oscillator.type = 'square';
+                    oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime);
                     gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.02);
                     oscillator.start();
-                    oscillator.stop(audioCtx.currentTime + 0.03);
+                    oscillator.stop(audioCtx.currentTime + 0.02);
+                    break;
+                case 'button':
+                    // UI Click - Sharp
+                    oscillator.type = 'square';
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.05);
                     break;
                 case 'skip':
                     // Skip turn - descending whoosh
@@ -890,19 +910,19 @@ export default function ImpostorGamePage() {
                             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '10px' }}>
                                 <div style={{ color: '#888', fontSize: '10px', marginBottom: '6px' }}>⚡ ACCIONES:</div>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                    <button onClick={() => setTimer(5)} style={{ padding: '6px 10px', background: '#333', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
+                                    <button onClick={() => { playSound('button'); setTimer(5); }} onMouseEnter={() => playSound('hover')} style={{ padding: '6px 10px', background: '#333', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
                                         ⏱️ +5s
                                     </button>
-                                    <button onClick={() => setPhase('VOTING')} style={{ padding: '6px 10px', background: '#333', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
+                                    <button onClick={() => { playSound('button'); setPhase('VOTING'); }} onMouseEnter={() => playSound('hover')} style={{ padding: '6px 10px', background: '#333', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
                                         🗳️ Votar
                                     </button>
-                                    <button onClick={() => setPhase('GAME_END')} style={{ padding: '6px 10px', background: '#333', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
+                                    <button onClick={() => { playSound('button'); setPhase('GAME_END'); }} onMouseEnter={() => playSound('hover')} style={{ padding: '6px 10px', background: '#333', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
                                         🏁 Fin
                                     </button>
-                                    <button onClick={() => { setWinner('CREW'); setPhase('GAME_END'); }} style={{ padding: '6px 10px', background: '#2222aa', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
+                                    <button onClick={() => { playSound('button'); setWinner('CREW'); setPhase('GAME_END'); }} onMouseEnter={() => playSound('hover')} style={{ padding: '6px 10px', background: '#2222aa', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
                                         👥 Crew Gana
                                     </button>
-                                    <button onClick={() => { setWinner('IMPOSTOR'); setPhase('GAME_END'); }} style={{ padding: '6px 10px', background: '#aa2222', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
+                                    <button onClick={() => { playSound('button'); setWinner('IMPOSTOR'); setPhase('GAME_END'); }} onMouseEnter={() => playSound('hover')} style={{ padding: '6px 10px', background: '#aa2222', border: 'none', borderRadius: '4px', color: 'white', fontSize: '10px', cursor: 'pointer' }}>
                                         🔪 Imp. Gana
                                     </button>
                                 </div>
@@ -992,6 +1012,7 @@ export default function ImpostorGamePage() {
                                         key={player.id}
                                         className={`${styles.playerSeat} ${currentPlayer?.id === player.id && phase === 'CLUES' ? styles.activeSeat : ''}`}
                                         style={{ '--seat-angle': `${(idx / alivePlayers.length) * 360}deg` } as any}
+                                        onMouseEnter={() => playSound('hover')}
                                     >
                                         <div className={styles.playerGlow} />
                                         <div className={styles.playerBean} style={{ '--bean-color': player.color } as any}>
@@ -1034,7 +1055,7 @@ export default function ImpostorGamePage() {
                                                 maxLength={40}
                                                 autoFocus
                                             />
-                                            <button onClick={handleSubmitClue} className={styles.sendBtn}>
+                                            <button onClick={() => { playSound('button'); handleSubmitClue(); }} onMouseEnter={() => playSound('hover')} className={styles.sendBtn}>
                                                 <span>ENVIAR</span>
                                                 <span className={styles.btnGlow} />
                                             </button>
@@ -1068,7 +1089,7 @@ export default function ImpostorGamePage() {
                                             onChange={e => setChatInput(e.target.value)}
                                             onKeyPress={e => e.key === 'Enter' && handleSendChat()}
                                         />
-                                        <button onClick={handleSendChat} className={styles.sendBtn}>→</button>
+                                        <button onClick={() => { playSound('button'); handleSendChat(); }} onMouseEnter={() => playSound('hover')} className={styles.sendBtn}>→</button>
                                     </div>
                                 </div>
                             )}
@@ -1084,8 +1105,9 @@ export default function ImpostorGamePage() {
                                             <button
                                                 key={player.id}
                                                 className={`${styles.voteCard} ${hasVoted ? styles.voted : ''}`}
-                                                onClick={() => handleVote(player.id)}
+                                                onClick={() => { playSound('button'); handleVote(player.id); }}
                                                 disabled={hasVoted}
+                                                onMouseEnter={() => playSound('hover')}
                                             >
                                                 <div className={styles.voteBeanWrap}>
                                                     <div className={styles.voteBean} style={{ '--bean-color': player.color } as any}>
@@ -1101,8 +1123,9 @@ export default function ImpostorGamePage() {
                                     </div>
                                     <button
                                         className={styles.skipButton}
-                                        onClick={() => handleVote(null)}
+                                        onClick={() => { playSound('button'); handleVote(null); }}
                                         disabled={hasVoted}
+                                        onMouseEnter={() => playSound('hover')}
                                     >
                                         SKIP VOTE
                                     </button>
