@@ -778,7 +778,7 @@ export default function ImpostorGamePage() {
 
             {/* RADIO PANEL */}
             <div className={styles.radioPanel}>
-                <button className={styles.radioBtn} onClick={() => setShowRadio(!showRadio)}>
+                <button className={styles.radioBtn} onClick={() => { playSound('button'); setShowRadio(!showRadio); }} onMouseEnter={() => playSound('hover')}>
                     {isPlaying ? '🎵' : '📻'}
                 </button>
                 {showRadio && (
@@ -789,7 +789,8 @@ export default function ImpostorGamePage() {
                                 <button
                                     key={i}
                                     className={`${styles.stationBtn} ${currentStation === i ? styles.activeStation : ''}`}
-                                    onClick={() => playStation(i)}
+                                    onClick={() => { playSound('button'); playStation(i); }}
+                                    onMouseEnter={() => playSound('hover')}
                                 >
                                     {station.icon} {station.name}
                                 </button>
@@ -807,7 +808,7 @@ export default function ImpostorGamePage() {
                                 className={styles.radioRange}
                             />
                         </div>
-                        <button className={styles.pauseBtn} onClick={toggleMusic}>
+                        <button className={styles.pauseBtn} onClick={() => { playSound('button'); toggleMusic(); }} onMouseEnter={() => playSound('hover')}>
                             {isPlaying ? '⏸ Pausar' : '▶ Reproducir'}
                         </button>
                     </div>
@@ -1197,11 +1198,11 @@ export default function ImpostorGamePage() {
 
                             {/* Bottom buttons - QUIT left, PLAY AGAIN right */}
                             <div className={styles.endButtonsBar}>
-                                <button onClick={() => navigate('/impostor-v2/menu')} className={styles.quitBtn}>
+                                <button onClick={() => { playSound('button'); navigate('/impostor-v2/menu'); }} onMouseEnter={() => playSound('hover')} className={styles.quitBtn}>
                                     <span className={styles.btnIcon}>✕</span>
                                     <span>SALIR</span>
                                 </button>
-                                <button onClick={() => initializeGame()} className={styles.playAgainBtn}>
+                                <button onClick={() => { playSound('button'); initializeGame(); }} onMouseEnter={() => playSound('hover')} className={styles.playAgainBtn}>
                                     <span className={styles.btnIcon}>↻</span>
                                     <span>DE NUEVO</span>
                                 </button>
