@@ -11,7 +11,22 @@ const socketToPlayer = new Map<string, { playerId: string; roomId: string }>();
 export function handleImpostorV2Events(socket: TypedSocket, io: TypedServer) {
 
     /**
-     * Start impostor game
+     * Start impostor game V2 (Sync for all players)
+     */
+    socket.on('impostor:start-v2' as any, (data: any) => {
+        const { roomId, players, settings } = data;
+        logger.info(`Syncing Impostor V2 game start for room ${roomId}`);
+
+        // Broadcast to everyone in the room to navigate to the game page
+        // We send the players and settings so they can be saved to localStorage by each client
+        io.to(roomId).emit('impostor:game-starting-v2' as any, {
+            players,
+            settings
+        });
+    });
+
+    /**
+     * Start impostor game (Legacy/Controller version)
      */
     socket.on('impostor:start-game', async (data) => {
         const { roomId } = data;

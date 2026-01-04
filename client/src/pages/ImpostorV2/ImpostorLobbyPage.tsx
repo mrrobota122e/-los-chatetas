@@ -80,7 +80,7 @@ export default function ImpostorLobbyPage() {
             setLoading(false);
         });
 
-        socket.on('room:updated', (data) => setPlayers(data.players));
+        socket.on('impostor:updated' as any, (data: any) => setPlayers(data.players));
         socket.on('room:error', (error) => {
             alert(error.message);
             navigate('/impostor-v2/menu');
@@ -92,12 +92,21 @@ export default function ImpostorLobbyPage() {
             }
         });
 
+        // Listen for synchronized game start
+        socket.on('impostor:game-starting-v2' as any, (data: any) => {
+            console.log('🎮 Game starting for everyone...', data);
+            localStorage.setItem('lobbyPlayers', JSON.stringify(data.players));
+            localStorage.setItem('gameSettings', JSON.stringify(data.settings));
+            navigate(`/impostor-v2/game/${roomCode}`);
+        });
+
         return () => {
             socket.off('room:joined');
             socket.off('room:state');
-            socket.off('room:updated');
+            socket.off('impostor:updated' as any);
             socket.off('room:error');
             socket.off('impostor:state-changed');
+            socket.off('impostor:game-starting-v2' as any);
         };
     }, [socket, roomCode, navigate]);
 
@@ -153,10 +162,14 @@ export default function ImpostorLobbyPage() {
     useEffect(() => {
         if (countdown === null) return;
         if (countdown === 0) {
-            // Save players to localStorage so game page can use them
-            localStorage.setItem('lobbyPlayers', JSON.stringify(players));
-            localStorage.setItem('gameSettings', JSON.stringify(settings));
-            navigate(`/impostor-v2/game/${roomCode}`);
+            // If host, notify everyone to start
+            if (isHost && socket && roomId) {
+                socket.emit('impostor:start-v2' as any, {
+                    roomId,
+                    players,
+                    settings
+                });
+            }
             return;
         }
         const timer = setTimeout(() => setCountdown(countdown - 1), 1000);

@@ -70,7 +70,7 @@ export default function ImpostorGamePage() {
     const [winner, setWinner] = useState<'CREW' | 'IMPOSTOR' | null>(null);
     const [round, setRound] = useState(1);
     const [showEmergency, setShowEmergency] = useState(false);
-    const [particles, setParticles] = useState<{ x: number, y: number, id: number }[]>([]);
+    // REMOVED particles state for performance
 
     const myId = useRef(`player-${Date.now()}`);
     const chatRef = useRef<HTMLDivElement>(null);
@@ -382,16 +382,7 @@ export default function ImpostorGamePage() {
         } catch (e) { console.log('Sound error:', e); }
     };
 
-    // Create particles
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setParticles(prev => [
-                ...prev.slice(-20),
-                { x: Math.random() * 100, y: Math.random() * 100, id: Date.now() }
-            ]);
-        }, 500);
-        return () => clearInterval(interval);
-    }, []);
+    // REMOVED particles interval for performance
 
     // ============== INIT ==============
     useEffect(() => {
@@ -740,12 +731,7 @@ export default function ImpostorGamePage() {
 
     return (
         <div className={styles.container}>
-            {/* Particles */}
-            <div className={styles.particlesContainer}>
-                {particles.map(p => (
-                    <div key={p.id} className={styles.particle} style={{ left: `${p.x}%`, top: `${p.y}%` }} />
-                ))}
-            </div>
+            {/* REMOVED particles for performance */}
 
             {/* Background */}
             <div className={styles.spaceBackground}>
