@@ -38,7 +38,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         <div className={styles.container}>
             <div className={styles.logo}>
                 <span className={styles.logoIcon}>🎭</span>
-                <h1>IMPOSTOR</h1>
+                <h1>DEPLOY-TEST</h1>
             </div>
 
             <div className={styles.progressContainer}>
