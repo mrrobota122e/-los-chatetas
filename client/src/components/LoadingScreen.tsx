@@ -11,12 +11,12 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
     useEffect(() => {
         const steps = [
-            { progress: 10, status: 'Conectando al servidor...' },
-            { progress: 30, status: 'Verificando versión...' },
-            { progress: 50, status: 'Cargando recursos...' },
-            { progress: 70, status: 'Sincronizando datos...' },
-            { progress: 90, status: 'Preparando interfaz...' },
-            { progress: 100, status: '¡Listo!' },
+            { progress: 10, status: '🌐 Conectando al servidor...' },
+            { progress: 30, status: '🔍 Verificando versión...' },
+            { progress: 50, status: '📦 Cargando recursos...' },
+            { progress: 70, status: '⚡ Sincronizando datos...' },
+            { progress: 90, status: '🎮 Preparando interfaz...' },
+            { progress: 100, status: '✅ ¡Listo!' },
         ];
 
         let i = 0;
