@@ -105,19 +105,14 @@ export default function IntroPage() {
 
                 {/* The logo text */}
                 <h1 className={styles.logo}>
-                    <span className={styles.logoLetter}>A</span>
-                    <span className={styles.logoLetter}>A</span>
-                    <span className={styles.logoLetter}>R</span>
+                    <span className={styles.logoLetter}>I</span>
+                    <span className={styles.logoLetter}>M</span>
+                    <span className={styles.logoLetter}>P</span>
                     <span className={styles.logoLetter}>O</span>
-                    <span className={styles.logoLetter}>N</span>
-                    <span className={styles.logoSpace}></span>
                     <span className={styles.logoLetter}>S</span>
                     <span className={styles.logoLetter}>T</span>
-                    <span className={styles.logoLetter}>U</span>
-                    <span className={styles.logoLetter}>D</span>
-                    <span className={`${styles.logoLetter} ${styles.number}`}>1</span>
-                    <span className={`${styles.logoLetter} ${styles.number}`}>0</span>
-                    <span className={styles.logoLetter}>S</span>
+                    <span className={styles.logoLetter}>O</span>
+                    <span className={styles.logoLetter}>R</span>
                 </h1>
 
                 {/* Underline effect */}
