@@ -17,12 +17,6 @@ import MusicRadio from './components/MusicRadio';
 import { APP_VERSION } from './config';
 
 function App() {
-    const [isLoading, setIsLoading] = useState(true);
-
-    if (isLoading) {
-        return <LoadingScreen onComplete={() => setIsLoading(false)} />;
-    }
-
     return (
         <BrowserRouter>
             <Routes>
