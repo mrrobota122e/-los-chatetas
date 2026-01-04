@@ -284,7 +284,7 @@ export default function GuessWhoLobbyPage() {
 
             {/* Footer */}
             <footer className={styles.footer}>
-                © 2025 AARON STUD10S
+                © 2025
             </footer>
         </div>
     );

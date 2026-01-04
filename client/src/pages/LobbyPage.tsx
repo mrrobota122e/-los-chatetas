@@ -200,7 +200,7 @@ export default function LobbyPage() {
                 </div>
 
                 <div className={styles.logo}>
-                    <span className={styles.logoText}>AARON STUD<span className={styles.logoNum}>10</span>S</span>
+                    <span className={styles.logoText}>IMPOSTOR</span>
                 </div>
             </header>
 

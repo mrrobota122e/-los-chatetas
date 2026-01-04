@@ -343,7 +343,7 @@ export default function ImpostorLobbyPage() {
             </main>
 
             <footer className={styles.footer}>
-                <span>v3.0.0 © AARON STUD10S</span>
+                <span>© IMPOSTOR</span>
             </footer>
         </div>
     );

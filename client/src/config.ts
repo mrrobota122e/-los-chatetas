@@ -5,7 +5,7 @@ export const APP_VERSION = '3.0.0';  // BUILD: 2024-12-19T12:10
 export const CONFIG = {
     version: APP_VERSION,
     appName: 'IMPOSTOR',
-    studio: 'AARON STUD10S',
+    studio: '',
 
     // Game settings
     defaultTurnDuration: 30,
