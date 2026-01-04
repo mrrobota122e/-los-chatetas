@@ -238,7 +238,7 @@ export default function MenuPage() {
 
             {/* Footer */}
             <footer className={styles.footer}>
-                <p>© 2025 AARON STUD<span>10</span>S — v1.0.5</p>
+                <p>© 2025 — v1.0.5</p>
             </footer>
 
             {/* Sound Controls */}
