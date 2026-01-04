@@ -16,42 +16,49 @@ import AdminPage from './pages/AdminPage';
 import MusicRadio from './components/MusicRadio';
 import { APP_VERSION } from './config';
 
-return (
-    <BrowserRouter>
-        <Routes>
-            {/* Intro page */}
-            <Route path="/" element={<IntroPage />} />
+function App() {
+    const [isLoading, setIsLoading] = useState(true);
 
-            {/* Los Chatetas routes */}
-            <Route path="/menu" element={<MenuPage />} />
-            <Route path="/lobby/:roomCode" element={<LobbyPage />} />
-            <Route path="/join/:roomCode" element={<LobbyPage />} />
-            <Route path="/game/:roomCode" element={<GamePage />} />
-            <Route path="/results/:roomCode" element={<ResultsPage />} />
+    if (isLoading) {
+        return <LoadingScreen onComplete={() => setIsLoading(false)} />;
+    }
 
-            {/* Guess Who routes */}
-            <Route path="/guess-who/menu" element={<GuessWhoMenuPage />} />
-            <Route path="/guess-who/lobby/:roomCode" element={<GuessWhoLobbyPage />} />
-            <Route path="/guess-who/join/:roomCode" element={<GuessWhoLobbyPage />} />
-            <Route path="/guess-who/game" element={<GuessWhoGamePage />} />
+    return (
+        <BrowserRouter>
+            <Routes>
+                {/* Intro page */}
+                <Route path="/" element={<IntroPage />} />
 
-            {/* Impostor V2 routes */}
-            <Route path="/impostor-v2/menu" element={<ImpostorMenuPage />} />
-            <Route path="/impostor-v2/lobby/:roomCode" element={<ImpostorLobbyPage />} />
-            <Route path="/impostor-v2/game/:roomCode" element={<ImpostorGamePage />} />
+                {/* Los Chatetas routes */}
+                <Route path="/menu" element={<MenuPage />} />
+                <Route path="/lobby/:roomCode" element={<LobbyPage />} />
+                <Route path="/join/:roomCode" element={<LobbyPage />} />
+                <Route path="/game/:roomCode" element={<GamePage />} />
+                <Route path="/results/:roomCode" element={<ResultsPage />} />
 
-            {/* Admin Panel */}
-            <Route path="/admin" element={<AdminPage />} />
+                {/* Guess Who routes */}
+                <Route path="/guess-who/menu" element={<GuessWhoMenuPage />} />
+                <Route path="/guess-who/lobby/:roomCode" element={<GuessWhoLobbyPage />} />
+                <Route path="/guess-who/join/:roomCode" element={<GuessWhoLobbyPage />} />
+                <Route path="/guess-who/game" element={<GuessWhoGamePage />} />
 
-            {/* Redirect unknown routes to intro */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+                {/* Impostor V2 routes */}
+                <Route path="/impostor-v2/menu" element={<ImpostorMenuPage />} />
+                <Route path="/impostor-v2/lobby/:roomCode" element={<ImpostorLobbyPage />} />
+                <Route path="/impostor-v2/game/:roomCode" element={<ImpostorGamePage />} />
 
-        {/* Global Components */}
-        <MusicRadio />
-    </BrowserRouter>
-);
+                {/* Admin Panel */}
+                <Route path="/admin" element={<AdminPage />} />
+
+                {/* Redirect unknown routes to intro */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+
+            {/* Global Components */}
+            <MusicRadio />
+        </BrowserRouter>
+    );
 }
 
-
 export default App;
+
