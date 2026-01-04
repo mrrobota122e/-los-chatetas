@@ -176,7 +176,7 @@ export default function GameHubPage() {
 
             {/* Footer */}
             <footer className={styles.footer}>
-                <p>© 2025 AARON STUD<span className={styles.footerNumber}>10</span>S — Todos los derechos reservados</p>
+                <p>© 2025 — Todos los derechos reservados</p>
             </footer>
         </div>
     );
